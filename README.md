@@ -8,7 +8,9 @@ Our change log template is following [keep a changelog](http://keepachangelog.co
 
 A changelog should be maintained to document all changes introduced into the codebase and should be updated as part of the final step in each pull request process.
 
-****Criteria -**** Branch types can be one of:
+## Criteria 
+
+**Branch types can be one of:**
 
 - `init` for initial setting up.
 - `feat` for new features.
