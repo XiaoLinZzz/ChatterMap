@@ -1,32 +1,26 @@
-import React, { useState } from 'react'
-import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View, Button } from 'react-native'
+import React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import ChatScreen from './pages/ChatScreen'
+import MapScreen from './pages/MapScreen'
+import UserInformationScreen from './pages/UserInformationScreen'
 
-// eslint-disable-next-line require-jsdoc
+const BottomTab = createBottomTabNavigator()
+
 export default function App () {
-  const [count, setCount] = useState(0)
-
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Open up App.js to start working on your app!</Text>
-      <Text style={styles.text}>Button pressed {count} times.</Text>
-      <Button
-        title="Press me"
-        onPress={() => setCount(count + 1)} />
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <BottomTab.Navigator
+        screenOptions={{
+          tabBarActiveTintColor: 'tomato',
+          tabBarInactiveTintColor: 'gray',
+          tabBarStyle: [{ display: 'flex' }, null]
+        }}
+      >
+        <BottomTab.Screen name="Chat" component={ChatScreen} />
+        <BottomTab.Screen name="Map" component={MapScreen} />
+        <BottomTab.Screen name="User Information" component={UserInformationScreen} />
+      </BottomTab.Navigator>
+    </NavigationContainer>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  text: {
-    marginBottom: 10,
-    fontSize: 18
-  }
-})
