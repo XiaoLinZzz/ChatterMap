@@ -20,6 +20,7 @@ export default function App () {
         <BottomTab.Screen name="Chat" component={ChatScreen} />
         <BottomTab.Screen name="Map" component={MapScreen} />
         <BottomTab.Screen name="User Information" component={UserInformationScreen} />
+
       </BottomTab.Navigator>
     </NavigationContainer>
   )
