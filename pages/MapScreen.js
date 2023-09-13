@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import MapScreenStyles from '../styles/MapScreenStyle.js'; // 导入样式文件
@@ -7,7 +7,7 @@ import MapScreenStyles from '../styles/MapScreenStyle.js'; // 导入样式文件
 export default function MapScreen() {
   const [location, setLocation] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [showImage, setShowImage] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -46,7 +46,7 @@ export default function MapScreen() {
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }
-          }
+          } onPress={() => setShowImage(false)}
         >
           {location && (
             <Marker
@@ -56,12 +56,18 @@ export default function MapScreen() {
               }}
               anchor={{ x: 0.5, y: 1 }}
               title="Here you are"
+              onPress={() => setShowImage(true)}
             >
+              {showImage && (
+                <Image
+                  source={require('../resource/profile1.png')} // 替换为您自己的图像路径
+                  style={{ width: 40, height: 40 }} // 设置图像的宽度和高度
+                />
+              )}
             </Marker>
           )}
         </MapView>
       )}
-
     </View>
   );
 }
