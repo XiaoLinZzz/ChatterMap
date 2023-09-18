@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, Dimensions } from 'react-native';
+import { Image, Dimensions } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import ChatScreen from './pages/ChatScreen'
@@ -8,9 +8,9 @@ import UserInformationScreen from './pages/UserInformationScreen'
 
 const BottomTab = createBottomTabNavigator()
 
-export default function App() {
-  const screenWidth = Dimensions.get('window').width;
-  const iconSize = screenWidth * 0.075;
+export default function App () {
+  const screenWidth = Dimensions.get('window').width
+  const iconSize = screenWidth * 0.075
   return (
     <NavigationContainer>
       <BottomTab.Navigator
@@ -23,7 +23,7 @@ export default function App() {
         <BottomTab.Screen name="Chat" component={ChatScreen} options={{
           tabBarIcon: ({ focused }) => (
             <Image
-              source={focused ? require("./resource/message.png") : require('./resource/messageSelected.png')}
+              source={focused ? require('./resource/message.png') : require('./resource/messageSelected.png')}
               style={{ width: focused ? iconSize : screenWidth * 0.064, height: focused ? iconSize : screenWidth * 0.064 }}
             />
           ),
