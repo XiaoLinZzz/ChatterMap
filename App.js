@@ -4,11 +4,11 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import ChatScreen from './pages/ChatScreen'
 import MapScreen from './pages/MapScreen'
-import UserInformationScreen from './pages/UserInformationScreen'
+import Profile from './pages/ProfileScreen'
 
 const BottomTab = createBottomTabNavigator()
 
-export default function App () {
+export default function App() {
   const screenWidth = Dimensions.get('window').width
   const iconSize = screenWidth * 0.075
   return (
@@ -39,7 +39,7 @@ export default function App () {
           headerShown: false
         }
         } />
-        <BottomTab.Screen name="User Information" component={UserInformationScreen} options={{
+        <BottomTab.Screen name="Profile" component={Profile} options={{
           tabBarIcon: ({ focused }) => (
             <Image
               source={focused ? require("./resource/profileSelected.png") : require('./resource/profile.png')}
