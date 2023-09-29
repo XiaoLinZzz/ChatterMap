@@ -60,8 +60,8 @@ export default function MapScreen() {
             >
               {showImage && (
                 <Image
-                  source={require('../resource/profile1.png')} // 替换为您自己的图像路径
-                  style={{ width: 40, height: 40 }} // 设置图像的宽度和高度
+                  source={require('../resource/profile1.png')}
+                  style={{ width: 40, height: 40 }}
                 />
               )}
             </Marker>
