@@ -32,7 +32,7 @@ export default function App () {
         <BottomTab.Screen name="Map" component={MapScreen} options={{
           tabBarIcon: ({ focused }) => (
             <Image
-              source={focused ? require("./resource/mapSelected.png") : require('./resource/map.png')}
+              source={focused ? require('./resource/mapSelected.png') : require('./resource/map.png')}
               style={{ width: focused ? iconSize : screenWidth * 0.064, height: focused ? iconSize : screenWidth * 0.064 }}
             />
           ),
@@ -42,7 +42,7 @@ export default function App () {
         <BottomTab.Screen name="User Information" component={UserInformationScreen} options={{
           tabBarIcon: ({ focused }) => (
             <Image
-              source={focused ? require("./resource/profileSelected.png") : require('./resource/profile.png')}
+              source={focused ? require('./resource/profileSelected.png') : require('./resource/profile.png')}
               style={{ width: focused ? iconSize : screenWidth * 0.064, height: focused ? iconSize : screenWidth * 0.064 }}
             />
           ),

@@ -1,73 +1,131 @@
-import React, { useState, useEffect } from 'react';
-import { View, ActivityIndicator, Image } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-import * as Location from 'expo-location';
-import MapScreenStyles from '../styles/MapScreenStyle.js'; // 导入样式文件
+import React, { useState, useEffect, useRef } from 'react'
+import { View, ActivityIndicator, Image } from 'react-native'
+import MapView, { Marker } from 'react-native-maps'
+import * as Location from 'expo-location'
+import * as Battery from 'expo-battery'
+import MapScreenStyles from '../styles/MapScreenStyle.js'
+import BatteryIcon from './componetns/BatteryIcon.js'
+import ResetLocationButton from './componetns/ResetLocationButton.js'
+import AddFriendButton from './componetns/AddFriendButton.js'
+import AddFriendModal from './componetns/AddFriendModal.js'
 
-export default function MapScreen() {
-  const [location, setLocation] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [showImage, setShowImage] = useState(false);
+export default function MapScreen () {
+  const [location, setLocation] = useState(null)
+  const [initialCoords, setInitialCoords] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [batteryLevel, setBatteryLevel] = useState(null)
+  const [showButton, setShowButton] = useState(false)
+  const mapViewRef = useRef(null)
+  const [resetting, setResetting] = useState(false)
+  const [firstLoad, setFirstLoad] = useState(true)
+  const [modalVisible, setModalVisible] = useState(false)
 
   useEffect(() => {
     (async () => {
-      setIsLoading(true);
+      setIsLoading(true)
 
-      const { status } = await Location.requestForegroundPermissionsAsync();
+      const { status } = await Location.requestForegroundPermissionsAsync()
       if (status !== 'granted') {
-        console.error('Permission to access location was denied');
+        console.error('Permission to access location was denied')
       } else {
-        const currentLocation = await Location.getCurrentPositionAsync({});
-        setLocation(currentLocation.coords);
+        const currentLocation = await Location.getCurrentPositionAsync({})
+        setLocation(currentLocation.coords)
+        setInitialCoords(currentLocation.coords)
       }
 
-      setIsLoading(false);
-    })();
-  }, []);
+      const level = await Battery.getBatteryLevelAsync()
+      setBatteryLevel(level)
+
+      setIsLoading(false)
+    })()
+  }, [])
 
   return (
     <View style={MapScreenStyles.screen}>
-      {isLoading ? (
+      {isLoading
+        ? (
         <ActivityIndicator size="large" color="#0000ff" />
-      ) : (
-        <MapView
-          style={MapScreenStyles.map}
-          initialRegion={
-            location
-              ? {
-                latitude: location.latitude,
-                longitude: location.longitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
+          )
+        : (
+        <>
+          <MapView
+            ref={mapViewRef}
+            style={MapScreenStyles.map}
+            initialRegion={
+              location
+                ? {
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                    latitudeDelta: 0.05,
+                    longitudeDelta: 0.025
+                  }
+                : {
+                    latitude: -37.804467,
+                    longitude: 144.972284,
+                    latitudeDelta: 0.05,
+                    longitudeDelta: 0.025
+                  }
+            }
+            onRegionChange={() => {
+              if (firstLoad) {
+                setFirstLoad(false)
+                return
               }
-              : {
-                latitude: -37.804467,
-                longitude: 144.972284,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
+              if (!resetting) {
+                setShowButton(true)
               }
-          } onPress={() => setShowImage(false)}
-        >
-          {location && (
-            <Marker
-              coordinate={{
-                latitude: location.latitude,
-                longitude: location.longitude,
+            }}
+
+            onRegionChangeComplete={() => {
+              if (resetting) {
+                setResetting(false)
+              }
+            }}
+          >
+            {location && (
+              <Marker
+                coordinate={{
+                  latitude: location.latitude,
+                  longitude: location.longitude
+                }}
+                anchor={{ x: 0.5, y: 0.5 }}
+                title="Here you are"
+              >
+                <View style={{ alignItems: 'center' }}>
+                  <Image
+                    source={require('../resource/profile1.png')}
+                    style={{ width: 20, height: 20, marginTop: 10 }}
+                  />
+                </View>
+                <BatteryIcon level={batteryLevel} />
+              </Marker>
+            )}
+          </MapView>
+          {showButton && (
+            <ResetLocationButton
+              onPress={() => {
+                setResetting(true)
+                mapViewRef.current.animateToRegion({
+                  latitude: initialCoords.latitude,
+                  longitude: initialCoords.longitude,
+                  latitudeDelta: 0.05,
+                  longitudeDelta: 0.025
+                })
+                setShowButton(false)
               }}
-              anchor={{ x: 0.5, y: 1 }}
-              title="Here you are"
-              onPress={() => setShowImage(true)}
-            >
-              {showImage && (
-                <Image
-                  source={require('../resource/profile1.png')} // 替换为您自己的图像路径
-                  style={{ width: 40, height: 40 }} // 设置图像的宽度和高度
-                />
-              )}
-            </Marker>
+            />
           )}
-        </MapView>
-      )}
+
+          {/* AddFriendButton Component */}
+          <AddFriendButton onPress={() => setModalVisible(true)} />
+
+          {/* AddFriendModal Component */}
+          <AddFriendModal
+            isVisible={modalVisible}
+            onClose={() => setModalVisible(false)}
+          />
+          </>
+          )}
     </View>
-  );
+  )
 }
