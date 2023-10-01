@@ -1,29 +1,46 @@
-import React from 'react'
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
+import { SafeAreaView, ScrollView, StyleSheet, TextInput } from 'react-native'
 import { List } from 'react-native-paper'
 
-const settings = {
-  username: 'Nacho',
-  email: 'nacho@example.com',
-  password: '********'
-}
+export default function AccountSettings() {
+  const [username, setUsername] = useState('Nacho');
+  const [email, setEmail] = useState('nacho@example.com');
+  const [password, setPassword] = useState('********');
 
-export default function AccountSettings () {
   return (
     <SafeAreaView style={styles.screen}>
       <ScrollView>
         <List.Section>
           <List.Item
             title="Username"
-            description={settings.username}
+            description={
+              <TextInput
+                value={username}
+                onChangeText={(text) => setUsername(text)}
+                style={styles.input}
+              />
+            }
           />
           <List.Item
             title="Email"
-            description={settings.email}
+            description={
+              <TextInput
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+                style={styles.input}
+              />
+            }
           />
           <List.Item
             title="Password"
-            description={settings.password}
+            description={
+              <TextInput
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+                secureTextEntry={true} // 隐藏密码
+                style={styles.input}
+              />
+            }
           />
         </List.Section>
       </ScrollView>
@@ -34,6 +51,11 @@ export default function AccountSettings () {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    marginHorizontal: 20
-  }
-})
+    marginHorizontal: 20,
+  },
+  input: {
+    padding: 100,
+    borderBottomWidth: 1,
+    borderBottomColor: '#111',
+  },
+});
