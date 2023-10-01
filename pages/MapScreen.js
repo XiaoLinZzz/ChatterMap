@@ -9,7 +9,7 @@ import ResetLocationButton from './componetns/ResetLocationButton.js'
 import AddFriendButton from './componetns/AddFriendButton.js'
 import AddFriendModal from './componetns/AddFriendModal.js'
 
-export default function MapScreen () {
+export default function MapScreen() {
   const [location, setLocation] = useState(null)
   const [initialCoords, setInitialCoords] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -44,88 +44,88 @@ export default function MapScreen () {
     <View style={MapScreenStyles.screen}>
       {isLoading
         ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-          )
+          <ActivityIndicator size="large" color="#0000ff" />
+        )
         : (
-        <>
-          <MapView
-            ref={mapViewRef}
-            style={MapScreenStyles.map}
-            initialRegion={
-              location
-                ? {
+          <>
+            <MapView
+              ref={mapViewRef}
+              style={MapScreenStyles.map}
+              initialRegion={
+                location
+                  ? {
                     latitude: location.latitude,
                     longitude: location.longitude,
                     latitudeDelta: 0.05,
                     longitudeDelta: 0.025
                   }
-                : {
+                  : {
                     latitude: -37.804467,
                     longitude: 144.972284,
                     latitudeDelta: 0.05,
                     longitudeDelta: 0.025
                   }
-            }
-            onRegionChange={() => {
-              if (firstLoad) {
-                setFirstLoad(false)
-                return
               }
-              if (!resetting) {
-                setShowButton(true)
-              }
-            }}
-
-            onRegionChangeComplete={() => {
-              if (resetting) {
-                setResetting(false)
-              }
-            }}
-          >
-            {location && (
-              <Marker
-                coordinate={{
-                  latitude: location.latitude,
-                  longitude: location.longitude
-                }}
-                anchor={{ x: 0.5, y: 0.5 }}
-                title="Here you are"
-              >
-                <View style={{ alignItems: 'center' }}>
-                  <Image
-                    source={require('../resource/profile1.png')}
-                    style={{ width: 20, height: 20, marginTop: 10 }}
-                  />
-                </View>
-                <BatteryIcon level={batteryLevel} />
-              </Marker>
-            )}
-          </MapView>
-          {showButton && (
-            <ResetLocationButton
-              onPress={() => {
-                setResetting(true)
-                mapViewRef.current.animateToRegion({
-                  latitude: initialCoords.latitude,
-                  longitude: initialCoords.longitude,
-                  latitudeDelta: 0.05,
-                  longitudeDelta: 0.025
-                })
-                setShowButton(false)
+              onRegionChange={() => {
+                if (firstLoad) {
+                  setFirstLoad(false)
+                  return
+                }
+                if (!resetting) {
+                  setShowButton(true)
+                }
               }}
+
+              onRegionChangeComplete={() => {
+                if (resetting) {
+                  setResetting(false)
+                }
+              }}
+            >
+              {location && (
+                <Marker
+                  coordinate={{
+                    latitude: location.latitude,
+                    longitude: location.longitude
+                  }}
+                  anchor={{ x: 0.5, y: 0.5 }}
+                  title="Here you are"
+                >
+                  <View style={{ alignItems: 'center' }}>
+                    <Image
+                      source={require('../resource/profile1.png')}
+                      style={{ width: 20, height: 20, marginTop: 10 }}
+                    />
+                  </View>
+                  <BatteryIcon level={batteryLevel} />
+                </Marker>
+              )}
+            </MapView>
+            {showButton && (
+              <ResetLocationButton
+                onPress={() => {
+                  setResetting(true)
+                  mapViewRef.current.animateToRegion({
+                    latitude: initialCoords.latitude,
+                    longitude: initialCoords.longitude,
+                    latitudeDelta: 0.05,
+                    longitudeDelta: 0.025
+                  })
+                  setShowButton(false)
+                }}
+              />
+            )}
+
+            {/* AddFriendButton Component */}
+            <AddFriendButton onPress={() => setModalVisible(true)} />
+
+            {/* AddFriendModal Component */}
+            <AddFriendModal
+              isVisible={modalVisible}
+              onClose={() => setModalVisible(false)}
             />
-          )}
-
-          {/* AddFriendButton Component */}
-          <AddFriendButton onPress={() => setModalVisible(true)} />
-
-          {/* AddFriendModal Component */}
-          <AddFriendModal
-            isVisible={modalVisible}
-            onClose={() => setModalVisible(false)}
-          />
           </>
-          )}
+        )}
     </View>
   )
 }
