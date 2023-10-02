@@ -131,7 +131,11 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    marginRight: 10
+    marginRight: 10,
+    height: 40, // 设置一个固定的高度
+    lineHeight: 40, // 使文本垂直居中
+    padding: 0, // 确保没有额外的内边距
+    margin: 0 // 确保没有额外的外边距
   },
   password: {
     fontSize: 16,
@@ -160,6 +164,11 @@ const styles = StyleSheet.create({
   editNameInput: {
     borderBottomWidth: 1,
     borderColor: 'gray',
+    marginRight: 10,
+    height: 40,
+    padding: 0,
+    margin: 0,
+    textAlign: 'center'
     fontSize: 20
   },
   editNameButton: {
@@ -179,7 +188,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   copyButton: {
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent'
     marginTop: 10,
     width: 20,
     height: 20
