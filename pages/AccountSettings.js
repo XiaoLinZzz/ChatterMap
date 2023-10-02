@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { SafeAreaView, ScrollView, StyleSheet, TextInput } from 'react-native'
 import { List } from 'react-native-paper'
 
-export default function AccountSettings() {
-  const [username, setUsername] = useState('Nacho');
-  const [email, setEmail] = useState('nacho@example.com');
-  const [password, setPassword] = useState('********');
+export default function AccountSettings () {
+  const [username, setUsername] = useState('Nacho')
+  const [email, setEmail] = useState('nacho@example.com')
+  const [password, setPassword] = useState('********')
 
   return (
     <SafeAreaView style={styles.screen}>
@@ -51,11 +51,11 @@ export default function AccountSettings() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    marginHorizontal: 20,
+    marginHorizontal: 20
   },
   input: {
     padding: 100,
     borderBottomWidth: 1,
-    borderBottomColor: '#111',
-  },
-});
+    borderBottomColor: '#111'
+  }
+})

@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, TextInput, TouchableWithoutFeedback, Clipboard } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, TextInput, TouchableWithoutFeedback, Clipboard } from 'react-native'
+import * as ImagePicker from 'expo-image-picker'
 
-
-export default function ProfileScreen() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [avatarSource, setAvatarSource] = useState(null);
-  const [editingName, setEditingName] = useState(false);
-  const [name, setName] = useState('Example'); // 初始昵称
+export default function ProfileScreen () {
+  const [showPassword, setShowPassword] = useState(false)
+  const [avatarSource, setAvatarSource] = useState(null)
+  const [editingName, setEditingName] = useState(false)
+  const [name, setName] = useState('Example') // 初始昵称
 
   const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+    setShowPassword(!showPassword)
+  }
 
   const selectImage = async () => {
+    // eslint-disable-next-line no-undef
     if (Platform.OS === 'ios' || Platform.OS === 'android') {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
       if (status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!');
-        return;
+        alert('Sorry, we need camera roll permissions to make this work!')
+        return
       }
     }
 
@@ -26,42 +26,42 @@ export default function ProfileScreen() {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
-    });
+      quality: 1
+    })
 
     if (!result.canceled) {
-      setAvatarSource({ uri: result.assets[0].uri });
+      setAvatarSource({ uri: result.assets[0].uri })
     }
-  };
+  }
   const saveName = () => {
-    setEditingName(false);
-  };
+    setEditingName(false)
+  }
 
   const cancelEditName = () => {
-    setEditingName(false);
-  };
-
+    setEditingName(false)
+  }
 
   const handleContainerPress = () => {
     if (editingName) {
-
-      cancelEditName();
+      cancelEditName()
     }
-  };
+  }
 
   const copyEmailToClipboard = () => {
-    Clipboard.setString('user@example.com'); // remember to change
-    alert("Copyed");
-  };
+    Clipboard.setString('user@example.com') // remember to change
+    alert('Copyed')
+  }
   return (
     <TouchableWithoutFeedback onPress={handleContainerPress}>
       <View style={styles.container}>
         <TouchableOpacity onPress={selectImage}>
-          {avatarSource ? (
+          {avatarSource
+            ? (
             <Image source={avatarSource} style={styles.avatar} />
-          ) : (
+              )
+            : (
             <Image source={require('../resource/profile1.png')} style={styles.avatar} />
-          )}
+              )}
         </TouchableOpacity>
         <Text style={styles.label}>Email:</Text>
         <View style={styles.emailContainer}>
@@ -71,7 +71,8 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </View>
         <Text style={styles.label}>Name:</Text>
-        {editingName ? (
+        {editingName
+          ? (
           <View style={styles.editNameContainer}>
             <TextInput
               style={styles.editNameInput}
@@ -87,15 +88,15 @@ export default function ProfileScreen() {
               </TouchableOpacity>
             </View>
           </View>
-        ) : (
+            )
+          : (
           <TouchableOpacity onPress={() => setEditingName(true)}>
             <Text style={styles.text}>{name}</Text>
           </TouchableOpacity>
-        )}
+            )}
 
         <Text style={styles.label}>Password:</Text>
         <Text style={styles.password}>{showPassword ? 'user_password' : '********'}</Text>
-
 
         <TouchableOpacity onPress={togglePasswordVisibility} style={styles.passwordVisibilityButton}>
           <Text style={styles.passwordVisibilityButtonText}>
@@ -108,69 +109,78 @@ export default function ProfileScreen() {
         </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    padding: Dimensions.get('window').height / 10,
+    padding: Dimensions.get('window').height / 10
   },
   avatar: {
     width: 100,
     height: 100,
     borderRadius: 50,
-    marginBottom: 20,
+    marginBottom: 20
   },
   label: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginTop: 10,
+    marginTop: 10
   },
   text: {
     fontSize: 16,
     marginRight: 10,
+    height: 40, // 设置一个固定的高度
+    lineHeight: 40, // 使文本垂直居中
+    padding: 0, // 确保没有额外的内边距
+    margin: 0 // 确保没有额外的外边距
   },
   password: {
     fontSize: 16,
     marginBottom: 5,
-    color: 'gray',
+    color: 'gray'
   },
   passwordVisibilityButtonText: {
-    color: 'blue',
+    color: 'blue'
   },
   settingsButton: {
     backgroundColor: 'tomato',
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,
-    marginTop: 20,
+    marginTop: 20
   },
   settingsButtonText: {
     color: 'white',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   editNameButtons: {
     flexDirection: 'row',
-    marginLeft: 10,
+    marginLeft: 10
   },
   editNameInput: {
     borderBottomWidth: 1,
     borderColor: 'gray',
-    fontSize: 20,
+    fontSize: 16,
+    marginRight: 10,
+    height: 40,
+    padding: 0,
+    margin: 0,
+    textAlign: 'center'
   },
   editNameButton: {
     paddingHorizontal: 20,
     paddingVertical: 5,
     borderRadius: 5,
     marginTop: 5,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   editNameButtonText: {
     color: 'black',
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   emailContainer: {
     flexDirection: 'row',
@@ -178,10 +188,10 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   copyButton: {
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent'
   },
   copyButtonImage: {
     width: 10,
-    height: 10,
-  },
-});
+    height: 10
+  }
+})
