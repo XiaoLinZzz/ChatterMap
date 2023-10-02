@@ -37,7 +37,7 @@ export default function AccountSettings () {
               <TextInput
                 value={password}
                 onChangeText={(text) => setPassword(text)}
-                secureTextEntry={true} // 隐藏密码
+                secureTextEntry={true}
                 style={styles.input}
               />
             }

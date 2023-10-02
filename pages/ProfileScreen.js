@@ -164,12 +164,12 @@ const styles = StyleSheet.create({
   editNameInput: {
     borderBottomWidth: 1,
     borderColor: 'gray',
-    fontSize: 16,
     marginRight: 10,
     height: 40,
     padding: 0,
     margin: 0,
     textAlign: 'center'
+    fontSize: 20
   },
   editNameButton: {
     paddingHorizontal: 20,
@@ -189,6 +189,9 @@ const styles = StyleSheet.create({
   },
   copyButton: {
     backgroundColor: 'transparent'
+    marginTop: 10,
+    width: 20,
+    height: 20
   },
   copyButtonImage: {
     width: 10,
