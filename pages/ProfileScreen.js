@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     height: 40,
     padding: 0,
     margin: 0,
-    textAlign: 'center'
+    textAlign: 'center',
     fontSize: 20
   },
   editNameButton: {
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   copyButton: {
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
     marginTop: 10,
     width: 20,
     height: 20
