@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Image, Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -11,6 +12,8 @@ import AuthLandingPage from './pages/AuthLandingPage';
 import { UserContext } from './pages/UserContext';
 
 const BottomTab = createBottomTabNavigator();
+const screenWidth = Dimensions.get('window').width
+const iconSize = screenWidth * 0.075
 
 const AppNavigator = () => {
     const { isUserLoggedIn } = useContext(UserContext);
