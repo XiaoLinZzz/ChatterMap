@@ -16,6 +16,7 @@ const BottomTab = createBottomTabNavigator()
 const screenWidth = Dimensions.get('window').width
 const iconSize = screenWidth * 0.075
 
+
 const AppNavigator = () => {
   const { isUserLoggedIn } = useContext(UserContext)
 
