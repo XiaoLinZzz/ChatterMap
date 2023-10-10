@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, TextInput, TouchableWithoutFeedback, Clipboard, SafeAreaView, ScrollView } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
-import PropTypes from 'prop-types'
-import { NavigationContainer, StackActions, NavigationActions } from '@react-navigation/native'
+// import PropTypes from 'prop-types'
+// import { NavigationContainer, StackActions, NavigationActions } from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker'
 import SettingScreen from './Setting'
 

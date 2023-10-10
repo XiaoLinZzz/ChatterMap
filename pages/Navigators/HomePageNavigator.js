@@ -1,38 +1,16 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Image, Dimensions } from 'react-native'
-import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { createStackNavigator } from '@react-navigation/stack'
-import ChatScreen from './pages/ChatScreen'
-import MapScreen from './pages/MapScreen'
-import Profile from './pages/ProfileScreen'
-import LoginScreen from './pages/Login'
-import SignUpScreen from './pages/Register'
-import AuthLandingPage from './pages/AuthLandingPage'
-import { UserContext } from './pages/UserContext'
-import Friends from './pages/friends/Friends'
+import ChatScreen from '../ChatScreen'
+import MapScreen from '../MapScreen'
+import Profile from '../ProfileScreen'
+import Friends from '../friends/Friends'
 
 const BottomTab = createBottomTabNavigator()
 const screenWidth = Dimensions.get('window').width
 const iconSize = screenWidth * 0.075
 
-const AppNavigator = () => {
-  const { isUserLoggedIn } = useContext(UserContext)
-
-  return (
-        <NavigationContainer>
-            {isUserLoggedIn
-              ? (
-                <HomePage />
-                )
-              : (
-                <LoginNavigator />
-                )}
-        </NavigationContainer>
-  )
-}
-
-const HomePage = () => {
+const HomePageNavigator = () => {
   return (
         <BottomTab.Navigator
             screenOptions={{
@@ -44,7 +22,7 @@ const HomePage = () => {
             <BottomTab.Screen name="Chat" component={ChatScreen} options={{
               tabBarIcon: ({ focused }) => (
                     <Image
-                        source={focused ? require('./resource/message.png') : require('./resource/messageSelected.png')}
+                        source={focused ? require('../../resource/message.png') : require('../../resource/messageSelected.png')}
                         style={{ width: focused ? iconSize : screenWidth * 0.064, height: focused ? iconSize : screenWidth * 0.064 }}
                     />
               ),
@@ -53,7 +31,7 @@ const HomePage = () => {
             <BottomTab.Screen name="Friends" component={Friends} options={{
               tabBarIcon: ({ focused }) => (
                     <Image
-                        source={focused ? require('./resource/groupSelected.png') : require('./resource/group.png')}
+                        source={focused ? require('../../resource/groupSelected.png') : require('../../resource/group.png')}
                         style={{ width: focused ? iconSize : screenWidth * 0.064, height: focused ? iconSize : screenWidth * 0.064 }}
                     />
               ),
@@ -62,7 +40,7 @@ const HomePage = () => {
             <BottomTab.Screen name="Map" component={MapScreen} options={{
               tabBarIcon: ({ focused }) => (
                     <Image
-                        source={focused ? require('./resource/mapSelected.png') : require('./resource/map.png')}
+                        source={focused ? require('../../resource/mapSelected.png') : require('../../resource/map.png')}
                         style={{ width: focused ? iconSize : screenWidth * 0.064, height: focused ? iconSize : screenWidth * 0.064 }}
                     />
               ),
@@ -72,7 +50,7 @@ const HomePage = () => {
             <BottomTab.Screen name="Profile" component={Profile} options={{
               tabBarIcon: ({ focused }) => (
                     <Image
-                        source={focused ? require('./resource/profileSelected.png') : require('./resource/profile.png')}
+                        source={focused ? require('../../resource/profileSelected.png') : require('../../resource/profile.png')}
                         style={{ width: focused ? iconSize : screenWidth * 0.064, height: focused ? iconSize : screenWidth * 0.064 }}
                     />
               ),
@@ -82,21 +60,4 @@ const HomePage = () => {
   )
 }
 
-const Stack = createStackNavigator()
-
-const LoginNavigator = () => {
-  return (
-        <Stack.Navigator
-            initialRouteName="AuthLanding"
-            screenOptions={{
-              headerShown: false
-            }}
-        >
-            <Stack.Screen name="AuthLanding" component={AuthLandingPage} />
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="SignUp" component={SignUpScreen} />
-        </Stack.Navigator>
-  )
-}
-
-export default AppNavigator
+export default HomePageNavigator
