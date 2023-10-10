@@ -1,14 +1,19 @@
-import React, { useContext, useState } from 'react'
-import { SafeAreaView, ScrollView, StyleSheet, Button, View, Alert } from 'react-native'
-import { List, TextInput, Text } from 'react-native-paper'
-import { UserContext } from './UserContext'
+import React, { useContext, useState } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator, View, Text } from 'react-native';
+import { List, TextInput } from 'react-native-paper';
+import { UserContext } from './UserContext';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default function LoginPage () {
-  const { loginUser } = useContext(UserContext)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+export default function LoginPage() {
+  const { loginUser } = useContext(UserContext);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleLogin = async () => {
+    setLoading(true);
+    setError(null);
     const data = {
       email,
       password
@@ -32,8 +37,9 @@ export default function LoginPage () {
         Alert.alert('Login Error', 'Invalid email or password. Please try again.')
       }
     } catch (error) {
-      console.error(error)
-      Alert.alert('Login Error', 'There was an error logging in. Please check your connection and try again.')
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -49,16 +55,19 @@ export default function LoginPage () {
             label="Email"
             value={email}
             onChangeText={setEmail}
-            style={styles.input}
+            left={<TextInput.Icon name={() => <Icon name="envelope" />} />}
           />
           <TextInput
             label="Password"
             value={password}
             secureTextEntry={true}
             onChangeText={setPassword}
-            style={styles.input}
+            left={<TextInput.Icon name={() => <Icon name="lock" />} />}
           />
-          <Button title="Login" onPress={handleLogin} color="#4CAF50" />
+          {error && <Text style={styles.errorText}>{error}</Text>}
+          <TouchableOpacity style={styles.loginButton} onPress={handleLogin} disabled={loading}>
+            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.loginButtonText}>Login</Text>}
+          </TouchableOpacity>
         </List.Section>
       </ScrollView>
     </SafeAreaView>
@@ -68,27 +77,24 @@ export default function LoginPage () {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#f5f5f5'
+    marginHorizontal: 20,
   },
-  container: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    padding: 20
-  },
-  logoContainer: {
+  loginButton: {
+    backgroundColor: '#6200ee',
+    borderRadius: 25,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
     alignItems: 'center',
-    marginBottom: 40
+    justifyContent: 'center',
+    marginTop: 20,
   },
-  logo: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#4CAF50'
+  loginButtonText: {
+    color: '#fff',
+    fontSize: 18,
   },
-  inputSection: {
-    marginBottom: 15
-  },
-  input: {
-    marginBottom: 15,
-    backgroundColor: 'white'
+  errorText: {
+    color: 'red',
+    marginTop: 10,
+    textAlign: 'center',
   }
 })
