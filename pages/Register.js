@@ -30,8 +30,12 @@ export default function SignupPage() {
 
   return (
     <SafeAreaView style={styles.screen}>
-      <ScrollView>
-        <List.Section>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.logoContainer}>
+          {/* This is a placeholder for your logo */}
+          <Text style={styles.logo}>Sign-up Page</Text>
+        </View>
+        <List.Section style={styles.inputSection}>
           <TextInput
             label="Username"
             value={username}
@@ -58,7 +62,7 @@ export default function SignupPage() {
         </List.Section>
       </ScrollView>
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({

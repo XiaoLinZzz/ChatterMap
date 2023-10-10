@@ -15,36 +15,42 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
     const data = {
-      email: email,
-      password: password
-    };
+      email,
+      password
+    }
     try {
       const response = await fetch('http://3.138.178.239:5000/users/login', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data),
-      });
+        body: JSON.stringify(data)
+      })
       if (!response.ok) {
-        throw new Error('Network response was not ok ' + response.statusText);
+        throw new Error('Network response was not ok ' + response.statusText)
       }
-      const responseData = await response.json();
-      console.log(responseData);
+      const responseData = await response.json()
+      console.log(responseData)
       if (responseData && responseData.email) {
-        loginUser(responseData.email);
+        loginUser(responseData.email)
+      } else {
+        Alert.alert('Login Error', 'Invalid email or password. Please try again.')
       }
     } catch (error) {
       setError(error.message);
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
     <SafeAreaView style={styles.screen}>
-      <ScrollView>
-        <List.Section>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.logoContainer}>
+          {/* This is a placeholder for your logo */}
+          <Text style={styles.logo}>Login Page</Text>
+        </View>
+        <List.Section style={styles.inputSection}>
           <TextInput
             label="Email"
             value={email}
@@ -65,7 +71,7 @@ export default function LoginPage() {
         </List.Section>
       </ScrollView>
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -91,4 +97,4 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: 'center',
   }
-});
+})

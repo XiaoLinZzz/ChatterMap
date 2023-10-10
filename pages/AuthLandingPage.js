@@ -54,4 +54,5 @@ const styles = StyleSheet.create({
     },
 });
 
-export default AuthLandingPage;
+
+export default AuthLandingPage

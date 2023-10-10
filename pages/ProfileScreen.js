@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, TextInput, TouchableWithoutFeedback, Clipboard } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, TextInput, TouchableWithoutFeedback, Clipboard, SafeAreaView, ScrollView } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
-import PropTypes from 'prop-types'
-import { SafeAreaView, ScrollView } from 'react-native'
-import { NavigationContainer ,StackActions, NavigationActions} from '@react-navigation/native'
+// import PropTypes from 'prop-types'
+// import { NavigationContainer, StackActions, NavigationActions } from '@react-navigation/native'
 import * as ImagePicker from 'expo-image-picker'
 import SettingScreen from './Setting'
 
@@ -13,7 +12,7 @@ import SettingScreen from './Setting'
 //   })
 // }
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator()
 
 export default function ProfileScreen () {
   return (
@@ -28,7 +27,7 @@ export default function ProfileScreen () {
     </Stack.Navigator>
   )
 }
-export function InformationScreen ({navigation}) {
+export function InformationScreen ({ navigation }) {
   const [showPassword, setShowPassword] = useState(false)
   const [avatarSource, setAvatarSource] = useState(null)
   const [editingName, setEditingName] = useState(false)
@@ -84,10 +83,10 @@ export function InformationScreen ({navigation}) {
             {avatarSource
               ? (
                 <Image source={avatarSource} style={styles.avatar} />
-              )
+                )
               : (
                 <Image source={require('../resource/profile1.png')} style={styles.avatar} />
-              )}
+                )}
           </TouchableOpacity>
           <Text style={styles.label}>Email:</Text>
           <View style={styles.emailContainer}>
@@ -113,12 +112,12 @@ export function InformationScreen ({navigation}) {
                   </TouchableOpacity>
                 </View>
               </View>
-            )
+              )
             : (
               <TouchableOpacity onPress={() => setEditingName(true)}>
                 <Text style={styles.text}>{name}</Text>
               </TouchableOpacity>
-            )}
+              )}
 
           <Text style={styles.label}>Password:</Text>
           <Text style={styles.password}>{showPassword ? 'user_password' : '********'}</Text>
@@ -129,7 +128,7 @@ export function InformationScreen ({navigation}) {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.settingsButton} onPress={()=>{console.log("go to setting");  navigation.navigate('Setting')}}>
+          <TouchableOpacity style={styles.settingsButton} onPress={() => { console.log('go to setting'); navigation.navigate('Setting') }}>
             <Text style={styles.settingsButtonText}>Settings</Text>
           </TouchableOpacity>
 
