@@ -1,91 +1,107 @@
 import PropTypes from 'prop-types'
-import React, { useState } from 'react'
-import { Modal, View, Text, Button, StyleSheet, TextInput, FlatList, TouchableOpacity } from 'react-native'
+import React from 'react'
+import { Modal, View, Text, StyleSheet, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native'
 
-export default function AddFriendModal ({ isVisible, onClose }) {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [friendsList, setFriendsList] = useState(['John Doe', 'Jane Smith', 'Alice', 'Bob'])
-  const [searchResults, setSearchResults] = useState(friendsList)
+import FontAwesome from '@expo/vector-icons/FontAwesome'
 
-  const handleSearch = () => {
-    const filteredResults = friendsList.filter(name => name.toLowerCase().includes(searchTerm.toLowerCase()))
-    setSearchResults(filteredResults)
+export default class AddFriendModal extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      searchTerm: ''
+    }
   }
 
-  return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={isVisible}
-      onRequestClose={onClose}
-    >
-      <View style={styles.modalBackground}>
-        <View style={styles.modalView}>
-          <Text>Add a friend!</Text>
+  handleSearch = () => {
+    // ...您的搜索逻辑
+  }
 
-          <TextInput
-            style={styles.searchBar}
-            placeholder="Search for friends..."
-            value={searchTerm}
-            onChangeText={setSearchTerm}
-            onSubmitEditing={handleSearch}
-          />
+  render () {
+    return (
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={this.props.isVisible}
+        onRequestClose={this.props.onClose}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.overlay}>
+            <View style={styles.dialog}>
+              <Text style={styles.title}>Add a friend</Text>
 
-          <FlatList
-            data={searchResults}
-            keyExtractor={(item) => item}
-            renderItem={({ item }) => (
-              <View style={styles.listItem}>
-                <Text>{item}</Text>
-                <TouchableOpacity style={styles.addButton}>
-                  <Text>add</Text>
+                <TouchableOpacity style={styles.closeButton} onPress={this.props.onClose}>
+                  <FontAwesome name="close" size={24} color="#aaa" />
                 </TouchableOpacity>
-              </View>
-            )}
-          />
 
-          <Button title="Close" onPress={onClose} />
-        </View>
-      </View>
-    </Modal>
-  )
+                <View style={styles.searchContainer}>
+                  <TextInput
+                    style={styles.searchBar}
+                    placeholder="Enter username..."
+                    value={this.state.searchTerm}
+                    onChangeText={(text) => this.setState({ searchTerm: text })}
+                  />
+                  <TouchableOpacity style={styles.searchButton} onPress={this.handleSearch}>
+                    <FontAwesome name="search" size={20} color="white" />
+                  </TouchableOpacity>
+                </View>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
-  modalBackground: {
+  overlay: {
     flex: 1,
-    justifyContent: 'flex-end'
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
-  modalView: {
-    flex: 0.7,
+  dialog: {
+    width: '85%',
     backgroundColor: 'white',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 15,
+    borderRadius: 25,
+    padding: 20,
+    position: 'relative', // 这允许我们对子元素进行定位
+    alignItems: 'center'
+  },
+  title: {
+    marginTop: 10,
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#4CAF50',
+    marginBottom: 20
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    width: '100%',
     alignItems: 'center'
   },
   searchBar: {
-    width: '80%',
-    height: 40,
-    borderColor: 'gray',
+    flex: 1,
+    height: 45,
+    borderColor: '#ddd',
     borderWidth: 1,
-    borderRadius: 10,
-    marginBottom: 10,
-    paddingLeft: 10
+    borderRadius: 12,
+    paddingLeft: 15,
+    marginRight: 10
   },
-  listItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '80%',
+  searchButton: {
     padding: 10,
-    borderBottomWidth: 0.5,
-    borderColor: 'gray'
-  },
-  addButton: {
-    padding: 5,
     backgroundColor: '#4CAF50',
-    borderRadius: 5
+    borderRadius: 8
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold'
+  },
+  closeButton: {
+    position: 'absolute', // 这将按钮定位到对话框的右上角
+    right: 5,
+    top: 5,
+    padding: 10
   }
 })
 

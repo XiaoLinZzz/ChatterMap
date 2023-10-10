@@ -10,12 +10,11 @@ import LoginScreen from './pages/Login'
 import SignUpScreen from './pages/Register'
 import AuthLandingPage from './pages/AuthLandingPage'
 import { UserContext } from './pages/UserContext'
-import Friends from './pages/Friends'
+import Friends from './pages/friends/Friends'
 
 const BottomTab = createBottomTabNavigator()
 const screenWidth = Dimensions.get('window').width
 const iconSize = screenWidth * 0.075
-
 
 const AppNavigator = () => {
   const { isUserLoggedIn } = useContext(UserContext)
