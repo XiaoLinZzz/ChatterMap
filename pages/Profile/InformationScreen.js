@@ -1,50 +1,22 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, TextInput, TouchableWithoutFeedback, Clipboard, SafeAreaView, ScrollView } from 'react-native'
-import { createStackNavigator } from '@react-navigation/stack'
-// import PropTypes from 'prop-types'
-// import { NavigationContainer, StackActions, NavigationActions } from '@react-navigation/native'
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, TextInput, TouchableWithoutFeedback, Clipboard } from 'react-native'
+import PropTypes from 'prop-types'
 import * as ImagePicker from 'expo-image-picker'
-import SettingScreen from './Setting'
 
-// InformationScreen.propTypes = {
-//   navigation: PropTypes.shape({
-//     navigate: PropTypes.func
-//   })
-// }
-
-const Stack = createStackNavigator()
-
-export default function ProfileScreen () {
-  return (
-
-    <Stack.Navigator initialRouteName="ProfileScreen">
-      <Stack.Screen
-        name="Profile"
-        component={InformationScreen}
-        headerShown={false}
-        />
-      <Stack.Screen name="Setting" component={SettingScreen} />
-    </Stack.Navigator>
-  )
-}
-export function InformationScreen ({ navigation }) {
+function InformationScreen ({ navigation }) {
   const [showPassword, setShowPassword] = useState(false)
   const [avatarSource, setAvatarSource] = useState(null)
   const [editingName, setEditingName] = useState(false)
-  const [name, setName] = useState('Example') // 初始昵称
+  const [name, setName] = useState('Example')
+  const [email, setEmail] = useState('user@example.com')
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword)
-  }
+  const togglePasswordVisibility = () => setShowPassword(!showPassword)
 
   const selectImage = async () => {
-    // eslint-disable-next-line no-undef
-    if (Platform.OS === 'ios' || Platform.OS === 'android') {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
-      if (status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!')
-        return
-      }
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+    if (status !== 'granted') {
+      alert('Sorry, we need camera roll permissions to make this work!')
+      return
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -58,24 +30,15 @@ export function InformationScreen ({ navigation }) {
       setAvatarSource({ uri: result.assets[0].uri })
     }
   }
-  const saveName = () => {
-    setEditingName(false)
-  }
 
-  const cancelEditName = () => {
-    setEditingName(false)
-  }
-
-  const handleContainerPress = () => {
-    if (editingName) {
-      cancelEditName()
-    }
-  }
-
+  const saveName = () => setEditingName(false)
+  const cancelEditName = () => setEditingName(false)
+  const handleContainerPress = () => editingName && cancelEditName()
   const copyEmailToClipboard = () => {
-    Clipboard.setString('user@example.com') // remember to change
-    alert('Copyed')
+    Clipboard.setString(email)
+    alert('Copied')
   }
+
   return (
     <TouchableWithoutFeedback onPress={handleContainerPress}>
         <View style={styles.container}>
@@ -137,6 +100,12 @@ export function InformationScreen ({ navigation }) {
   )
 }
 
+InformationScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired
+  }).isRequired
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -157,10 +126,10 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     marginRight: 10,
-    height: 40, // 设置一个固定的高度
-    lineHeight: 40, // 使文本垂直居中
-    padding: 0, // 确保没有额外的内边距
-    margin: 0 // 确保没有额外的外边距
+    height: 40,
+    lineHeight: 40,
+    padding: 0,
+    margin: 0
   },
   password: {
     fontSize: 16,
@@ -223,3 +192,5 @@ const styles = StyleSheet.create({
     height: 10
   }
 })
+
+export default InformationScreen
