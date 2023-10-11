@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator, View, Text } from 'react-native';
 import { List, TextInput } from 'react-native-paper';
 import { UserContext } from './UserContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function LoginPage() {
@@ -30,9 +31,9 @@ export default function LoginPage() {
         throw new Error('Network response was not ok ' + response.statusText)
       }
       const responseData = await response.json()
-      console.log(responseData)
-      if (responseData && responseData.email) {
-        loginUser(responseData.email)
+      if (responseData && responseData.token) {
+        await AsyncStorage.setItem('userToken', responseData.token);
+        loginUser(responseData.email);
       } else {
         Alert.alert('Login Error', 'Invalid email or password. Please try again.')
       }
