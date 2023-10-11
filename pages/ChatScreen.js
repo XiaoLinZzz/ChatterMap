@@ -1,134 +1,82 @@
-import React from 'react'
-import { ScrollView, StyleSheet, SafeAreaView } from 'react-native'
-import { List, Text } from 'react-native-paper'
+import React, { useState } from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView,useSafeAreaInsets } from 'react-native-safe-area-context';
+import Slider from '@react-native-community/slider';
+import { useNavigation } from '@react-navigation/native'
 
-const groupChats = [
-  {
-    id: 1,
-    name: 'Mobile App Development',
-    lastMessage: 'See you!',
-    lastMessageTime: '10:30',
-    avatar: require('../resource/group-chat.png')
-  },
-  {
-    id: 2,
-    name: 'Data Structure',
-    lastMessage: 'I am going to be late.',
-    lastMessageTime: '9:30',
-    avatar: require('../resource/group-chat.png')
-  },
-  {
-    id: 3,
-    name: 'Algorithm',
-    lastMessage: 'Ok',
-    lastMessageTime: '9:23',
-    avatar: require('../resource/group-chat.png')
-  },
-  {
-    id: 4,
-    name: 'Computer Network',
-    lastMessage: 'See you!',
-    lastMessageTime: '10:30',
-    avatar: require('../resource/group-chat.png')
-  },
-  {
-    id: 5,
-    name: 'Operating System',
-    lastMessage: 'I am going to be late.',
-    lastMessageTime: '9:30',
-    avatar: require('../resource/group-chat.png')
-  },
-  {
-    id: 6,
-    name: 'Database',
-    lastMessage: 'Ok',
-    lastMessageTime: '9:23',
-    avatar: require('../resource/group-chat.png')
-  },
-  {
-    id: 7,
-    name: 'Software Engineering',
-    lastMessage: 'See you!',
-    lastMessageTime: '10:30',
-    avatar: require('../resource/group-chat.png')
-  },
-  {
-    id: 8,
-    name: 'Computer Graphics',
-    lastMessage: 'I am going to be late.',
-    lastMessageTime: '9:30',
-    avatar: require('../resource/group-chat.png')
-  },
-  {
-    id: 9,
-    name: 'Artificial Intelligence',
-    lastMessage: 'Ok',
-    lastMessageTime: '9:23',
-    avatar: require('../resource/group-chat.png')
-  },
-  {
-    id: 10,
-    name: 'Computer Architecture',
-    lastMessage: 'See you!',
-    lastMessageTime: '10:30',
-    avatar: require('../resource/group-chat.png')
-  },
-  {
-    id: 11,
-    name: 'Computer Organization',
-    lastMessage: 'I am going to be late.',
-    lastMessageTime: '9:30',
-    avatar: require('../resource/group-chat.png')
-  },
-  {
-    id: 12,
-    name: 'Computer Security',
-    lastMessage: 'Ok',
-    lastMessageTime: '9:23',
-    avatar: require('../resource/group-chat.png')
-  },
-  {
-    id: 13,
-    name: 'Computer Vision',
-    lastMessage: 'See you!',
-    lastMessageTime: '10:30',
-    avatar: require('../resource/group-chat.png')
-  },
-  {
-    id: 14,
-    name: 'Computer Animation',
-    lastMessage: 'I am going to be late.',
-    lastMessageTime: '9:30',
-    avatar: require('../resource/group-chat.png')
-  }
-]
 
-export default function ChatScreen () {
+export default function GroupChatListScreen() {
+
+  const navigation = useNavigation();
+  const [topPadding, setTopPadding] = useState(0);
+  const [groupChats, setGroupChats] = useState([
+    { id: '1', name: 'Family Chat', members: ['Alice', 'Bob', 'Charlie'] },
+    { id: '2', name: 'Friends Chat', members: ['David', 'Eve', 'Frank'] },
+    { id: '3', name: 'Work Chat', members: ['Grace', 'Hank', 'Ivy'] },
+    // Add more group chats here
+  ]);
+
+  const renderGroupChatItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.groupChatItem}
+      onPress={() => handleGroupChatPress(item)}
+    >
+      <Text style={styles.groupChatName}>{item.name}</Text>
+      <Text style={styles.groupChatMembers}>
+        {item.members.join(', ')}
+      </Text>
+    </TouchableOpacity>
+  );
+
+  const handleGroupChatPress = (groupChat) => {
+    // Handle group chat item press, e.g., navigate to the chat screen
+    console.log(`Pressed group chat: ${groupChat.name}`);
+    // navigation.navigate('GroupChat', { groupChat });
+  };
+
+
   return (
-    <SafeAreaView style={styles.screen}>
-      <ScrollView>
-        <Text variant="displayMedium">Chats</Text>
-        <List.Section>
-          {groupChats.map((groupChat) => (
-            <List.Item
-              key={groupChat.id}
-              title={groupChat.name}
-              description={groupChat.lastMessage}
-              left={() => <List.Icon icon={groupChat.avatar} />}
-              right={() => <Text>{groupChat.lastMessageTime}</Text>}
-            />
-          ))}
-        </List.Section>
-      </ScrollView>
-    </SafeAreaView>
-  )
+  <SafeAreaView style={{ flex: 1, paddingTop: topPadding }}>
+    <View style={styles.header}>
+      <Text style={styles.headerTitle}>Group Chats</Text>
+    </View>
+    <FlatList
+      data={groupChats}
+      keyExtractor={(item) => item.id}
+      renderItem={renderGroupChatItem}
+    />
+  </SafeAreaView>
+);
+
 }
 
 const styles = StyleSheet.create({
-  screen: {
+  groupChatItem: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  groupChatName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  groupChatMembers: {
+    fontSize: 14,
+    color: '#888',
+  },
+  header: {
+    flexDirection: 'row',
+    backgroundColor: 'tomato',
+    padding: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
     flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center'
-    marginHorizontal: 20
-  }
-})
+  },
+});
