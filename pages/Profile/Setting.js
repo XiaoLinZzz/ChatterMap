@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Switch } from 'react-native';
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, Switch } from 'react-native'
 
-export default function SettingScreen() {
-  const [isEnabled, setIsEnabled] = useState(false);
+export default function SettingScreen () {
+  const [isEnabled, setIsEnabled] = useState(false)
 
   const toggleSwitch = () => {
-    setIsEnabled((previousState) => !previousState);
-  };
+    setIsEnabled((previousState) => !previousState)
+  }
 
   return (
     <View style={styles.container}>
@@ -28,21 +28,21 @@ export default function SettingScreen() {
         />
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 16
   },
   settingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 20
   },
   label: {
     flex: 1, // 让标签占满剩余的空间
-    fontSize: 16,
-  },
-});
+    fontSize: 16
+  }
+})

@@ -3,7 +3,7 @@ import { Image, Dimensions } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import ChatScreen from '../ChatScreen'
 import MapScreen from '../MapScreen'
-import Profile from '../ProfileScreen'
+import Profile from '../Profile/ProfileScreen'
 import Friends from '../friends/Friends'
 
 const BottomTab = createBottomTabNavigator()
