@@ -1,20 +1,18 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
-import { SafeAreaView,useSafeAreaInsets } from 'react-native-safe-area-context';
-import Slider from '@react-native-community/slider';
+import React, { useState } from 'react'
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native'
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
+// import Slider from '@react-native-community/slider';
 import { useNavigation } from '@react-navigation/native'
 
-
-export default function GroupChatListScreen() {
-
-  const navigation = useNavigation();
-  const [topPadding, setTopPadding] = useState(0);
+export default function GroupChatListScreen () {
+  const navigation = useNavigation()
+  const [topPadding, setTopPadding] = useState(0)
   const [groupChats, setGroupChats] = useState([
     { id: '1', name: 'Family Chat', members: ['Alice', 'Bob', 'Charlie'] },
     { id: '2', name: 'Friends Chat', members: ['David', 'Eve', 'Frank'] },
-    { id: '3', name: 'Work Chat', members: ['Grace', 'Hank', 'Ivy'] },
+    { id: '3', name: 'Work Chat', members: ['Grace', 'Hank', 'Ivy'] }
     // Add more group chats here
-  ]);
+  ])
 
   const renderGroupChatItem = ({ item }) => (
     <TouchableOpacity
@@ -26,14 +24,13 @@ export default function GroupChatListScreen() {
         {item.members.join(', ')}
       </Text>
     </TouchableOpacity>
-  );
+  )
 
   const handleGroupChatPress = (groupChat) => {
     // Handle group chat item press, e.g., navigate to the chat screen
-    console.log(`Pressed group chat: ${groupChat.name}`);
+    console.log(`Pressed group chat: ${groupChat.name}`)
     // navigation.navigate('GroupChat', { groupChat });
-  };
-
+  }
 
   return (
   <SafeAreaView style={{ flex: 1, paddingTop: topPadding }}>
@@ -46,8 +43,7 @@ export default function GroupChatListScreen() {
       renderItem={renderGroupChatItem}
     />
   </SafeAreaView>
-);
-
+  )
 }
 
 const styles = StyleSheet.create({
@@ -55,15 +51,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: '#ddd'
   },
   groupChatName: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   groupChatMembers: {
     fontSize: 14,
-    color: '#888',
+    color: '#888'
   },
   header: {
     flexDirection: 'row',
@@ -71,12 +67,12 @@ const styles = StyleSheet.create({
     padding: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   headerTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     color: 'white',
-    flex: 1,
-  },
-});
+    flex: 1
+  }
+})

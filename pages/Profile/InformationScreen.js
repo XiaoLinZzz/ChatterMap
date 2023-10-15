@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, TextInput, TouchableWithoutFeedback } from 'react-native'
-import Clipboard from '@react-native-clipboard/clipboard';
+// import Clipboard from '@react-native-clipboard/clipboard'
 import PropTypes from 'prop-types'
 import * as ImagePicker from 'expo-image-picker'
 
-function InformationScreen({ navigation }) {
+function InformationScreen ({ navigation }) {
   const [showPassword, setShowPassword] = useState(false)
   const [avatarSource, setAvatarSource] = useState(null)
   const [editingName, setEditingName] = useState(false)
@@ -35,10 +35,10 @@ function InformationScreen({ navigation }) {
   const saveName = () => setEditingName(false)
   const cancelEditName = () => setEditingName(false)
   const handleContainerPress = () => editingName && cancelEditName()
-  const copyEmailToClipboard = () => {
-    Clipboard.setString(email)
-    alert('Copied')
-  }
+  // const copyEmailToClipboard = () => {
+  //   Clipboard.setString(email)
+  //   alert('Copied')
+  // }
 
   return (
     <TouchableWithoutFeedback onPress={handleContainerPress}>
@@ -47,17 +47,17 @@ function InformationScreen({ navigation }) {
           {avatarSource
             ? (
               <Image source={avatarSource} style={styles.avatar} />
-            )
+              )
             : (
               <Image source={require('../../resource/profile1.png')} style={styles.avatar} />
-            )}
+              )}
         </TouchableOpacity>
         <Text style={styles.label}>Email:</Text>
         <View style={styles.emailContainer}>
           <Text style={styles.text}>user@example.com</Text>
-          <TouchableOpacity onPress={copyEmailToClipboard} style={styles.copyButton}>
+          {/* <TouchableOpacity onPress={copyEmailToClipboard} style={styles.copyButton}>
             <Image source={require('../../resource/copy.png')} style={styles.copyButtonImage} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <Text style={styles.label}>Name:</Text>
         {editingName
@@ -76,12 +76,12 @@ function InformationScreen({ navigation }) {
                 </TouchableOpacity>
               </View>
             </View>
-          )
+            )
           : (
             <TouchableOpacity onPress={() => setEditingName(true)}>
               <Text style={styles.text}>{name}</Text>
             </TouchableOpacity>
-          )}
+            )}
 
         <Text style={styles.label}>Password:</Text>
         <Text style={styles.password}>{showPassword ? 'user_password' : '********'}</Text>
