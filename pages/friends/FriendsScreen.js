@@ -27,31 +27,31 @@ const FriendsScreen = () => {
   }
 
   return (
-          <View style={styles.container}>
-              <View style={styles.inputContainer}>
-                  <TextInput
-                      style={styles.input}
-                      onChangeText={setNewFriend}
-                      value={newFriend}
-                      placeholder="Enter friend's name"
-                  />
-                  <TouchableOpacity style={styles.addButton} onPress={addFriend}>
-                      <FontAwesome name="plus" size={20} color="white" />
-                  </TouchableOpacity>
-              </View>
-              <FlatList
-                data={friends}
-                renderItem={({ item }) => (
-                  <View style={styles.friendContainer}>
-                    <Text style={styles.friendText}>{item.name}</Text>
-                    <TouchableOpacity onPress={() => openChatWithFriend(item.name)}>
-                      <FontAwesome name="comment" size={20} color="#4CAF50" />
-                    </TouchableOpacity>
-                  </View>
-                )}
-                keyExtractor={item => item.id}
-              />
-          </View>
+    <View style={styles.container}>
+        <View style={styles.inputContainer}>
+            <TextInput
+                style={styles.input}
+                onChangeText={setNewFriend}
+                value={newFriend}
+                placeholder="Enter friend's name"
+            />
+            <TouchableOpacity style={styles.addButton} onPress={addFriend}>
+                <FontAwesome name="plus" size={20} color="white" />
+            </TouchableOpacity>
+        </View>
+        <FlatList
+          data={friends}
+          renderItem={({ item }) => (
+            <View style={styles.friendContainer}>
+              <Text style={styles.friendText}>{item.name}</Text>
+              <TouchableOpacity onPress={() => openChatWithFriend(item.name)}>
+                <FontAwesome name="comment" size={20} color="#4CAF50" />
+              </TouchableOpacity>
+            </View>
+          )}
+          keyExtractor={item => item.id}
+        />
+    </View>
   )
 }
 
