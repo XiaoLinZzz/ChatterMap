@@ -21,7 +21,7 @@ export default function SignupPage() {
       password: password
     };
     try {
-      const response = await fetch('http://3.138.178.239:5000/users/', {
+      const response = await fetch('http://3.138.178.239:5000/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
