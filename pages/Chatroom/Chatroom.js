@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import React, { useState } from 'react'
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
 
 const Chatroom = () => {
-    const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState('')
+  const [messages, setMessages] = useState([])
 
-    const handleSend = () => {
-        if (message.trim() === '') return;
+  const handleSend = () => {
+    if (message.trim() === '') return
 
-        setMessages([...messages, { text: message, user: 'me' }]);
-        setMessage('');
-    };
+    setMessages([...messages, { text: message, user: 'me' }])
+    setMessage('')
+  }
 
-    return (
+  return (
         <View style={styles.container}>
             <FlatList
                 data={messages}
@@ -35,45 +35,45 @@ const Chatroom = () => {
                 </TouchableOpacity>
             </View>
         </View>
-    );
-};
+  )
+}
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-    },
-    myMessage: {
-        alignSelf: 'flex-end',
-        backgroundColor: 'lightblue',
-        padding: 8,
-        marginVertical: 4,
-        borderRadius: 8,
-    },
-    otherMessage: {
-        alignSelf: 'flex-start',
-        backgroundColor: 'lightgray',
-        padding: 8,
-        marginVertical: 4,
-        borderRadius: 8,
-    },
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    input: {
-        flex: 1,
-        borderWidth: 1,
-        borderColor: 'gray',
-        borderRadius: 8,
-        padding: 8,
-        marginRight: 8,
-    },
-    sendButton: {
-        backgroundColor: 'tomato',
-        padding: 8,
-        borderRadius: 8,
-    },
-});
+  container: {
+    flex: 1,
+    padding: 16
+  },
+  myMessage: {
+    alignSelf: 'flex-end',
+    backgroundColor: 'lightblue',
+    padding: 8,
+    marginVertical: 4,
+    borderRadius: 8
+  },
+  otherMessage: {
+    alignSelf: 'flex-start',
+    backgroundColor: 'lightgray',
+    padding: 8,
+    marginVertical: 4,
+    borderRadius: 8
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 8,
+    padding: 8,
+    marginRight: 8
+  },
+  sendButton: {
+    backgroundColor: 'tomato',
+    padding: 8,
+    borderRadius: 8
+  }
+})
 
-export default Chatroom;
+export default Chatroom
