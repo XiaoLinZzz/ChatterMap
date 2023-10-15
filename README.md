@@ -20,7 +20,7 @@ Now you should have the development server running and can start exploring the p
 
 - [Change Log](CHANGELOG.md): Track the evolution of the project.
 - [Tech Spec](https://chattermap.notion.site/Tech-Spec-7a4f390044de40dcafd913281694b1cf?pvs=4): Dive deeper into the technical landscape of ChatterMap.
-- [HISTORY.md](history.md): See the commit history.
+- [HISTORY](history.md): See the commit history.
 
 ## Backend Library
 
