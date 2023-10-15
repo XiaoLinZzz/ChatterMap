@@ -1,10 +1,16 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, Switch, Vibration } from 'react-native'
+import React, { useState } from 'react';
+import { Button, View, Text, StyleSheet, Switch, TextInput, Modal, TouchableOpacity, Image, Dimensions, Vibration } from 'react-native';
 
-export default function SettingScreen () {
+
+
+export default function SettingScreen() {
   const [notificationEnabled, setNotificationEnabled] = useState(false)
   const [autoJoinEnabled, setAutoJoinEnabled] = useState(false)
   const [vibrationEnabled, setVibrationEnabled] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+
+
 
   const switchNotification = () => {
     setNotificationEnabled((previousState) => !previousState)
@@ -21,6 +27,32 @@ export default function SettingScreen () {
     } else {
       Vibration.cancel()
     }
+  }
+
+  const handleChangePassword = () => {
+
+    if (newPassword === '') {
+      alert('Password doesn\'t change');
+      hideModal()
+      return;
+    }
+
+    // send request
+
+    setNewPassword('');
+    hideModal()
+    alert('Password changed');
+  }
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
+  const hideModal = () => {
+    setIsModalVisible(false);
+  };
+
+  const logout = () => {
+    alert('log out now')
   }
 
   return (
@@ -55,7 +87,44 @@ export default function SettingScreen () {
           value={vibrationEnabled}
         />
       </View>
+      <View style={styles.settingContainer}>
+        <TouchableOpacity style={styles.changePasswordButton} onPress={toggleModal}>
+          <Text style={styles.changePasswordButtonText}>Change Password</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.imagecontainer}>
+        <TouchableOpacity style={styles.label} onPress={() => { logout() }}>
+          <Image source={require('../../resource/logout.png')} style={styles.avatar} />
+        </TouchableOpacity>
+      </View>
 
+      <Modal
+        transparent={true}
+        animationType="slide"
+        visible={isModalVisible}
+        onRequestClose={hideModal}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.label}>Enter New Password</Text>
+            <TextInput
+              style={[styles.input, { backgroundColor: 'tomato', color: 'white' }]}
+              secureTextEntry={true}
+              value={newPassword}
+              onChangeText={(text) => setNewPassword(text)}
+            />
+
+            <View style={styles.buttonContainer}>
+              <View style={styles.buttonWrapper}>
+                <Button title="Save" onPress={() => { handleChangePassword() }} />
+              </View>
+              <View style={styles.buttonWrapper}>
+                <Button title="Cancel" onPress={hideModal} />
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   )
 }
@@ -73,5 +142,36 @@ const styles = StyleSheet.create({
   label: {
     flex: 1,
     fontSize: 16
-  }
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: 300, // 设置Modal的宽度
+    backgroundColor: 'white',
+    padding: 16,
+    borderRadius: 8,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  buttonWrapper: {
+    flex: 1,
+    margin: 4,
+  },
+  imagecontainer: {
+    flex: 1,
+    alignItems: 'center',
+    padding: Dimensions.get('window').height / 10
+  },
+  avatar: {
+    width: 102,
+    height: 78,
+    borderRadius: 50,
+    marginBottom: 20
+  },
 })
