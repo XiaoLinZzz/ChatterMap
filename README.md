@@ -1,34 +1,35 @@
-# MyApp
+# ChatterMap
 
 ## Getting Started
 
-View our [change log](CHANGELOG.md)
+To get the project up and running on your local machine, follow these steps:
 
-Our change log template is following [keep a changelog](http://keepachangelog.com/en/1.0.0/)
+1. **Install dependencies:**
+    ```bash
+    yarn install
+    ```
 
-A changelog should be maintained to document all changes introduced into the codebase and should be updated as part of the final step in each pull request process.
+2. **Start the development server:**
+    ```bash
+    yarn start
+    ```
 
-## Criteria 
+Now you should have the development server running and can start exploring the project!
 
-**Branch types can be one of:**
+## Documentation
 
-- `init` for initial setting up.
-- `feat` for new features.
-- `Changed` for changes in existing functionality.
-- `Deprecated` for soon-to-be removed features.
-- `Removed` for now removed features.
-- `Fixed` for any bug fixes.
-- `Security` in case of vulnerabilities.
+- [Change Log](CHANGELOG.md): Track the evolution of the project.
+- [Tech Spec](https://chattermap.notion.site/Tech-Spec-7a4f390044de40dcafd913281694b1cf?pvs=4): Dive deeper into the technical landscape of ChatterMap.
+- [HISTORY.md](history.md): See the commit history.
 
-**e.g.**
+## Backend Library
 
-Format of the branch name is `{feat, fix, refactor}/{your_modification}`
+Our backend services are handled by a separate library. You can find the backend repository [here](https://github.com/ignacio-urrutia/MyApp-backend).
 
-## Workflow
+## Contributing
 
-1. Fetch the newest master: `git pull origin master`
-2. From master branch checkout your branch in this format: `{branch_type}/{your_modification}`
-3. Before you start coding, make a temporary update in `[CHANGELOG.md](http://changelog.md)` and make a commit, then push the branch onto remote and create pull request
-4. Work on your task and commit code incrementally and push to remote
-5. Update `[CHANGELOG.md](<http://changelog.md>)` when all code is done, in accordance to Semantic Versioning, and https://keepachangelog.com/en/1.0.0/
-6. When task is finished, fetch new master: `git checkout master && git pull origin master` and rebase: `git checkout <your branch> && git push origin <your branch>`
+Feel free to submit issues and enhancement requests.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
