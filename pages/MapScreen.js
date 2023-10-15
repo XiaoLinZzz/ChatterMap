@@ -9,6 +9,7 @@ import ResetLocationButton from './Components/ResetLocationButton.js'
 import AddFriendButton from './Components/AddFriendButton.js'
 import AddFriendModal from './Components/AddFriendModal.js'
 import { updateLocation, getAllUsersLocations } from '../Services/LocationService.js'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function MapScreen () {
   const [location, setLocation] = useState(null)
@@ -20,14 +21,16 @@ export default function MapScreen () {
   const [resetting, setResetting] = useState(false)
   const [firstLoad, setFirstLoad] = useState(true)
   const [modalVisible, setModalVisible] = useState(false)
+  const [userId, setUserId] = useState(null)
 
-  const userId = 1 // Assume this is the logged-in user's ID
+  // const userId = 2 // Assume this is the logged-in user's ID
   const [allUsersLocations, setAllUsersLocations] = useState([])
 
   const fetchAndSetUsersLocations = useCallback(async () => {
     try {
       const usersLocations = await getAllUsersLocations()
       setAllUsersLocations(usersLocations)
+      // console.log('All users locations:', usersLocations)
     } catch (error) {
       console.error('Error getting all users locations:', error)
     }
@@ -46,11 +49,14 @@ export default function MapScreen () {
         setInitialCoords(currentLocation.coords)
         // Update location once on component mount
         try {
-          await updateLocation(userId, currentLocation.coords.latitude, currentLocation.coords.longitude)
+          await updateLocation(currentLocation.coords.latitude, currentLocation.coords.longitude)
         } catch (error) {
           console.error('Error updating location:', error)
         }
       }
+
+      const storedUserId = await AsyncStorage.getItem('userId')
+      setUserId(storedUserId)
 
       const level = await Battery.getBatteryLevelAsync()
       setBatteryLevel(level)
@@ -64,7 +70,7 @@ export default function MapScreen () {
 
       return () => clearInterval(intervalId) // Cleanup interval on component unmount
     })()
-  }, [fetchAndSetUsersLocations, userId])
+  }, [fetchAndSetUsersLocations])
 
   return (
     <View style={MapScreenStyles.screen}>

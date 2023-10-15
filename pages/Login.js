@@ -32,7 +32,10 @@ export default function LoginPage() {
       }
       const responseData = await response.json()
       if (responseData && responseData.token) {
+        await console.log(responseData.token);
+        await AsyncStorage.setItem('userId', responseData.user_id.toString());
         await AsyncStorage.setItem('userToken', responseData.token);
+        // await AsyncStorage.setItem('userId', responseData.user_id.toString());
         loginUser(responseData.email);
       } else {
         Alert.alert('Login Error', 'Invalid email or password. Please try again.')
