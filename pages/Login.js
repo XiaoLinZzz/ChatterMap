@@ -48,7 +48,6 @@ export default function LoginPage() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.screen}>
         <ScrollView contentContainerStyle={styles.container}>
-          {/* Sign Up Title */}
           <Text style={styles.pageTitle}>Log in to ChatterMap</Text>
           <List.Section style={styles.inputSection}>
             <TextInput

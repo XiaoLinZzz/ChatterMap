@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, TextInput, TouchableWithoutFeedback } from 'react-native'
-// import Clipboard from '@react-native-clipboard/clipboard'
 import PropTypes from 'prop-types'
 import * as ImagePicker from 'expo-image-picker'
 
@@ -8,8 +7,8 @@ function InformationScreen({ navigation }) {
   const [showPassword, setShowPassword] = useState(false)
   const [avatarSource, setAvatarSource] = useState(null)
   const [editingName, setEditingName] = useState(false)
-  const [name, setName] = useState('Example')
-  const [email, setEmail] = useState('user@example.com')
+  const [name, setName] = useState()
+  const [email, setEmail] = useState()
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword)
 
@@ -35,10 +34,6 @@ function InformationScreen({ navigation }) {
   const saveName = () => setEditingName(false)
   const cancelEditName = () => setEditingName(false)
   const handleContainerPress = () => editingName && cancelEditName()
-  // const copyEmailToClipboard = () => {
-  //   Clipboard.setString(email)
-  //   alert('Copied')
-  // }
 
   return (
     <TouchableWithoutFeedback onPress={handleContainerPress}>
@@ -55,9 +50,6 @@ function InformationScreen({ navigation }) {
         <Text style={styles.label}>Email:</Text>
         <View style={styles.emailContainer}>
           <Text style={styles.text}>user@example.com</Text>
-          {/* <TouchableOpacity onPress={copyEmailToClipboard} style={styles.copyButton}>
-            <Image source={require('../../resource/copy.png')} style={styles.copyButtonImage} />
-          </TouchableOpacity> */}
         </View>
         <Text style={styles.label}>Name:</Text>
         {editingName
