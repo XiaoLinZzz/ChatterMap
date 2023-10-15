@@ -4,12 +4,12 @@ import MapView, { Marker } from 'react-native-maps'
 import * as Location from 'expo-location'
 import * as Battery from 'expo-battery'
 import MapScreenStyles from '../styles/MapScreenStyle.js'
-import BatteryIcon from './componetns/BatteryIcon.js'
-import ResetLocationButton from './componetns/ResetLocationButton.js'
-import AddFriendButton from './componetns/AddFriendButton.js'
-import AddFriendModal from './componetns/AddFriendModal.js'
+import BatteryIcon from './Components/BatteryIcon.js'
+import ResetLocationButton from './Components/ResetLocationButton.js'
+import AddFriendButton from './Components/AddFriendButton.js'
+import AddFriendModal from './Components/AddFriendModal.js'
 
-export default function MapScreen () {
+export default function MapScreen() {
   const [location, setLocation] = useState(null)
   const [initialCoords, setInitialCoords] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -45,7 +45,7 @@ export default function MapScreen () {
       {isLoading
         ? (
           <ActivityIndicator size="large" color="#0000ff" />
-          )
+        )
         : (
           <>
             <MapView
@@ -54,17 +54,17 @@ export default function MapScreen () {
               initialRegion={
                 location
                   ? {
-                      latitude: location.latitude,
-                      longitude: location.longitude,
-                      latitudeDelta: 0.05,
-                      longitudeDelta: 0.025
-                    }
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                    latitudeDelta: 0.05,
+                    longitudeDelta: 0.025
+                  }
                   : {
-                      latitude: -37.804467,
-                      longitude: 144.972284,
-                      latitudeDelta: 0.05,
-                      longitudeDelta: 0.025
-                    }
+                    latitude: -37.804467,
+                    longitude: 144.972284,
+                    latitudeDelta: 0.05,
+                    longitudeDelta: 0.025
+                  }
               }
               onRegionChange={() => {
                 if (firstLoad) {
@@ -125,7 +125,7 @@ export default function MapScreen () {
               onClose={() => setModalVisible(false)}
             />
           </>
-          )}
+        )}
     </View>
   )
 }
