@@ -1,31 +1,27 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Switch } from 'react-native';
-import { Vibration } from 'react-native';
+import React, { useState } from 'react'
+import { View, Text, StyleSheet, Switch, Vibration } from 'react-native'
 
-
-export default function SettingScreen() {
-  const [notificationEnabled, setNotificationEnabled] = useState(false);
-  const [autoJoinEnabled, setAutoJoinEnabled] = useState(false);
-  const [vibrationEnabled, setVibrationEnabled] = useState(false);
-
+export default function SettingScreen () {
+  const [notificationEnabled, setNotificationEnabled] = useState(false)
+  const [autoJoinEnabled, setAutoJoinEnabled] = useState(false)
+  const [vibrationEnabled, setVibrationEnabled] = useState(false)
 
   const switchNotification = () => {
-    setNotificationEnabled((previousState) => !previousState);
-  };
+    setNotificationEnabled((previousState) => !previousState)
+  }
 
   const switchAutoJoin = () => {
-    setAutoJoinEnabled((previousState) => !previousState);
-  };
+    setAutoJoinEnabled((previousState) => !previousState)
+  }
 
   const switchVibration = () => {
-    setVibrationEnabled((previousState) => !previousState);
+    setVibrationEnabled((previousState) => !previousState)
     if (!vibrationEnabled) {
-      Vibration.vibrate();
+      Vibration.vibrate()
     } else {
-      Vibration.cancel();
+      Vibration.cancel()
     }
-  };
-
+  }
 
   return (
     <View style={styles.container}>
@@ -61,21 +57,21 @@ export default function SettingScreen() {
       </View>
 
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 16
   },
   settingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 20
   },
   label: {
     flex: 1,
-    fontSize: 16,
-  },
-});
+    fontSize: 16
+  }
+})
