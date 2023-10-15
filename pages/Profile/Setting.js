@@ -32,7 +32,7 @@ export default function SettingScreen() {
   const handleChangePassword = () => {
 
     if (newPassword === '') {
-      alert('Password doesn\'t change');
+      alert('Password hasn\'t changed.');
       hideModal()
       return;
     }
@@ -41,7 +41,7 @@ export default function SettingScreen() {
 
     setNewPassword('');
     hideModal()
-    alert('Password changed');
+    alert('Password changed.');
   }
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
