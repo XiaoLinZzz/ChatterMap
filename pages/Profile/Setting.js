@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, View, Text, StyleSheet, Switch, TextInput, Modal, TouchableOpacity, Image, Dimensions, Vibration } from 'react-native';
-
+import { getVibrationSwitch, setVibrationSwitch } from '../../GlobalVar';
 
 
 export default function SettingScreen() {
@@ -9,9 +9,15 @@ export default function SettingScreen() {
   const [vibrationEnabled, setVibrationEnabled] = useState(false)
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [newPassword, setNewPassword] = useState('');
+  useEffect(() => {
+    const fetchAndSetVibrationState = async () => {
+      const storedValue = await getVibrationSwitch();
+      const flag = JSON.parse(storedValue);
+      setVibrationEnabled(flag);
+    };
 
-
-
+    fetchAndSetVibrationState();
+  }, []);
   const switchNotification = () => {
     setNotificationEnabled((previousState) => !previousState)
   }
@@ -20,13 +26,19 @@ export default function SettingScreen() {
     setAutoJoinEnabled((previousState) => !previousState)
   }
 
-  const switchVibration = () => {
-    setVibrationEnabled((previousState) => !previousState)
-    if (!vibrationEnabled) {
-      Vibration.vibrate()
-    } else {
-      Vibration.cancel()
-    }
+  const switchVibration = async () => {
+
+    setVibrationEnabled(prevState => {
+      const newState = !prevState;
+      if (newState) {
+        Vibration.vibrate();
+      } else {
+        Vibration.cancel();
+      }
+      setVibrationSwitch(newState);
+      console.log(newState)
+      return newState;
+    });
   }
 
   const handleChangePassword = () => {
@@ -54,7 +66,6 @@ export default function SettingScreen() {
   const logout = () => {
     alert('log out now')
   }
-
   return (
     <View style={styles.container}>
       <View style={styles.settingContainer}>
