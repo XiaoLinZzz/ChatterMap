@@ -42,26 +42,25 @@ export default function SettingScreen() {
   }
 
   const handleChangePassword = () => {
-
     if (newPassword === '') {
-      alert('Password hasn\'t changed.');
+      alert('Password hasn\'t changed.')
       hideModal()
-      return;
+      return
     }
 
     // send request
 
-    setNewPassword('');
+    setNewPassword('')
     hideModal()
-    alert('Password changed.');
+    alert('Password changed.')
   }
   const toggleModal = () => {
-    setIsModalVisible(!isModalVisible);
-  };
+    setIsModalVisible(!isModalVisible)
+  }
 
   const hideModal = () => {
-    setIsModalVisible(false);
-  };
+    setIsModalVisible(false)
+  }
 
   const logout = () => {
     alert('log out now')
@@ -158,21 +157,21 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)'
   },
   modalContent: {
     width: 300, // 设置Modal的宽度
     backgroundColor: 'white',
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 8
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   buttonWrapper: {
     flex: 1,
-    margin: 4,
+    margin: 4
   },
   imagecontainer: {
     flex: 1,
@@ -184,5 +183,5 @@ const styles = StyleSheet.create({
     height: 78,
     borderRadius: 50,
     marginBottom: 20
-  },
+  }
 })

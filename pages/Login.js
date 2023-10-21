@@ -1,20 +1,20 @@
-import React, { useContext, useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator, View, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { List, TextInput } from 'react-native-paper';
-import { UserContext } from './UserContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React, { useContext, useState } from 'react'
+import { SafeAreaView, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator, View, Text, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { List, TextInput } from 'react-native-paper'
+import { UserContext } from './UserContext'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
-export default function LoginPage() {
-  const { loginUser } = useContext(UserContext);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+export default function LoginPage () {
+  const { loginUser } = useContext(UserContext)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
 
   const handleLogin = async () => {
-    setLoading(true);
-    setError(null);
+    setLoading(true)
+    setError(null)
     const data = {
       email,
       password
@@ -32,18 +32,18 @@ export default function LoginPage() {
       }
       const responseData = await response.json()
       if (responseData && responseData.token) {
-        await console.log(responseData.token);
-        await AsyncStorage.setItem('userId', responseData.user_id.toString());
-        await AsyncStorage.setItem('userToken', responseData.token);
+        // await console.log(responseData.token);
+        await AsyncStorage.setItem('userId', responseData.user_id.toString())
+        await AsyncStorage.setItem('userToken', responseData.token)
         // await AsyncStorage.setItem('userId', responseData.user_id.toString());
-        loginUser(responseData.email);
+        loginUser(responseData.email)
       } else {
         Alert.alert('Login Error', 'Invalid email or password. Please try again.')
       }
     } catch (error) {
-      setError(error.message);
+      setError(error.message)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
@@ -83,16 +83,16 @@ export default function LoginPage() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    marginHorizontal: 20,
+    marginHorizontal: 20
   },
   pageTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: 20,
+    marginTop: 20
   },
   container: {
-    margin: 30,
+    margin: 30
   },
   loginButton: {
     backgroundColor: '#6200ee',
@@ -101,16 +101,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 20,
+    marginTop: 20
   },
   loginButtonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 18
   },
   errorText: {
     color: 'red',
     marginTop: 10,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   forgotPasswordText: {
     textAlign: 'right',

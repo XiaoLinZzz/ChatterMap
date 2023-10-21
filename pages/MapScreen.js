@@ -56,7 +56,8 @@ export default function MapScreen () {
       }
 
       const storedUserId = await AsyncStorage.getItem('userId')
-      setUserId(storedUserId)
+      console.log('Stored User ID:', storedUserId)
+      setUserId(Number(storedUserId))
 
       const level = await Battery.getBatteryLevelAsync()
       setBatteryLevel(level)
@@ -115,6 +116,7 @@ export default function MapScreen () {
               }}
             >
               {location && (
+                // console.log('Current user location:', location),
                 <Marker
                   coordinate={{
                     latitude: location.latitude,
@@ -134,6 +136,7 @@ export default function MapScreen () {
               )}
 
               {allUsersLocations.map(user => (
+                // console.log('User from allUsersLocations:', user.id, user.last_latitude, user.last_longitude),
                 (user.id !== userId && user.last_latitude && user.last_longitude)
                   ? (
                   <Marker
