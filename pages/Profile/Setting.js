@@ -21,6 +21,7 @@ export default function SettingScreen() {
 
     fetchAndSetVibrationState();
   }, []);
+  
   const switchNotification = () => {
     setNotificationEnabled((previousState) => !previousState)
   }
@@ -30,7 +31,6 @@ export default function SettingScreen() {
   }
 
   const switchVibration = async () => {
-
     setVibrationEnabled(prevState => {
       const newState = !prevState;
       if (newState) {
@@ -46,7 +46,7 @@ export default function SettingScreen() {
 
   const handleChangePassword = () => {
     if (newPassword === '') {
-      alert('Password hasn\'t changed.')
+      alert("Password hasn't changed.")
       hideModal()
       return
     }
@@ -57,6 +57,7 @@ export default function SettingScreen() {
     hideModal()
     alert('Password changed.')
   }
+
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible)
   }
@@ -67,15 +68,15 @@ export default function SettingScreen() {
 
   const logout = () => {
     Alert.alert(
-      "Logout",
-      "Are you sure you want to log out now?",
+      'Logout',
+      'Are you sure you want to log out now?',
       [
         {
-          text: "Not now",
-          style: "cancel",
+          text: 'Not now',
+          style: 'cancel',
         },
         {
-          text: "OK",
+          text: 'OK',
           onPress: () => {
             console.log('go to login');
             logoutUser();
@@ -98,6 +99,7 @@ export default function SettingScreen() {
           value={notificationEnabled}
         />
       </View>
+      <View style={styles.separator} />
       <View style={styles.settingContainer}>
         <Text style={styles.label}>Auto Join Chatroom</Text>
         <Switch
@@ -123,12 +125,13 @@ export default function SettingScreen() {
         <Button
           title="Edit"
           onPress={toggleModal}
-          color="#FA8072" // You can set this color to match the other UI elements
+          color="#FA8072"
         />
       </View>
       <View style={styles.imagecontainer}>
-        <TouchableOpacity style={styles.label} onPress={() => { logout() }}>
+        <TouchableOpacity onPress={logout}>
           <Image source={require('../../resource/logout.png')} style={styles.avatar} />
+          <Text style={styles.logoutLabel}>    Logout</Text>
         </TouchableOpacity>
       </View>
 
@@ -142,7 +145,8 @@ export default function SettingScreen() {
           <View style={styles.modalContent}>
             <Text style={styles.label}>Enter New Password</Text>
             <TextInput
-              style={[styles.input, { backgroundColor: 'tomato', color: 'white' }]}
+              style={[styles.input, { backgroundColor: 'tomato', color: 'white' }]
+              }
               secureTextEntry={true}
               value={newPassword}
               onChangeText={(text) => setNewPassword(text)}
@@ -150,7 +154,7 @@ export default function SettingScreen() {
 
             <View style={styles.buttonContainer}>
               <View style={styles.buttonWrapper}>
-                <Button title="Save" onPress={() => { handleChangePassword() }} />
+                <Button title="Save" onPress={handleChangePassword} />
               </View>
               <View style={styles.buttonWrapper}>
                 <Button title="Cancel" onPress={hideModal} />
@@ -184,7 +188,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)'
   },
   modalContent: {
-    width: 300, // 设置Modal的宽度
+    width: 300,
     backgroundColor: 'white',
     padding: 16,
     borderRadius: 8
@@ -206,6 +210,10 @@ const styles = StyleSheet.create({
     width: 102,
     height: 78,
     borderRadius: 50,
-    marginBottom: 20
+    marginBottom: 10
+  },
+  logoutLabel: {
+    color: 'black',
+    fontSize: 20
   }
-})
+});
