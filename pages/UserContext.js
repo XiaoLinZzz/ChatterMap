@@ -1,6 +1,9 @@
 import React, { createContext, useState } from 'react'
 import PropTypes from 'prop-types'
 
+
+//let hideTab = 'flex';
+
 // Create a user context with default values
 export const UserContext = createContext({
   isUserLoggedIn: false,

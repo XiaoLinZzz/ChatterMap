@@ -5,18 +5,25 @@ import ChatScreen from '../ChatScreen'
 import MapScreen from '../MapScreen'
 import Profile from '../Profile/ProfileScreen'
 import Friends from '../Friends/Friends'
+import { hideTab, setHideTab } from '../../GlobalVar'
+//import { useEffect } from 'react'
 
 const BottomTab = createBottomTabNavigator()
 const screenWidth = Dimensions.get('window').width
 const iconSize = screenWidth * 0.075
 
+
 const HomePageNavigator = () => {
+  setHideTab('flex');
+  console.log('hideTab value in homepage:', hideTab);
+
+
   return (
     <BottomTab.Navigator
       screenOptions={{
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
-        tabBarStyle: [{ display: 'flex' }, null]
+        tabBarStyle: [{ display: hideTab }, null]
       }}
     >
       <BottomTab.Screen name="Chatroom" component={ChatScreen} options={{
@@ -26,7 +33,7 @@ const HomePageNavigator = () => {
             style={{ width: focused ? iconSize : screenWidth * 0.064, height: focused ? iconSize : screenWidth * 0.064 }}
           />
         ),
-        headerShown: true
+        headerShown: false
       }} />
       <BottomTab.Screen name="Friends" component={Friends} options={{
         tabBarIcon: ({ focused }) => (

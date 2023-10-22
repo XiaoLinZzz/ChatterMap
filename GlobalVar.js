@@ -7,3 +7,9 @@ export async function getVibrationSwitch() {
 export async function setVibrationSwitch(vibrationEnabled) {
     AsyncStorage.setItem('vibrationEnabled', JSON.stringify(vibrationEnabled))
 }
+
+export let hideTab = 'flex'; 
+
+export const setHideTab = (value) => {
+    hideTab = value;
+  };
