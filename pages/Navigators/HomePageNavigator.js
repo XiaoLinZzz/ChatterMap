@@ -19,14 +19,14 @@ const HomePageNavigator = () => {
         tabBarStyle: [{ display: 'flex' }, null]
       }}
     >
-      <BottomTab.Screen name="Chat" component={ChatScreen} options={{
+      <BottomTab.Screen name="Chatroom" component={ChatScreen} options={{
         tabBarIcon: ({ focused }) => (
           <Image
             source={focused ? require('../../resource/message.png') : require('../../resource/messageSelected.png')}
             style={{ width: focused ? iconSize : screenWidth * 0.064, height: focused ? iconSize : screenWidth * 0.064 }}
           />
         ),
-        headerShown: false
+        headerShown: true
       }} />
       <BottomTab.Screen name="Friends" component={Friends} options={{
         tabBarIcon: ({ focused }) => (

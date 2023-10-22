@@ -13,7 +13,11 @@ export default function ProfileScreen () {
         component={InformationScreen}
         headerShown={false}
       />
-      <Stack.Screen name="Setting" component={SettingScreen} />
+      <Stack.Screen 
+      name="Setting" 
+      component={SettingScreen} 
+      options={{tabBarStyle : { display: "none"},}}
+      />
     </Stack.Navigator>
   )
 }
