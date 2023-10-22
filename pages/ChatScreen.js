@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 
 export default function GroupChatListScreen () {
   const navigation = useNavigation()
-  const [topPadding, setTopPadding] = useState(0)
+  const [topPadding, setTopPadding] = useState(-100)
   const [groupChats, setGroupChats] = useState([
     { id: '1', name: 'Family Chat', members: ['Alice', 'Bob', 'Charlie'] },
     { id: '2', name: 'Friends Chat', members: ['David', 'Eve', 'Frank'] },
@@ -34,9 +34,9 @@ export default function GroupChatListScreen () {
 
   return (
   <SafeAreaView style={{ flex: 1, paddingTop: topPadding }}>
-    <View style={styles.header}>
+    {/* <View style={styles.header}>
       <Text style={styles.headerTitle}>Group Chats</Text>
-    </View>
+    </View> */}
     <FlatList
       data={groupChats}
       keyExtractor={(item) => item.id}
@@ -60,14 +60,6 @@ const styles = StyleSheet.create({
   groupChatMembers: {
     fontSize: 14,
     color: '#888'
-  },
-  header: {
-    flexDirection: 'row',
-    backgroundColor: 'tomato',
-    padding: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-    alignItems: 'center'
   },
   headerTitle: {
     fontSize: 24,
