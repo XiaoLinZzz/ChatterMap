@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, View, Text, StyleSheet, Switch, TextInput, Modal, TouchableOpacity, Image, Dimensions, Vibration } from 'react-native';
 import { getVibrationSwitch, setVibrationSwitch } from '../../GlobalVar';
-
+import { Alert } from 'react-native';
+import { UserContext } from '../UserContext';
 
 export default function SettingScreen() {
   const [notificationEnabled, setNotificationEnabled] = useState(false)
@@ -9,6 +10,8 @@ export default function SettingScreen() {
   const [vibrationEnabled, setVibrationEnabled] = useState(false)
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [newPassword, setNewPassword] = useState('');
+  const { logoutUser } = useContext(UserContext);
+
   useEffect(() => {
     const fetchAndSetVibrationState = async () => {
       const storedValue = await getVibrationSwitch();
@@ -63,8 +66,26 @@ export default function SettingScreen() {
   }
 
   const logout = () => {
-    alert('log out now')
-  }
+    Alert.alert(
+      "Logout",
+      "Are you sure you want to log out now?",
+      [
+        {
+          text: "Not now",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            console.log('go to login');
+            logoutUser();
+          }
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.settingContainer}>
@@ -98,9 +119,12 @@ export default function SettingScreen() {
         />
       </View>
       <View style={styles.settingContainer}>
-        <TouchableOpacity style={styles.changePasswordButton} onPress={toggleModal}>
-          <Text style={styles.changePasswordButtonText}>Change Password</Text>
-        </TouchableOpacity>
+        <Text style={styles.label}>Change Password</Text>
+        <Button
+          title="Edit"
+          onPress={toggleModal}
+          color="#FA8072" // You can set this color to match the other UI elements
+        />
       </View>
       <View style={styles.imagecontainer}>
         <TouchableOpacity style={styles.label} onPress={() => { logout() }}>

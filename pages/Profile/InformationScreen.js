@@ -8,7 +8,6 @@ function InformationScreen({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
   const [editingName, setEditingName] = useState(false)
   const [name, setName] = useState()
-  const [email, setEmail] = useState()
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword)
 
