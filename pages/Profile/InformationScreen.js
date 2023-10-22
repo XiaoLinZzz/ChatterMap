@@ -1,15 +1,30 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, TextInput, TouchableWithoutFeedback } from 'react-native'
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, TouchableWithoutFeedback } from 'react-native'
 import PropTypes from 'prop-types'
 import * as ImagePicker from 'expo-image-picker'
+import { getUserData } from '../../Services/UserService.js'
 
 function InformationScreen({ navigation }) {
-  const [showPassword, setShowPassword] = useState(false)
   const [avatarSource, setAvatarSource] = useState(null)
-  const [editingName, setEditingName] = useState(false)
-  const [name, setName] = useState()
+  const [id, setId] = useState(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
-  const togglePasswordVisibility = () => setShowPassword(!showPassword)
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getUserData();
+        setId(data.id);
+        setName(data.name);
+        setEmail(data.email);
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      }
+    }
+
+    fetchData();
+  }, []);
+
 
   const selectImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
@@ -30,12 +45,8 @@ function InformationScreen({ navigation }) {
     }
   }
 
-  const saveName = () => setEditingName(false)
-  const cancelEditName = () => setEditingName(false)
-  const handleContainerPress = () => editingName && cancelEditName()
-
   return (
-    <TouchableWithoutFeedback onPress={handleContainerPress}>
+    <TouchableWithoutFeedback>
       <View style={styles.container}>
         <TouchableOpacity onPress={selectImage}>
           {avatarSource
@@ -46,34 +57,14 @@ function InformationScreen({ navigation }) {
               <Image source={require('../../resource/profile1.png')} style={styles.avatar} />
             )}
         </TouchableOpacity>
+        <Text style={styles.label}>Name:</Text>
+        <View style={styles.emailContainer}>
+          <Text style={styles.text}>{name + ' #' + id}</Text>
+        </View>
         <Text style={styles.label}>Email:</Text>
         <View style={styles.emailContainer}>
-          <Text style={styles.text}>user@example.com</Text>
+          <Text style={styles.text}>{email}</Text>
         </View>
-        <Text style={styles.label}>Name:</Text>
-        {editingName
-          ? (
-            <View style={styles.editNameContainer}>
-              <TextInput
-                style={styles.editNameInput}
-                onChangeText={(text) => setName(text)}
-                value={name} />
-              <View style={styles.editNameButtons}>
-                <TouchableOpacity onPress={saveName} style={styles.editNameButton}>
-                  <Text style={styles.editNameButtonText}>Save</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={cancelEditName} style={styles.editNameButton}>
-                  <Text style={styles.editNameButtonText}>Cancel</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )
-          : (
-            <TouchableOpacity onPress={() => setEditingName(true)}>
-              <Text style={styles.text}>{name}</Text>
-            </TouchableOpacity>
-          )}
-
 
         <TouchableOpacity style={styles.settingsButton} onPress={() => { console.log('go to setting'); navigation.navigate('Setting') }}>
           <Text style={styles.settingsButtonText}>Settings</Text>

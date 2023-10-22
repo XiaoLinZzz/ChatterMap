@@ -5,7 +5,7 @@ import { UserContext } from './UserContext'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-export default function LoginPage () {
+export default function LoginPage() {
   const { loginUser } = useContext(UserContext)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
