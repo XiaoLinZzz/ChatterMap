@@ -28,7 +28,7 @@ export default function LoginPage() {
         body: JSON.stringify(data)
       })
       if (!response.ok) {
-        throw new Error('Network response was not ok ' + response.statusText)
+        throw new Error('Invalid email or password. Please try again.')
       }
       const responseData = await response.json()
       if (responseData && responseData.token) {
@@ -39,9 +39,11 @@ export default function LoginPage() {
         loginUser(responseData.email)
       } else {
         Alert.alert('Login Error', 'Invalid email or password. Please try again.')
+        setPassword('')
       }
     } catch (error) {
       setError(error.message)
+      setPassword('')
     } finally {
       setLoading(false)
     }
