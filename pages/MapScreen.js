@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { View, ActivityIndicator, Image } from 'react-native'
+import { View, Animated, Easing, Image } from 'react-native'
 import MapView, { Marker } from 'react-native-maps'
 import * as Location from 'expo-location'
 import * as Battery from 'expo-battery'
@@ -10,6 +10,7 @@ import AddFriendButton from './Components/AddFriendButton.js'
 import AddFriendModal from './Components/AddFriendModal.js'
 import { updateLocation, getAllUsersLocations } from '../Services/LocationService.js'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as Progress from 'react-native-progress'
 
 export default function MapScreen () {
   const [location, setLocation] = useState(null)
@@ -22,6 +23,11 @@ export default function MapScreen () {
   const [firstLoad, setFirstLoad] = useState(true)
   const [modalVisible, setModalVisible] = useState(false)
   const [userId, setUserId] = useState(null)
+  const [progressValue, setProgressValue] = useState(0)
+  const animatedProgress = useRef(new Animated.Value(0)).current
+  const intervalRef = useRef(null)
+
+  const AnimatedProgressBar = Animated.createAnimatedComponent(Progress.Bar)
 
   // const userId = 2 // Assume this is the logged-in user's ID
   const [allUsersLocations, setAllUsersLocations] = useState([])
@@ -73,17 +79,50 @@ export default function MapScreen () {
     })()
   }, [fetchAndSetUsersLocations])
 
+  useEffect(() => {
+    Animated.timing(animatedProgress, {
+      toValue: progressValue,
+      duration: 1000,
+      easing: Easing.inOut(Easing.quad),
+      useNativeDriver: false
+    }).start()
+  }, [progressValue])
+
+  useEffect(() => {
+    intervalRef.current = setInterval(() => {
+      setProgressValue((prevProgress) => {
+        if (prevProgress < 1) {
+          return prevProgress + 0.1
+        }
+        clearInterval(intervalRef.current)
+        return 1
+      })
+    }, 1000)
+
+    return () => clearInterval(intervalRef.current)
+  }, [])
+
   return (
     <View style={MapScreenStyles.screen}>
       {isLoading
         ? (
-          <ActivityIndicator size="large" color="#0000ff" />
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <AnimatedProgressBar
+              progress={animatedProgress}
+              width={200}
+              color="#0000ff"
+            />
+          </View>
           )
         : (
           <>
             <MapView
               ref={mapViewRef}
               style={MapScreenStyles.map}
+              onMapReady={() => {
+                setProgressValue(1)
+                clearInterval(intervalRef.current)
+              }}
               initialRegion={
                 location
                   ? {
