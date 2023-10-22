@@ -3,6 +3,7 @@ import { Button, View, Text, StyleSheet, Switch, TextInput, Modal, TouchableOpac
 import { getVibrationSwitch, setVibrationSwitch } from '../../GlobalVar';
 import { Alert } from 'react-native';
 import { UserContext } from '../UserContext';
+import { updatePassword } from '../../Services/UserService.js'
 
 export default function SettingScreen() {
   const [notificationEnabled, setNotificationEnabled] = useState(false)
@@ -44,7 +45,7 @@ export default function SettingScreen() {
     });
   }
 
-  const handleChangePassword = () => {
+  const handleChangePassword = async () => {
     if (newPassword === '') {
       alert("Password hasn't changed.")
       hideModal()
@@ -52,10 +53,17 @@ export default function SettingScreen() {
     }
 
     // send request
-
-    setNewPassword('')
-    hideModal()
-    alert('Password changed.')
+    const data = await updatePassword(newPassword);
+    if (data == true) {
+      hideModal()
+      alert('Password changed.')
+      console.log('Password changed.')
+    } else {
+      alert('Password hasn\'t changed. It has some errors.')
+      console.log('Password hasn\'t changed. It has some errors.')
+      hideModal()
+      return
+    }
   }
 
   const toggleModal = () => {
@@ -151,7 +159,6 @@ export default function SettingScreen() {
               value={newPassword}
               onChangeText={(text) => setNewPassword(text)}
             />
-
             <View style={styles.buttonContainer}>
               <View style={styles.buttonWrapper}>
                 <Button title="Save" onPress={handleChangePassword} />
@@ -188,7 +195,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)'
   },
   modalContent: {
-    width: 300,
+    height: 130,
+    width: 300, // 设置Modal的宽度
     backgroundColor: 'white',
     padding: 16,
     borderRadius: 8
