@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
 
-const Chatroom = () => {
+const Chatroom = ({ route }) => {
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState([])
+
+  const groupChat = route.params.groupChat;
 
   const handleSend = () => {
     if (message.trim() === '') return
@@ -13,28 +15,28 @@ const Chatroom = () => {
   }
 
   return (
-        <View style={styles.container}>
-            <FlatList
-                data={messages}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => (
-                    <View style={item.user === 'me' ? styles.myMessage : styles.otherMessage}>
-                        <Text>{item.text}</Text>
-                    </View>
-                )}
-            />
-            <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Type your message..."
-                    value={message}
-                    onChangeText={(text) => setMessage(text)}
-                />
-                <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
-                    <Text>Send</Text>
-                </TouchableOpacity>
+    <View style={styles.container}>
+      <FlatList
+        data={messages}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+            <View style={item.user === 'me' ? styles.myMessage : styles.otherMessage}>
+                <Text>{item.text}</Text>
             </View>
-        </View>
+        )}
+      />
+      <View style={styles.inputContainer}>
+        <TextInput
+            style={styles.input}
+            placeholder="Type your message..."
+            value={message}
+            onChangeText={(text) => setMessage(text)}
+        />
+        <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
+            <Text>Send</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   )
 }
 

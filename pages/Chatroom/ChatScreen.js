@@ -28,8 +28,8 @@ export default function GroupChatListScreen () {
 
   const handleGroupChatPress = (groupChat) => {
     // Handle group chat item press, e.g., navigate to the chat screen
+    navigation.navigate('Chatroom', { groupChat })
     console.log(`Pressed group chat: ${groupChat.name}`)
-    // navigation.navigate('GroupChat', { groupChat });
   }
 
   return (
