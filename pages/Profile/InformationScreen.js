@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, TouchableW
 import PropTypes from 'prop-types'
 import * as ImagePicker from 'expo-image-picker'
 import { getUserData } from '../../Services/UserService.js'
+import { hideTab } from '../../GlobalVar.js';
+import { setHideTab } from '../../GlobalVar.js';
 
 function InformationScreen({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
@@ -66,7 +68,13 @@ function InformationScreen({ navigation }) {
           <Text style={styles.text}>{email}</Text>
         </View>
 
-        <TouchableOpacity style={styles.settingsButton} onPress={() => { console.log('go to setting'); navigation.navigate('Setting') }}>
+        <TouchableOpacity 
+          style={styles.settingsButton} 
+          onPress={() => { 
+            setHideTab('none');
+            console.log('go to setting'); 
+            console.log('hideTab value:', hideTab); 
+            navigation.navigate('Setting') }}>
           <Text style={styles.settingsButtonText}>Settings</Text>
         </TouchableOpacity>
 
