@@ -11,7 +11,7 @@ export default function AddFriendButton ({ onPress }) {
       style={{
         position: 'absolute',
         top: 50,
-        right: 10,
+        right: 45,
         padding: 10
       }}
       onPress={onPress}
