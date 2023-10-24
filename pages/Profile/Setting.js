@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, View, Text, StyleSheet, Switch, TextInput, Modal, TouchableOpacity, Image, Dimensions, Vibration } from 'react-native';
-import { getVibrationSwitch, setVibrationSwitch } from '../../GlobalVar';
-import { Alert } from 'react-native';
+import { Alert, Button, Dimensions, Image, Modal, StyleSheet, Switch, Text, TextInput, TouchableOpacity, Vibration, View } from 'react-native';
+import { getAutoJoinChatroomSwitchGlobal, getVibrationSwitchGlobal, setAutoJoinChatroomSwitchGlobal, setVibrationSwitchGlobal } from '../../GlobalVar';
+import { updatePassword } from '../../Services/UserService.js';
 import { UserContext } from '../UserContext';
-import { updatePassword } from '../../Services/UserService.js'
 
 export default function SettingScreen() {
   const [notificationEnabled, setNotificationEnabled] = useState(false)
@@ -15,20 +14,31 @@ export default function SettingScreen() {
 
   useEffect(() => {
     const fetchAndSetVibrationState = async () => {
-      const storedValue = await getVibrationSwitch();
+      const storedValue = await getVibrationSwitchGlobal();
       const flag = JSON.parse(storedValue);
       setVibrationEnabled(flag);
     };
+    const fetchAndSetAutoJoinState = async () => {
+      const storedValue = await getAutoJoinChatroomSwitchGlobal();
+      const flag = JSON.parse(storedValue);
+      setAutoJoinEnabled(flag);
+    };
 
     fetchAndSetVibrationState();
+    fetchAndSetAutoJoinState();
   }, []);
 
   const switchNotification = () => {
     setNotificationEnabled((previousState) => !previousState)
   }
 
-  const switchAutoJoin = () => {
-    setAutoJoinEnabled((previousState) => !previousState)
+  const switchAutoJoin = async () => {
+    setAutoJoinEnabled(prevState => {
+      const newState = !prevState;
+      setAutoJoinChatroomSwitchGlobal(newState);
+      // console.log(newState)
+      return newState;
+    });
   }
 
   const switchVibration = async () => {
@@ -39,8 +49,8 @@ export default function SettingScreen() {
       } else {
         Vibration.cancel();
       }
-      setVibrationSwitch(newState);
-      console.log(newState)
+      setVibrationSwitchGlobal(newState);
+      // console.log(newState)
       return newState;
     });
   }
