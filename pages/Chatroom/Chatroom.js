@@ -1,81 +1,64 @@
-import React, { useState } from 'react'
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { Button, FlatList, Text, TextInput, View } from 'react-native';
 
-const Chatroom = ({ route }) => {
-  const [message, setMessage] = useState('')
-  const [messages, setMessages] = useState([])
+export function ChatRoomScreen({ route }) {
+  const navigation = useNavigation();
+  const { chatRoomId } = route.params;
 
-  const groupChat = route.params.groupChat;
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
+  const addMessage = (text, sender) => {
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { id: prevMessages.length, text, sender },
+    ]);
+  };
 
-  const handleSend = () => {
-    if (message.trim() === '') return
+  // change the title of the chat room
+  React.useEffect(() => {
+    navigation.setOptions({ title: `${chatRoomId.name}` });
+  }, [chatRoomId]);
 
-    setMessages([...messages, { text: message, user: 'me' }])
-    setMessage('')
-  }
+
+  const sendMessage = () => {
+    if (newMessage) {
+      addMessage(newMessage, 'user');
+      setNewMessage('');
+    }
+  };
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1, padding: 10 }}>
       <FlatList
         data={messages}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-            <View style={item.user === 'me' ? styles.myMessage : styles.otherMessage}>
-                <Text>{item.text}</Text>
-            </View>
+          <View
+            style={{
+              alignSelf: item.sender === 'user' ? 'flex-end' : 'flex-start',
+              backgroundColor: item.sender === 'user' ? '#007AFF' : '#E5E5EA',
+              borderRadius: 10,
+              margin: 5,
+              maxWidth: '70%',
+              padding: 10,
+            }}
+          >
+            <Text style={{ color: item.sender === 'user' ? 'white' : 'black' }}>
+              {item.text}
+            </Text>
+          </View>
         )}
       />
-      <View style={styles.inputContainer}>
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TextInput
-            style={styles.input}
-            placeholder="Type your message..."
-            value={message}
-            onChangeText={(text) => setMessage(text)}
+          style={{ flex: 1, borderWidth: 1, marginRight: 5, padding: 10, borderRadius: 10 }}
+          value={newMessage}
+          onChangeText={setNewMessage}
+          multiline={true}
         />
-        <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
-            <Text>Send</Text>
-        </TouchableOpacity>
+        <Button title="send" onPress={sendMessage} />
       </View>
     </View>
-  )
+  );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16
-  },
-  myMessage: {
-    alignSelf: 'flex-end',
-    backgroundColor: 'lightblue',
-    padding: 8,
-    marginVertical: 4,
-    borderRadius: 8
-  },
-  otherMessage: {
-    alignSelf: 'flex-start',
-    backgroundColor: 'lightgray',
-    padding: 8,
-    marginVertical: 4,
-    borderRadius: 8
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  input: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 8,
-    padding: 8,
-    marginRight: 8
-  },
-  sendButton: {
-    backgroundColor: 'tomato',
-    padding: 8,
-    borderRadius: 8
-  }
-})
-
-export default Chatroom

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Button, FlatList, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { getGroupChatInformation } from '../../Services/GroupChatService';
+import { ChatRoomScreen } from './Chatroom';
 
 const Stack = createNativeStackNavigator();
 
@@ -56,68 +57,68 @@ function MainChatScreen() {
   );
 }
 
-function ChatRoomScreen({ route }) {
-  const navigation = useNavigation();
-  const { chatRoomId } = route.params;
+// function ChatRoomScreen({ route }) {
+//   const navigation = useNavigation();
+//   const { chatRoomId } = route.params;
 
-  const [messages, setMessages] = React.useState([]);
-  const [newMessage, setNewMessage] = React.useState('');
-  const addMessage = (text, sender) => {
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { id: prevMessages.length, text, sender },
-    ]);
-  };
+//   const [messages, setMessages] = React.useState([]);
+//   const [newMessage, setNewMessage] = React.useState('');
+//   const addMessage = (text, sender) => {
+//     setMessages((prevMessages) => [
+//       ...prevMessages,
+//       { id: prevMessages.length, text, sender },
+//     ]);
+//   };
 
-  // change the title of the chat room
-  React.useEffect(() => {
-    navigation.setOptions({ title: `${chatRoomId.name}` });
-  }, [chatRoomId]);
+//   // change the title of the chat room
+//   React.useEffect(() => {
+//     navigation.setOptions({ title: `${chatRoomId.name}` });
+//   }, [chatRoomId]);
 
 
-  const sendMessage = () => {
-    if (newMessage) {
-      addMessage(newMessage, 'user');
-      setNewMessage('');
-    }
-  };
+//   const sendMessage = () => {
+//     if (newMessage) {
+//       addMessage(newMessage, 'user');
+//       setNewMessage('');
+//     }
+//   };
 
-  return (
-    <View style={{ flex: 1, padding: 10 }}>
-      <FlatList
-        data={messages}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View
-            style={{
-              alignSelf: item.sender === 'user' ? 'flex-end' : 'flex-start',
-              backgroundColor: item.sender === 'user' ? '#007AFF' : '#E5E5EA',
-              borderRadius: 10,
-              margin: 5,
-              maxWidth: '70%',
-              padding: 10,
-            }}
-          >
-            <Text style={{ color: item.sender === 'user' ? 'white' : 'black' }}>
-              {item.text}
-            </Text>
-          </View>
-        )}
-      />
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TextInput
-          style={{ flex: 1, borderWidth: 1, marginRight: 5, padding: 10, borderRadius: 10 }}
-          value={newMessage}
-          onChangeText={setNewMessage}
-          multiline={true}
-        />
-        <Button title="send" onPress={sendMessage} />
-      </View>
-    </View>
-  );
-}
+//   return (
+//     <View style={{ flex: 1, padding: 10 }}>
+//       <FlatList
+//         data={messages}
+//         keyExtractor={(item) => item.id.toString()}
+//         renderItem={({ item }) => (
+//           <View
+//             style={{
+//               alignSelf: item.sender === 'user' ? 'flex-end' : 'flex-start',
+//               backgroundColor: item.sender === 'user' ? '#007AFF' : '#E5E5EA',
+//               borderRadius: 10,
+//               margin: 5,
+//               maxWidth: '70%',
+//               padding: 10,
+//             }}
+//           >
+//             <Text style={{ color: item.sender === 'user' ? 'white' : 'black' }}>
+//               {item.text}
+//             </Text>
+//           </View>
+//         )}
+//       />
+//       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+//         <TextInput
+//           style={{ flex: 1, borderWidth: 1, marginRight: 5, padding: 10, borderRadius: 10 }}
+//           value={newMessage}
+//           onChangeText={setNewMessage}
+//           multiline={true}
+//         />
+//         <Button title="send" onPress={sendMessage} />
+//       </View>
+//     </View>
+//   );
+// }
 
-function ChatScreen() {
+export default function ChatScreen() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" component={MainChatScreen} />
@@ -126,7 +127,7 @@ function ChatScreen() {
   );
 }
 
-export default ChatScreen;
+
 const styles = StyleSheet.create({
   groupChatItem: {
     paddingHorizontal: 16,
