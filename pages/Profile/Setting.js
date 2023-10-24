@@ -22,7 +22,7 @@ export default function SettingScreen() {
 
     fetchAndSetVibrationState();
   }, []);
-  
+
   const switchNotification = () => {
     setNotificationEnabled((previousState) => !previousState)
   }
