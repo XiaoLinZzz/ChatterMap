@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { Button, FlatList, Text, TextInput, View } from 'react-native';
-import { getLastNMessageInformation } from '../../Services/GroupChatService';
+import { sendGroupMessage, getLastNMessageInformation } from '../../Services/GroupChatService';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export function ChatRoomScreen({ route }) {
   const navigation = useNavigation();
@@ -14,13 +15,12 @@ export function ChatRoomScreen({ route }) {
   const [scrollY, setScrollY] = useState(0);
   const [top, setTop] = useState(true)
   const [bottom, setBottom] = useState(true)
-  const addMessage = (text, sender) => {
-    const lastMessageId = messages.length > 0 ? messages[messages.length - 1].id : 0;
-    const newMessageId = lastMessageId + 1;
-    const newMessage = { id: newMessageId, text, sender };
-    console.log("you should send this message to the database:")
-    console.log(newMessage)
-    console.log("then you should get the latest messages")
+
+  const addMessage = async (content) => {
+    const user_id = await AsyncStorage.getItem('userId')
+    console.log(chatRoomId);
+    sendGroupMessage(content, chatRoomId.id, user_id)
+
     async function getMessages() {
       const messagesInChat = await getLastNMessageInformation(chatRoomId.id)
       console.log(messagesInChat)
@@ -69,7 +69,7 @@ export function ChatRoomScreen({ route }) {
 
   const sendMessage = () => {
     if (newMessage) {
-      addMessage(newMessage, 'user');
+      addMessage(newMessage);
       setNewMessage('');
     }
   };
@@ -114,7 +114,7 @@ export function ChatRoomScreen({ route }) {
     <View style={{ flex: 1, padding: 10 }}>
       <FlatList
         data={messages}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item && item.id ? item.id.toString() : Math.random().toString()}
         refreshing={isRefreshing}
         onRefresh={onRefresh}
         onScroll={handleScroll}

@@ -60,3 +60,26 @@ export async function getLastNMessageInformation(groupchatId, startIndex = null,
     }
 
 }
+
+export async function sendGroupMessage(content, group_id, user_id) {
+    const message = {
+        content,
+        user_id
+    }
+    const response = await fetch(`${BASIC_URL + "/" + group_id + "/" + "messages"}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${await AsyncStorage.getItem('userToken')}`,
+        },
+        body: JSON.stringify(message)
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(data);
+    return data;
+}

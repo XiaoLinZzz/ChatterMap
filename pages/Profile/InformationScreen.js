@@ -10,13 +10,9 @@ function InformationScreen({ navigation }) {
   const [id, setId] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-
   const { hideTab, setHideTab } = useHideTab();
 
-
-
   useEffect(() => {
-
     async function fetchData() {
       try {
         const data = await getUserData();
