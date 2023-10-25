@@ -7,7 +7,7 @@ const Stack = createStackNavigator()
 
 export default function ProfileScreen() {
   return (
-    <Stack.Navigator initialRouteName="ProfileScreen">
+    <Stack.Navigator>
       <Stack.Screen
         name="User"
         component={InformationScreen}
