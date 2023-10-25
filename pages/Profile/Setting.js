@@ -3,6 +3,8 @@ import { Alert, Button, Dimensions, Image, Modal, StyleSheet, Switch, Text, Text
 import { getAutoJoinChatroomSwitchGlobal, getVibrationSwitchGlobal, setAutoJoinChatroomSwitchGlobal, setVibrationSwitchGlobal } from '../../GlobalVar';
 import { updatePassword } from '../../Services/UserService.js';
 import { UserContext } from '../UserContext';
+import { useHideTab } from '../../HideTabContext';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function SettingScreen() {
   const [notificationEnabled, setNotificationEnabled] = useState(false)
@@ -11,6 +13,13 @@ export default function SettingScreen() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const { logoutUser } = useContext(UserContext);
+  const { hideTab, setHideTab } = useHideTab();
+  
+  useFocusEffect( 
+    React.useCallback(() => { 
+      return () => setHideTab('flex'); 
+    }, []) 
+  );
 
   useEffect(() => {
     const fetchAndSetVibrationState = async () => {
