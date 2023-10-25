@@ -5,18 +5,18 @@ import SettingScreen from './Setting'
 
 const Stack = createStackNavigator()
 
-export default function ProfileScreen () {
+export default function ProfileScreen() {
   return (
     <Stack.Navigator initialRouteName="ProfileScreen">
       <Stack.Screen
-        name="Profile"
+        name="User"
         component={InformationScreen}
         headerShown={false}
       />
-      <Stack.Screen 
-      name="Setting" 
-      component={SettingScreen} 
-      options={{tabBarStyle : { display: "none"},}}
+      <Stack.Screen
+        name="Setting"
+        component={SettingScreen}
+        options={{ tabBarStyle: { display: "none" }, }}
       />
     </Stack.Navigator>
   )
