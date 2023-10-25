@@ -5,8 +5,6 @@ import ChatScreen from '../Chatroom/ChatScreen'
 import MapScreen from '../MapScreen'
 import Profile from '../Profile/ProfileScreen'
 import Friends from '../Friends/Friends'
-import { hideTab, setHideTab } from '../../GlobalVar'
-//import { useEffect } from 'react'
 import { useHideTab } from '../../HideTabContext'
 
 const BottomTab = createBottomTabNavigator()
@@ -15,8 +13,6 @@ const iconSize = screenWidth * 0.075
 
 
 const HomePageNavigator = () => {
-  //setHideTab('flex');
-  //console.log('hideTab value in homepage:', hideTab);
   const { hideTab } = useHideTab();
 
   return (

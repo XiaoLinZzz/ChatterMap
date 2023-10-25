@@ -3,10 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, TouchableW
 import PropTypes from 'prop-types'
 import * as ImagePicker from 'expo-image-picker'
 import { getUserData } from '../../Services/UserService.js'
-//import { hideTab } from '../../GlobalVar.js';
-//import { setHideTab } from '../../GlobalVar.js';
 import { useHideTab } from '../../HideTabContext.js';
-//import { useFocusEffect } from '@react-navigation/native';
 
 function InformationScreen({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
@@ -68,20 +65,21 @@ function InformationScreen({ navigation }) {
         </TouchableOpacity>
         <Text style={styles.label}>Name:</Text>
         <View style={styles.emailContainer}>
-          <Text style={styles.text}>{name + ' #' + id}</Text>
+          <Text style={styles.text}>{name + '#' + id}</Text>
         </View>
         <Text style={styles.label}>Email:</Text>
         <View style={styles.emailContainer}>
           <Text style={styles.text}>{email}</Text>
         </View>
 
-        <TouchableOpacity 
-          style={styles.settingsButton} 
-          onPress={() => { 
+        <TouchableOpacity
+          style={styles.settingsButton}
+          onPress={() => {
             setHideTab('none');
-            console.log('go to setting'); 
-            console.log('hideTab value:', hideTab); 
-            navigation.navigate('Setting') }}>
+            console.log('go to setting');
+            console.log('hideTab value:', hideTab);
+            navigation.navigate('Setting')
+          }}>
           <Text style={styles.settingsButtonText}>Settings</Text>
         </TouchableOpacity>
 
