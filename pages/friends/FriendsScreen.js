@@ -20,10 +20,10 @@ const FriendsScreen = () => {
 
   const addFriend = () => {
     if (newFriend) {
-      setFriends(prevFriends => [
-        ...prevFriends,
-        { id: (friends.length + 1).toString(), name: newFriend }
-      ])
+      // setFriends(prevFriends => [
+      //   ...prevFriends,
+      //   { id: (friends.length + 1).toString(), name: newFriend }
+      // ])
       setNewFriend('')
     }
   }
