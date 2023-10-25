@@ -1,8 +1,16 @@
 import React, { useState } from 'react'
+import { useNavigation } from '@react-navigation/native';
 import { View, Text, TouchableOpacity, TextInput, FlatList, StyleSheet } from 'react-native'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 
 const FriendsScreen = () => {
+  const navigation = useNavigation();
+
+  const goToInvitations = () => {
+    // Navigate to FriendInvitationsScreen when it's set up
+    navigation.navigate('New Friends');
+  }
+
   const [friends, setFriends] = useState([
     { id: '1', name: 'Alice' },
     { id: '2', name: 'Bob' },
@@ -28,29 +36,32 @@ const FriendsScreen = () => {
 
   return (
     <View style={styles.container}>
-        <View style={styles.inputContainer}>
-            <TextInput
-                style={styles.input}
-                onChangeText={setNewFriend}
-                value={newFriend}
-                placeholder="Enter friend's name"
-            />
-            <TouchableOpacity style={styles.addButton} onPress={addFriend}>
-                <FontAwesome name="plus" size={20} color="white" />
-            </TouchableOpacity>
-        </View>
-        <FlatList
-          data={friends}
-          renderItem={({ item }) => (
-            <View style={styles.friendContainer}>
-              <Text style={styles.friendText}>{item.name}</Text>
-              <TouchableOpacity onPress={() => openChatWithFriend(item.name)}>
-                <FontAwesome name="comment" size={20} color="#4CAF50" />
-              </TouchableOpacity>
-            </View>
-          )}
-          keyExtractor={item => item.id}
+      <View style={styles.inputContainer}>
+        <TouchableOpacity style={styles.invitationButton} onPress={goToInvitations}>
+          <FontAwesome name="users" size={20} color="white" />
+        </TouchableOpacity>
+        <TextInput
+          style={styles.input}
+          onChangeText={setNewFriend}
+          value={newFriend}
+          placeholder="Enter friend's name"
         />
+        <TouchableOpacity style={styles.addButton} onPress={addFriend}>
+          <FontAwesome name="plus" size={20} color="white" />
+        </TouchableOpacity>
+      </View>
+      <FlatList
+        data={friends}
+        renderItem={({ item }) => (
+          <View style={styles.friendContainer}>
+            <Text style={styles.friendText}>{item.name}</Text>
+            <TouchableOpacity onPress={() => openChatWithFriend(item.name)}>
+              <FontAwesome name="comment" size={20} color="#4CAF50" />
+            </TouchableOpacity>
+          </View>
+        )}
+        keyExtractor={item => item.id}
+      />
     </View>
   )
 }
@@ -69,6 +80,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingLeft: 15,
     backgroundColor: 'white',
+    marginLeft: 10,
     marginRight: 10
   },
   addButton: {
@@ -111,6 +123,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderBottomWidth: 0.5,
     borderBottomColor: '#ddd'
+  },
+  invitationButton: {
+    padding: 12,
+    backgroundColor: '#4CAF50',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 })
 
