@@ -18,15 +18,6 @@ function MainChatScreen() {
   const [name, setName] = useState("");
   const [chatroomData, setData] = useState(chatRooms);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const refreshData = async () => {
-    try {
-      const data = await getGroupChatInformation(1);
-      setData(data);
-      console.log("Data refreshed");
-    } catch (error) {
-      console.error("Failed to fetch user data:", error);
-    }
-  };
 
   const joinChatRoom = (chatRoomId) => {
     navigation.navigate('ChatRoom', { chatRoomId });
@@ -36,6 +27,7 @@ function MainChatScreen() {
     try {
       const data = await getGroupChatInformation(1);
       setData(data);
+      console.log("Data refresh")
     } catch (error) {
       console.error("Failed to fetch user data:", error);
     } finally {
@@ -82,17 +74,6 @@ const styles = StyleSheet.create({
   groupChatMembers: {
     fontSize: 14,
     color: '#888',
-  },
-  refreshButton: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
-    backgroundColor: 'white',
-    borderRadius: 30, // 调整按钮的形状
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
 
