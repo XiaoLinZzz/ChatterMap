@@ -1,13 +1,26 @@
-import React from 'react'
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, TouchableOpacity, TextInput, FlatList, StyleSheet } from 'react-native'
+import FontAwesome from '@expo/vector-icons/FontAwesome'
 
 const NewFriendsScreen = () => {
+    const [newFriend, setNewFriend] = useState('')
+
     // Sample data for invitations
     const invitations = [
         { id: '4', name: 'David', status: 'Pending' },
         { id: '5', name: 'Eva', status: 'Pending' }
         // ... more invitations
     ];
+
+    const addFriend = () => {
+        if (newFriend) {
+            // setFriends(prevFriends => [
+            //   ...prevFriends,
+            //   { id: (friends.length + 1).toString(), name: newFriend }
+            // ])
+            setNewFriend('')
+        }
+    }
 
     const acceptInvitation = (name) => {
         console.log(`Accepted invitation from ${name}`)
@@ -21,6 +34,17 @@ const NewFriendsScreen = () => {
 
     return (
         <View style={styles.container}>
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setNewFriend}
+                    value={newFriend}
+                    placeholder="Enter friend's name"
+                />
+                <TouchableOpacity style={styles.addButton} onPress={addFriend}>
+                    <FontAwesome name="plus" size={20} color="white" />
+                </TouchableOpacity>
+            </View>
             <FlatList
                 data={invitations}
                 renderItem={({ item }) => (
@@ -47,6 +71,28 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
         backgroundColor: '#f5f5f5'
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 16
+    },
+    input: {
+        flex: 1,
+        height: 45,
+        borderColor: '#ddd',
+        borderWidth: 1,
+        borderRadius: 12,
+        paddingLeft: 15,
+        backgroundColor: 'white',
+        marginRight: 10
+    },
+    addButton: {
+        padding: 12,
+        backgroundColor: '#4CAF50',
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     invitationContainer: {
         flexDirection: 'row',
