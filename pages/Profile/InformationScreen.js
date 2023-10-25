@@ -3,8 +3,10 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, TouchableW
 import PropTypes from 'prop-types'
 import * as ImagePicker from 'expo-image-picker'
 import { getUserData } from '../../Services/UserService.js'
-import { hideTab } from '../../GlobalVar.js';
-import { setHideTab } from '../../GlobalVar.js';
+//import { hideTab } from '../../GlobalVar.js';
+//import { setHideTab } from '../../GlobalVar.js';
+import { useHideTab } from '../../HideTabContext.js';
+//import { useFocusEffect } from '@react-navigation/native';
 
 function InformationScreen({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
@@ -12,7 +14,12 @@ function InformationScreen({ navigation }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
+  const { hideTab, setHideTab } = useHideTab();
+
+
+
   useEffect(() => {
+
     async function fetchData() {
       try {
         const data = await getUserData();
