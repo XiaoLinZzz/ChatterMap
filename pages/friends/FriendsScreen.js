@@ -47,7 +47,7 @@ const FriendsScreen = () => {
           placeholder="Enter friend's name"
         />
         <TouchableOpacity style={styles.addButton} onPress={addFriend}>
-          <FontAwesome name="plus" size={20} color="white" />
+          <FontAwesome name="search" size={20} color="white" />
         </TouchableOpacity>
       </View>
       <FlatList
