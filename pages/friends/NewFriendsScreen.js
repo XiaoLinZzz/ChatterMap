@@ -1,35 +1,81 @@
-import React, { useState } from 'react'
-import { View, Text, TouchableOpacity, TextInput, FlatList, StyleSheet } from 'react-native'
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, TextInput, FlatList, StyleSheet, Alert } from 'react-native'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
+import { getNewFriendsList, updateNewFriend, addNewFriend } from '../../Services/FriendService.js'
 
 const NewFriendsScreen = () => {
-    const [newFriend, setNewFriend] = useState('')
+    const [newFriend, setNewFriend] = useState('');
+    const [invitations, setInvitations] = useState([]);
 
-    // Sample data for invitations
-    const invitations = [
-        { id: '4', name: 'David', status: 'Pending' },
-        { id: '5', name: 'Eva', status: 'Pending' }
-        // ... more invitations
-    ];
+    useEffect(() => {
+        const fetchInvitations = async () => {
+            try {
+                const data = await getNewFriendsList();
+                const invitationData = data.pending_requests.map(request => ({
+                    id: request.sender.id.toString(),
+                    name: request.sender.name,
+                    status: request.status,
+                    request_id: request.id
+                }));
+                setInvitations(invitationData);
+            } catch (error) {
+                console.error("Error fetching invitation list:", error.message);
+                Alert.alert("Error", "Unable to fetch invitations.");
+            }
+        }
 
-    const addFriend = () => {
+        fetchInvitations();
+    }, []);
+
+    const addFriend = async () => {
         if (newFriend) {
-            // setFriends(prevFriends => [
-            //   ...prevFriends,
-            //   { id: (friends.length + 1).toString(), name: newFriend }
-            // ])
-            setNewFriend('')
+            try {
+                const data = await addNewFriend(newFriend);
+
+                if (data) {
+                    Alert.alert("Success", "Friend added successfully!");
+                }
+                setNewFriend('');
+            } catch (error) {
+                console.error("Error adding new friend:", error.message);
+                Alert.alert("Error", "Friend's ID does not exist.");
+            }
         }
     }
 
-    const acceptInvitation = (name) => {
-        console.log(`Accepted invitation from ${name}`)
-        // Handle the accept logic here
+    const acceptInvitation = async (id) => {
+        try {
+            const response = await updateNewFriend(id, 'accepted');
+            // You can handle the response here if necessary, e.g., check for a specific response status
+            if (response) {
+                setInvitations(invitations.map(invite => {
+                    if (invite.id === id) {
+                        return { ...invite, status: 'accepted' }
+                    }
+                    return invite
+                }));
+            }
+        } catch (error) {
+            console.error("Error accepting invitation:", error.message);
+            Alert.alert("Error", "Unable to accept the invitation.");
+        }
     }
 
-    const declineInvitation = (name) => {
-        console.log(`Declined invitation from ${name}`)
-        // Handle the decline logic here
+    const declineInvitation = async (id) => {
+        try {
+            const response = await updateNewFriend(id, 'declined');
+            if (response) {
+                setInvitations(invitations.map(invite => {
+                    if (invite.id === id) {
+                        return { ...invite, status: 'declined' }
+                    }
+                    return invite
+                }));
+            }
+        } catch (error) {
+            console.error("Error declining invitation:", error.message);
+            Alert.alert("Error", "Unable to decline the invitation.");
+        }
     }
 
     return (
@@ -39,7 +85,7 @@ const NewFriendsScreen = () => {
                     style={styles.input}
                     onChangeText={setNewFriend}
                     value={newFriend}
-                    placeholder="Enter friend's name"
+                    placeholder="Enter friend's id"
                 />
                 <TouchableOpacity style={styles.addButton} onPress={addFriend}>
                     <FontAwesome name="plus" size={20} color="white" />
@@ -51,12 +97,26 @@ const NewFriendsScreen = () => {
                     <View style={styles.invitationContainer}>
                         <Text style={styles.invitationText}>{item.name}</Text>
                         <View style={styles.buttonsContainer}>
-                            <TouchableOpacity style={styles.acceptButton} onPress={() => acceptInvitation(item.name)}>
-                                <Text style={styles.buttonText}>Accept</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.declineButton} onPress={() => declineInvitation(item.name)}>
-                                <Text style={styles.buttonText}>Decline</Text>
-                            </TouchableOpacity>
+                            {item.status === 'pending' && (
+                                <>
+                                    <TouchableOpacity style={styles.acceptButton} onPress={() => acceptInvitation(item.request_id)}>
+                                        <Text style={styles.buttonText}>Accept</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.declineButton} onPress={() => declineInvitation(item.request_id)}>
+                                        <Text style={styles.buttonText}>Decline</Text>
+                                    </TouchableOpacity>
+                                </>
+                            )}
+                            {item.status === 'accepted' &&
+                                <TouchableOpacity style={styles.acceptedButton}>
+                                    <Text style={styles.buttonText}>Accepted</Text>
+                                </TouchableOpacity>
+                            }
+                            {item.status === 'declined' &&
+                                <TouchableOpacity style={styles.declinedButton}>
+                                    <Text style={styles.buttonText}>Declined</Text>
+                                </TouchableOpacity>
+                            }
                         </View>
                     </View>
                 )}
@@ -118,6 +178,16 @@ const styles = StyleSheet.create({
         marginRight: 10
     },
     declineButton: {
+        padding: 5,
+        backgroundColor: '#f44336',
+        borderRadius: 5
+    },
+    acceptedButton: {
+        padding: 5,
+        backgroundColor: '#4CAF50',
+        borderRadius: 5,
+    },
+    declinedButton: {
         padding: 5,
         backgroundColor: '#f44336',
         borderRadius: 5
