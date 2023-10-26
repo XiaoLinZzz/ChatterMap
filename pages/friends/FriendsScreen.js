@@ -12,18 +12,12 @@ const FriendsScreen = () => {
   }
 
   const [friends, setFriends] = useState([
-    { id: '1', name: 'Alice' },
-    { id: '2', name: 'Bob' },
     { id: '3', name: 'Charlie' }
   ])
   const [newFriend, setNewFriend] = useState('')
 
   const addFriend = () => {
     if (newFriend) {
-      // setFriends(prevFriends => [
-      //   ...prevFriends,
-      //   { id: (friends.length + 1).toString(), name: newFriend }
-      // ])
       setNewFriend('')
     }
   }
