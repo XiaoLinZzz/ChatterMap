@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { View, Animated, Easing, Image } from 'react-native'
-import MapView, { Marker } from 'react-native-maps'
+import MapView, { Marker, Circle } from 'react-native-maps'
 import * as Location from 'expo-location'
 import * as Battery from 'expo-battery'
-import MapScreenStyles from '../styles/MapScreenStyle.js'
+import MapScreenStyles from '../../styles/MapScreenStyle.js'
 import BatteryIcon from './Components/BatteryIcon.js'
 import ResetLocationButton from './Components/ResetLocationButton.js'
 import AddFriendButton from './Components/AddFriendButton.js'
 import AddFriendModal from './Components/AddFriendModal.js'
-import { updateLocation, getAllUsersLocations } from '../Services/LocationService.js'
+import { updateLocation, getFriendsLocation } from '../../Services/LocationService.js'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Progress from 'react-native-progress'
+import ChatRoom from './Components/ChatRoomLocation.js'
 
 export default function MapScreen () {
   const [location, setLocation] = useState(null)
@@ -26,15 +27,45 @@ export default function MapScreen () {
   const [progressValue, setProgressValue] = useState(0)
   const animatedProgress = useRef(new Animated.Value(0)).current
   const intervalRef = useRef(null)
+  // const [chatRooms, setChatRooms] = useState([]) // This would be loaded similarly to friends locations
+  const [selectedRoom, setSelectedRoom] = useState(null)
+
+  const chatRooms = [
+    {
+      id: 'room1',
+      name: 'Eastern Resource Centre',
+      latitude: -37.79935252464269,
+      longitude: 144.96290471436666,
+      description: 'Chat with people in Central Park!'
+    },
+    {
+      id: 'room2',
+      name: 'Baillieu Library',
+      latitude: -37.79847444052613,
+      longitude: 144.95943074538698,
+      description: 'Discuss the hustle and bustle of Times Square.'
+    },
+    {
+      id: 'room3',
+      name: 'Law Building',
+      latitude: -37.80227690068929,
+      longitude: 144.96012347411093,
+      description: 'Share stories on the Brooklyn Bridge.'
+    }
+  ]
 
   const AnimatedProgressBar = Animated.createAnimatedComponent(Progress.Bar)
 
-  // const userId = 2 // Assume this is the logged-in user's ID
+  // const userId = 2
   const [allUsersLocations, setAllUsersLocations] = useState([])
+
+  const onRoomMarkerPress = (roomData) => {
+    setSelectedRoom(roomData)
+  }
 
   const fetchAndSetUsersLocations = useCallback(async () => {
     try {
-      const usersLocations = await getAllUsersLocations()
+      const usersLocations = await getFriendsLocation()
       setAllUsersLocations(usersLocations)
       // console.log('All users locations:', usersLocations)
     } catch (error) {
@@ -166,7 +197,7 @@ export default function MapScreen () {
                 >
                   <View style={{ alignItems: 'center' }}>
                     <Image
-                      source={require('../resource/profile1.png')}
+                      source={require('../../resource/profile1.png')}
                       style={{ width: 20, height: 20, marginTop: 10 }}
                     />
                   </View>
@@ -174,28 +205,57 @@ export default function MapScreen () {
                 </Marker>
               )}
 
-              {allUsersLocations.map(user => (
-                // console.log('User from allUsersLocations:', user.id, user.last_latitude, user.last_longitude),
-                (user.id !== userId && user.last_latitude && user.last_longitude)
+              {allUsersLocations.map(user => {
+                return (user.id !== userId && user.last_latitude && user.last_longitude)
                   ? (
-                  <Marker
-                    key={user.id}
-                    coordinate={{
-                      latitude: user.last_latitude,
-                      longitude: user.last_longitude
-                    }}
-                    title={user.name || 'No name provided'}
-                  >
-                    <View style={{ alignItems: 'center' }}>
-                      <Image
-                        source={require('../resource/profile1.png')}
-                        style={{ width: 20, height: 20, marginTop: 10 }}
-                      />
-                    </View>
-                  </Marker>
+                    <Marker
+                      key={user.id}
+                      coordinate={{
+                        latitude: user.last_latitude,
+                        longitude: user.last_longitude
+                      }}
+                      title={user.name || 'No name provided'}
+                    >
+                      <View style={{ alignItems: 'center' }}>
+                        <Image
+                          source={require('../../resource/profile1.png')}
+                          style={{
+                            width: 20,
+                            height: 20,
+                            marginTop: 10
+                          }}
+                        />
+                      </View>
+                    </Marker>
                     )
                   : null
+              })}
+
+              {chatRooms.map(room => (
+                <Marker
+                  key={room.id}
+                  coordinate={{
+                    latitude: room.latitude,
+                    longitude: room.longitude
+                  }}
+                  title={room.name}
+                  // Change this from onCalloutPress to onPress
+                  onPress={() => onRoomMarkerPress(room)}
+                />
               ))}
+
+              {selectedRoom && (
+                <Circle
+                  center={{
+                    latitude: selectedRoom.latitude,
+                    longitude: selectedRoom.longitude,
+                  }}
+                  radius={150} // Adjust the radius as needed
+                  fillColor="rgba(100, 100, 200, 0.3)" // Adjust the color and opacity as needed
+                  strokeColor="rgba(100, 100, 200, 0.5)" // Adjust the border color and opacity as needed
+                />
+              )}
+
             </MapView>
             {showButton && (
               <ResetLocationButton
@@ -219,6 +279,12 @@ export default function MapScreen () {
             <AddFriendModal
               isVisible={modalVisible}
               onClose={() => setModalVisible(false)}
+            />
+
+            <ChatRoom
+              isVisible={!!selectedRoom}
+              onClose={() => setSelectedRoom(null)}
+              roomData={selectedRoom}
             />
           </>
           )}

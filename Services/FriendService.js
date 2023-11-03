@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const BASIC_URL = "http://18.222.120.14:5000/friend_requests";
+const DELETE_FRIEND = "http://18.222.120.14:5000/friends";
 
 export async function addNewFriend(receiver) {
     const response = await fetch(`${BASIC_URL}`, {
@@ -61,5 +62,26 @@ export async function getNewFriendsList() {
 
     const data = await response.json();
 
+    return data;
+}
+
+export async function deleteFriend(friend_id) {
+    const response = await fetch(`${DELETE_FRIEND}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${await AsyncStorage.getItem('userToken')}`
+        },
+        body: JSON.stringify({
+            friend_id: friend_id
+        })
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log(data)
     return data;
 }
