@@ -68,9 +68,6 @@ export default function LoginPage() {
               onChangeText={setPassword}
               left={<TextInput.Icon name="lock" icon={() => <Icon name="lock" size={20} />} />}
             />
-            <TouchableOpacity onPress={() => { /* handle forgot password logic here */ }}>
-              <Text style={styles.forgotPasswordText}>Forgot password?</Text>
-            </TouchableOpacity>
             {error && <Text style={styles.errorText}>{error}</Text>}
             <TouchableOpacity style={styles.loginButton} onPress={handleLogin} disabled={loading}>
               {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.loginButtonText}>Login</Text>}
@@ -91,7 +88,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: 20
+    marginTop: 20,
+    marginBottom: 30
   },
   container: {
     margin: 30
