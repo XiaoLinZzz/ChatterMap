@@ -28,7 +28,7 @@
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-native": "0.72.5",
-    "react-native-gesture-handler": "~2.12.0",
+    "react-native-gesture-handler": "^2.13.4",
     "react-native-image-picker": "^7.0.0",
     "react-native-maps": "^1.7.1",
     "react-native-paper": "^5.10.4",
