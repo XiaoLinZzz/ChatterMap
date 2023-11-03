@@ -9,7 +9,7 @@ export default function ResetLocationButton ({ onPress }) {
     <View style={styles.resetButtonContainer}>
       <TouchableOpacity style={styles.button} onPress={onPress}>
         <Image
-            source={require('../../resource/globe.png')} // Replace with your image path
+            source={require('../../../resource/globe.png')} // Replace with your image path
             style={styles.iconStyle} // You can define a style for the image if you want
         />
       </TouchableOpacity>
