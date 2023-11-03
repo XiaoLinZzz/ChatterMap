@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { View, Text, TouchableOpacity, TextInput, FlatList, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, FlatList, StyleSheet, Alert } from 'react-native'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
+import { getUserData } from '../../Services/UserService.js'
+import { deleteFriend } from '../../Services/FriendService.js'
 import { useHideTab } from '../../HideTabContext';
+import { Swipeable } from 'react-native-gesture-handler';
 
 const FriendsScreen = () => {
   const navigation = useNavigation();
   const [friends, setFriends] = useState([]);
   const [newFriend, setNewFriend] = useState('')
-
   const { hideTab, setHideTab } = useHideTab();
+
   const goToInvitations = () => {
     // Navigate to FriendInvitationsScreen when it's set up
     navigation.navigate('New Friends');
@@ -49,6 +52,45 @@ const FriendsScreen = () => {
     console.log(`Start chat with ${friendName}`)
   }
 
+  const confirmDeleteFriend = (friendId) => {
+    Alert.alert(
+      "Delete",
+      "Are you sure you want to delete this friend?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Yes", onPress: () => handleDeleteFriend(friendId) }
+      ]
+    );
+  };
+
+  // Renamed function to handleDeleteFriend
+  const handleDeleteFriend = async (friendId) => {
+    try {
+      const data = await deleteFriend(friendId); // This calls the imported deleteFriend
+
+      if (data) {
+        Alert.alert("Success", "Friend deleted successfully!");
+        // You probably want to update the friends list after a successful delete
+        setFriends(prevFriends => prevFriends.filter(friend => friend.id !== friendId));
+      }
+    } catch (error) {
+      console.error("Error deleting friend:", error.message);
+      Alert.alert("Error", "Friend deletion unsuccessful!");
+    }
+  }
+
+  const renderRightActions = (friendId) => {
+    return (
+      <TouchableOpacity onPress={() => confirmDeleteFriend(friendId)} style={styles.deleteButton}>
+        <Text style={styles.deleteButtonText}>Delete</Text>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
@@ -68,12 +110,14 @@ const FriendsScreen = () => {
       <FlatList
         data={friends}
         renderItem={({ item }) => (
-          <View style={styles.friendContainer}>
-            <Text style={styles.friendText}>{item.name}</Text>
-            <TouchableOpacity onPress={() => openChatWithFriend(item.name)}>
-              <FontAwesome name="comment" size={20} color="#4CAF50" />
-            </TouchableOpacity>
-          </View>
+          <Swipeable renderRightActions={() => renderRightActions(item.id)}>
+            <View style={styles.friendContainer}>
+              <Text style={styles.friendText}>{item.name}</Text>
+              <TouchableOpacity onPress={() => openChatWithFriend(item.name)}>
+                <FontAwesome name="comment" size={20} color="#4CAF50" />
+              </TouchableOpacity>
+            </View>
+          </Swipeable>
         )}
         keyExtractor={item => item.id}
       />
@@ -105,8 +149,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
+  deleteButton: {
+    width: 70, // Set a fixed width for the delete button
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 8,
+    marginLeft: 5,
+    height: 42
+  },
+  deleteButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 15,
+    textAlign: 'center'
+  },
   friendText: {
-    fontSize: 16
+    fontSize: 15
   },
   title: {
     fontSize: 26,
@@ -121,10 +181,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     backgroundColor: 'white',
-    marginBottom: 10,
+    marginBottom: 15,
     borderRadius: 8,
     borderColor: '#ddd',
-    borderWidth: 1
+    borderWidth: 1,
+    minHeight: 40,
   },
   container: {
     flex: 1,
