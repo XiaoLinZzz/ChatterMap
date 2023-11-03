@@ -14,9 +14,3 @@ export async function getAutoJoinChatroomSwitchGlobal() {
 export async function setAutoJoinChatroomSwitchGlobal(autoJoinChatroomEnabled) {
     AsyncStorage.setItem('autoJoinChatroomEnabled', JSON.stringify(autoJoinChatroomEnabled))
 }
-
-export let hideTab = 'flex';
-
-export const setHideTab = (value) => {
-    hideTab = value;
-};

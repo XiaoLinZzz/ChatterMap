@@ -2,13 +2,16 @@ import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, TouchableOpacity, TextInput, FlatList, StyleSheet } from 'react-native'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
+import { useHideTab } from '../../HideTabContext';
 
 const FriendsScreen = () => {
   const navigation = useNavigation();
 
+  const { hideTab, setHideTab } = useHideTab();
   const goToInvitations = () => {
     // Navigate to FriendInvitationsScreen when it's set up
     navigation.navigate('New Friends');
+    setHideTab('none');
   }
 
   const [friends, setFriends] = useState([
