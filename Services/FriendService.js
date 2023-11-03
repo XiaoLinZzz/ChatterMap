@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const BASIC_URL = "http://3.138.178.239:5000/friend_requests";
+const BASIC_URL = "http://18.222.120.14:5000/friend_requests";
 
 export async function addNewFriend(receiver) {
     const response = await fetch(`${BASIC_URL}`, {

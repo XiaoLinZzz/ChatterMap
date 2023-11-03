@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-let BASIC_URL = "http://3.138.178.239:5000/groupchats";
+let BASIC_URL = "http://18.222.120.14:5000/groupchats";
 
 export async function getGroupChatInformation(groupId) {
     const response = await fetch(`${BASIC_URL}`, {

@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // src/services/LocationService.js
-const API_URL = 'http://3.138.178.239:5000/users/'
-const ALL_USERS_API_URL = 'http://3.138.178.239:5000/all-users/'
+const API_URL = 'http://18.222.120.14:5000/users/'
+const ALL_USERS_API_URL = 'http://18.222.120.14:5000/all-users/'
 
 export async function updateLocation (latitude, longitude) {
   try {
