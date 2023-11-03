@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { Button, FlatList, Text, TextInput, View } from 'react-native';
 import { sendGroupMessage, getLastNMessageInformation } from '../../Services/GroupChatService';
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useHideTab } from '../../HideTabContext';
-import { useFocusEffect } from '@react-navigation/native';
 
 export function ChatRoomScreen({ route }) {
   const navigation = useNavigation();
@@ -17,22 +15,15 @@ export function ChatRoomScreen({ route }) {
   const [scrollY, setScrollY] = useState(0);
   const [top, setTop] = useState(true)
   const [bottom, setBottom] = useState(true)
-  const { hideTab, setHideTab } = useHideTab();
-  
-  useFocusEffect( 
-    React.useCallback(() => { 
-      return () => setHideTab('flex'); 
-    }, []) 
-  );
 
   const addMessage = async (content) => {
     const user_id = await AsyncStorage.getItem('userId')
-    console.log(chatRoomId);
+    console.log("chatroom id" + chatRoomId);
     sendGroupMessage(content, chatRoomId.id, user_id)
 
     async function getMessages() {
       const messagesInChat = await getLastNMessageInformation(chatRoomId.id)
-      console.log(messagesInChat)
+      // console.log(messagesInChat)
       addMessages(messagesInChat)
     }
     getMessages()
@@ -58,8 +49,8 @@ export function ChatRoomScreen({ route }) {
   useEffect(() => {
     navigation.setOptions({ title: `${chatRoomId.name}` });
     async function getMessages() {
-      const messagesInChat = await getLastNMessageInformation(chatRoomId.id, null, -1)
-      console.log(messagesInChat)
+      const messagesInChat = await getLastNMessageInformation(chatRoomId.id)
+      // console.log(messagesInChat)
       addMessages(messagesInChat)
     }
     getMessages()
@@ -71,10 +62,11 @@ export function ChatRoomScreen({ route }) {
       ...newMessages.map((message) => ({
         id: message.id,
         text: message.content,
-        sender: message.user_id,
+        sender: message.user_id === 1 ? 'user' : 'other', // 判断是否是你发送的消息
       }))
     ]);
   };
+
 
   const sendMessage = () => {
     if (newMessage) {
@@ -123,7 +115,7 @@ export function ChatRoomScreen({ route }) {
     <View style={{ flex: 1, padding: 10 }}>
       <FlatList
         data={messages}
-        keyExtractor={(item) => item && item.id ? item.id.toString() : Math.random().toString()}
+        keyExtractor={(item) => item.id ? item.id.toString() : Math.random().toString()}
         refreshing={isRefreshing}
         onRefresh={onRefresh}
         onScroll={handleScroll}

@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { getGroupChatInformation } from '../../Services/GroupChatService';
 import { ChatRoomScreen } from './Chatroom';
@@ -8,18 +8,15 @@ import { useHideTab } from '../../HideTabContext';
 
 const Stack = createNativeStackNavigator();
 
-const chatRooms = [
-  { id: 3, name: "Chat Room 1", description: "sfsdf" },
-  { id: 2, name: "Chat Room 2", description: "sfasdfasdfasdfsadfsadsdf" },
-  // Add more chat rooms as needed
-];
 
 function MainChatScreen() {
   const navigation = useNavigation();
   const [name, setName] = useState("");
-  const [chatroomData, setData] = useState(chatRooms);
+  const [chatroomData, setData] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
-
+  useEffect(() => {
+    onRefresh();
+  }, [])
   const { hideTab, setHideTab } = useHideTab();
 
   const joinChatRoom = (chatRoomId) => {
