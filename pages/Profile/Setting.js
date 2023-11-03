@@ -172,7 +172,7 @@ export default function SettingScreen() {
           <View style={styles.modalContent}>
             <Text style={styles.label}>Enter New Password</Text>
             <TextInput
-              style={[styles.input, { backgroundColor: 'tomato', color: 'white' }]
+              style={[styles.input, { backgroundColor: 'lightgray', color: 'black' }]
               }
               secureTextEntry={true}
               value={newPassword}

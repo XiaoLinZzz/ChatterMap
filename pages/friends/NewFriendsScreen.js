@@ -2,11 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, TextInput, FlatList, StyleSheet, Alert } from 'react-native'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { getNewFriendsList, updateNewFriend, addNewFriend } from '../../Services/FriendService.js'
+import { useHideTab } from '../../HideTabContext';
+import { useFocusEffect } from '@react-navigation/native';
+
 
 const NewFriendsScreen = () => {
     const [newFriend, setNewFriend] = useState('');
     const [invitations, setInvitations] = useState([]);
-
+    const { hideTab, setHideTab } = useHideTab();
+  
+    useFocusEffect( 
+      React.useCallback(() => { 
+        return () => setHideTab('flex'); 
+      }, []) 
+    );
+    
     useEffect(() => {
         const fetchInvitations = async () => {
             try {

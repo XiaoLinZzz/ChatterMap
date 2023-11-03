@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { getGroupChatInformation } from '../../Services/GroupChatService';
 import { ChatRoomScreen } from './Chatroom';
+import { useHideTab } from '../../HideTabContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,8 +20,11 @@ function MainChatScreen() {
   const [chatroomData, setData] = useState(chatRooms);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
+  const { hideTab, setHideTab } = useHideTab();
+
   const joinChatRoom = (chatRoomId) => {
     navigation.navigate('ChatRoom', { chatRoomId });
+    setHideTab('none');
   };
   const onRefresh = async () => {
     setIsRefreshing(true);
