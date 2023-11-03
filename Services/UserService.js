@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const USER_INFO = "http://3.138.178.239:5000/users/";
+const USER_INFO = "http://18.222.120.14:5000/users/";
 
 export async function getUserData() {
     const response = await fetch(`${USER_INFO}`, {
