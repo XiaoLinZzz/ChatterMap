@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { View, Text, TouchableOpacity, TextInput, FlatList, StyleSheet } from 'react-native'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { useHideTab } from '../../HideTabContext';
 
 const FriendsScreen = () => {
   const navigation = useNavigation();
+  const [friends, setFriends] = useState([]);
+  const [newFriend, setNewFriend] = useState('')
 
   const { hideTab, setHideTab } = useHideTab();
   const goToInvitations = () => {
@@ -14,10 +16,26 @@ const FriendsScreen = () => {
     setHideTab('none');
   }
 
-  const [friends, setFriends] = useState([
-    { id: '3', name: 'Charlie' }
-  ])
-  const [newFriend, setNewFriend] = useState('')
+  const fetchUserData = async () => {
+    try {
+      const data = await getUserData();
+      const friendsData = data.friends.map(friend => ({
+        id: friend.id.toString(),
+        name: friend.name
+      }));
+      setFriends(friendsData);
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+    }
+  };
+
+  // Fetch friends every time the screen comes into focus
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchUserData();
+      return () => { };
+    }, [])
+  );
 
   const addFriend = () => {
     if (newFriend) {

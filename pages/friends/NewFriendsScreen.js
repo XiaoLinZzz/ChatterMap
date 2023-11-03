@@ -53,16 +53,15 @@ const NewFriendsScreen = () => {
         }
     }
 
-    const acceptInvitation = async (id) => {
+    const acceptInvitation = async (request_id) => {
         try {
-            const response = await updateNewFriend(id, 'accepted');
-            // You can handle the response here if necessary, e.g., check for a specific response status
+            const response = await updateNewFriend(request_id, 'accepted');
             if (response) {
                 setInvitations(invitations.map(invite => {
-                    if (invite.id === id) {
+                    if (invite.request_id === request_id) {
                         return { ...invite, status: 'accepted' }
                     }
-                    return invite
+                    return invite;
                 }));
             }
         } catch (error) {
@@ -71,15 +70,15 @@ const NewFriendsScreen = () => {
         }
     }
 
-    const declineInvitation = async (id) => {
+    const declineInvitation = async (request_id) => {
         try {
-            const response = await updateNewFriend(id, 'declined');
+            const response = await updateNewFriend(request_id, 'declined');
             if (response) {
                 setInvitations(invitations.map(invite => {
-                    if (invite.id === id) {
+                    if (invite.request_id === request_id) {
                         return { ...invite, status: 'declined' }
                     }
-                    return invite
+                    return invite;
                 }));
             }
         } catch (error) {
