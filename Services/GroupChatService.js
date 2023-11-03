@@ -28,8 +28,8 @@ export async function getGroupChatInformation(groupId) {
  * @param {*} n the number of history message you want to show
  * @returns a list of messages, message format :{"content": "?", "group_chat_id": ?, "id": ?, "timestamp": "?", "user_id": ?}
  */
-export async function getLastNMessageInformation(groupchatId, startIndex = null, n = 30) {
-    const response = await fetch(`${BASIC_URL + "/" + groupchatId}`, {
+export async function getLastNMessageInformation(groupchatId) {
+    const response = await fetch(`${BASIC_URL + "/" + groupchatId + "/recent-messages"}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -43,22 +43,8 @@ export async function getLastNMessageInformation(groupchatId, startIndex = null,
 
     const data = await response.json();
     // console.log(typeof data)
-    // console.log(data.messages);
-    if (startIndex === null) {
-        if (n >= data.messages.length) {
-            return data.messages;
-        }
-        return data.messages.slice(-n);
-    }
-    else {
-        if (startIndex - n <= 0) {
-            // console.log("return :" + data.messages.slice(0, startIndex))
-            return data.messages.slice(0, startIndex);
-        } else {
-            return data.messages.slice(startIndex - n, startIndex)
-        }
-    }
-
+    // console.log(data);
+    return data
 }
 
 export async function sendGroupMessage(content, group_id, user_id) {
