@@ -63,6 +63,7 @@ export function ChatRoomScreen({ route }) {
         id: message.id,
         text: message.content,
         sender: message.user_id === 1 ? 'user' : 'other', // 判断是否是你发送的消息
+        sender_name: message.user_id
       }))
     ]);
   };
@@ -82,7 +83,7 @@ export function ChatRoomScreen({ route }) {
       if (!isLoadingHistory) {
         setIsLoadingHistory(true);
         try {
-          console.log(messages[0].id)
+          console.log(messages[0])
           // const data = await getMoreMessageInformation(chatRoomId.id, messages[0].id);
           // addMessages(data);
         } catch (error) {
@@ -99,7 +100,7 @@ export function ChatRoomScreen({ route }) {
     setIsRefreshing(true);
     try {
       if (messages.length > 0) {
-        console.log("top message id:" + messages[0].id)
+        console.log("top message id:" + messages[0])
         const data = await getLastNMessageInformation(chatRoomId.id, messages[0].id);
         console.log(data)
         addMessages(data);
@@ -121,23 +122,32 @@ export function ChatRoomScreen({ route }) {
         onScroll={handleScroll}
         onEndReached={loadMoreHistoryMessages}
         onEndReachedThreshold={0.01}
+        ListHeaderComponent={<View style={{ height: 20 }} />} // 用于放置发送者名字的空白视图
         renderItem={({ item }) => (
-          <View
-            style={{
-              alignSelf: item.sender === 'user' ? 'flex-end' : 'flex-start',
-              backgroundColor: item.sender === 'user' ? '#007AFF' : '#E5E5EA',
-              borderRadius: 10,
-              margin: 5,
-              maxWidth: '70%',
-              padding: 10,
-            }}
-          >
-            <Text style={{ color: item.sender === 'user' ? 'white' : 'black' }}>
-              {item.text}
-            </Text>
+          <View>
+            {item.sender !== 'user' && (
+              <Text style={{ fontSize: 12, color: 'gray' }}>
+                {item.sender_name}
+              </Text>
+            )}
+            <View
+              style={{
+                alignSelf: item.sender === 'user' ? 'flex-end' : 'flex-start',
+                backgroundColor: item.sender === 'user' ? '#007AFF' : '#E5E5EA',
+                borderRadius: 10,
+                margin: 5,
+                maxWidth: '70%',
+                padding: 10,
+              }}
+            >
+              <Text style={{ color: item.sender === 'user' ? 'white' : 'black' }}>
+                {item.text}
+              </Text>
+            </View>
           </View>
         )}
       />
+
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <TextInput
           style={{ flex: 1, borderWidth: 1, marginRight: 5, padding: 10, borderRadius: 10 }}
