@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useHideTab } from '../../HideTabContext';
 import { useFocusEffect } from '@react-navigation/native';
 import { KeyboardAvoidingView, Platform, SafeAreaView, Keyboard } from 'react-native';
-import io from 'socket.io-client';
+import roomSocket from '../../socket';
 
 export function ChatRoomScreen({ route }) {
   const navigation = useNavigation();
@@ -24,18 +24,16 @@ export function ChatRoomScreen({ route }) {
 
 
   const flatListRef = React.useRef(null);
-  const socket = React.useRef(null);
 
   useEffect(() => {
-
-    socket.current = io('http://18.222.120.14:5000');
-    socket.current.on('new_message', (message) => {
-      addMessage(message);
-    });
-
-    // 清除 Socket 连接
+    const newMessageArrived = (data) => {
+      console.log("Im here_HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
+      onRefresh()
+    }
+    roomSocket.on("new_message", newMessageArrived)
     return () => {
-      socket.current.disconnect();
+
+      roomSocket.off("new_message", newMessageArrived)
     };
   }, []);
 
@@ -52,7 +50,7 @@ export function ChatRoomScreen({ route }) {
 
     async function getMessages() {
       const messagesInChat = await getLastNMessageInformation(chatRoomId.id)
-      console.log(messagesInChat)
+      // console.log(messagesInChat)
       addMessages(messagesInChat)
     }
     getMessages()
