@@ -77,13 +77,14 @@ export default function SettingScreen() {
     
       alert('Password changed.')
       console.log('Password changed.')
+      hideModal();
     } else {
       alert('Password hasn\'t changed. It has some errors.')
       console.log('Password hasn\'t changed. It has some errors.')
       
 
     }
-    hideModal();
+    
   }
 
   const toggleModal = () => {
