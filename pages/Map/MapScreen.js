@@ -8,10 +8,11 @@ import BatteryIcon from './Components/BatteryIcon.js'
 import ResetLocationButton from './Components/ResetLocationButton.js'
 import AddFriendButton from './Components/AddFriendButton.js'
 import AddFriendModal from './Components/AddFriendModal.js'
-import { updateLocation, getFriendsLocation } from '../../Services/LocationService.js'
+import { updateLocation, getFriendsLocation, checkUserChatroomStatus } from '../../Services/LocationService.js'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Progress from 'react-native-progress'
 import ChatRoom from './Components/ChatRoomLocation.js'
+import CheckChatroomButton from './Components/CheckChatroomButton.js'
 
 export default function MapScreen () {
   const [location, setLocation] = useState(null)
@@ -29,6 +30,7 @@ export default function MapScreen () {
   const intervalRef = useRef(null)
   // const [chatRooms, setChatRooms] = useState([]) // This would be loaded similarly to friends locations
   const [selectedRoom, setSelectedRoom] = useState(null)
+  const [currentChatroom, setCurrentChatroom] = useState(null)
 
   const chatRooms = [
     {
@@ -72,6 +74,18 @@ export default function MapScreen () {
       console.error('Error getting all users locations:', error)
     }
   }, [])
+
+  const checkChatroom = async () => {
+    try {
+      const chatroomName = await checkUserChatroomStatus()
+
+      setCurrentChatroom(chatroomName)
+
+      alert(`You are currently in: ${chatroomName}`)
+    } catch (error) {
+      console.error('Error checking chatroom status:', error)
+    }
+  }
 
   useEffect(() => {
     (async () => {
@@ -248,7 +262,7 @@ export default function MapScreen () {
                 <Circle
                   center={{
                     latitude: selectedRoom.latitude,
-                    longitude: selectedRoom.longitude,
+                    longitude: selectedRoom.longitude
                   }}
                   radius={150} // Adjust the radius as needed
                   fillColor="rgba(100, 100, 200, 0.3)" // Adjust the color and opacity as needed
@@ -272,14 +286,18 @@ export default function MapScreen () {
               />
             )}
 
-            {/* AddFriendButton Component */}
-            <AddFriendButton onPress={() => setModalVisible(true)} />
+            {/* /!* AddFriendButton Component *!/ */}
+            {/* <AddFriendButton onPress={() => setModalVisible(true)} /> */}
 
-            {/* AddFriendModal Component */}
-            <AddFriendModal
-              isVisible={modalVisible}
-              onClose={() => setModalVisible(false)}
-            />
+            {!isLoading && (
+              <CheckChatroomButton onPress={checkChatroom} />
+            )}
+
+            {/* /!* AddFriendModal Component *!/ */}
+            {/* <AddFriendModal */}
+            {/*   isVisible={modalVisible} */}
+            {/*   onClose={() => setModalVisible(false)} */}
+            {/* /> */}
 
             <ChatRoom
               isVisible={!!selectedRoom}

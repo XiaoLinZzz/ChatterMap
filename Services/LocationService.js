@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 const API_URL = 'http://18.222.120.14:5000/users/'
 const ALL_USERS_API_URL = 'http://18.222.120.14:5000/all-users/'
 const FRIENDS_API = 'http://18.222.120.14:5000/friends'
+const CHATROOM_API = 'http://18.222.120.14:5000/users/update-chatrooms'
 
 export async function updateLocation (latitude, longitude) {
   try {
@@ -83,5 +84,47 @@ export async function getFriendsLocation () {
   } catch (error) {
     console.error('Error getting friends locations:', error)
     throw error
+  }
+}
+
+export async function checkInChatroom () {
+  try {
+    const userToken = await AsyncStorage.getItem('userToken')
+    const response = await fetch(`${CHATROOM_API}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userToken}`
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    const data = await response.json()
+    return getChatroomNameFromResponse(data)
+  } catch (error) {
+    console.error('Error checking chatroom:', error)
+    throw error
+  }
+}
+
+function getChatroomNameFromResponse (response) {
+  if (Array.isArray(response) && response.length > 0) {
+    const name = response[0].name
+    if (name) {
+      return name
+    }
+  }
+  return 'Not in any chatroom'
+}
+
+export async function checkUserChatroomStatus () {
+  try {
+    const chatroomName = await checkInChatroom()
+    return chatroomName
+  } catch (error) {
+    console.error('An error occurred:', error)
   }
 }
