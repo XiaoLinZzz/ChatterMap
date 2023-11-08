@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Alert, Button, Dimensions, Image, Modal, StyleSheet, Switch, Text, TextInput, TouchableOpacity, Vibration, View } from 'react-native';
+import { Alert, Button, Image, Modal, StyleSheet, Switch, Text, TextInput, TouchableOpacity, Vibration, View } from 'react-native';
 import { getAutoJoinChatroomSwitchGlobal, getVibrationSwitchGlobal, setAutoJoinChatroomSwitchGlobal, setVibrationSwitchGlobal } from '../../GlobalVar';
 import { updatePassword } from '../../Services/UserService.js';
 import { UserContext } from '../UserContext';
@@ -14,11 +14,11 @@ export default function SettingScreen() {
   const [newPassword, setNewPassword] = useState('');
   const { logoutUser } = useContext(UserContext);
   const { hideTab, setHideTab } = useHideTab();
-  
-  useFocusEffect( 
-    React.useCallback(() => { 
-      return () => setHideTab('flex'); 
-    }, []) 
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => setHideTab('flex');
+    }, [])
   );
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export default function SettingScreen() {
   const handleChangePassword = async () => {
     if (newPassword === '') {
       alert("Password hasn't changed.")
-      
+
     }
 
     const isValidPassword = (newPassword) => {
@@ -79,7 +79,7 @@ export default function SettingScreen() {
     //const data = await updatePassword(newPassword);
 
     if (isValidPassword(newPassword)) {
-    
+
       alert('Password changed.')
       console.log('Password changed.')
       await updatePassword(newPassword);
@@ -87,10 +87,10 @@ export default function SettingScreen() {
     } else {
       alert('Password hasn\'t changed. It has some errors.')
       console.log('Password hasn\'t changed. It has some errors.')
-      
+
 
     }
-  
+
   }
 
   const toggleModal = () => {
@@ -181,11 +181,11 @@ export default function SettingScreen() {
             <Text style={styles.label}>Enter New Password</Text>
             <TextInput
               style={[styles.input, {
-                 backgroundColor: 'rgba(211, 211, 211, 0.5)', 
-                 color: 'black',
-                 padding: 3,
-                 borderRadius: 5 
-                }]
+                backgroundColor: 'rgba(211, 211, 211, 0.5)',
+                color: 'black',
+                padding: 3,
+                borderRadius: 5
+              }]
               }
               secureTextEntry={true}
               value={newPassword}

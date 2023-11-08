@@ -51,12 +51,6 @@ const FriendsScreen = () => {
     }
   }
 
-  const openChatWithFriend = (friendName) => {
-    // Here, you can handle what should be done when a user clicks on the chat bubble.
-    // For instance, navigate to a chat screen.
-    console.log(`Start chat with ${friendName}`)
-  }
-
   const confirmDeleteFriend = (friendId) => {
     Alert.alert(
       "Delete",
@@ -122,9 +116,7 @@ const FriendsScreen = () => {
             {/* Friend item content */}
             <View style={styles.friendContainer}>
               <Text style={styles.friendText}>{item.name}</Text>
-              <TouchableOpacity onPress={() => openChatWithFriend(item.name)}>
-                <FontAwesome name="comment" size={20} color="#4CAF50" />
-              </TouchableOpacity>
+              <Text style={styles.friendIdText}>{item.id}</Text>
             </View>
           </Swipeable>
         )}
@@ -175,8 +167,15 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   friendText: {
-    fontSize: 15
+    fontSize: 15,
+    flex: 1
   },
+  friendIdText: {
+    fontSize: 15,
+    textAlign: 'right',
+    flex: 1
+  },
+
   title: {
     fontSize: 26,
     fontWeight: 'bold',
