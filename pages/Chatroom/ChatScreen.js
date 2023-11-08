@@ -5,9 +5,9 @@ import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native
 import { getGroupChatInformation } from '../../Services/GroupChatService';
 import { ChatRoomScreen } from './Chatroom';
 import { useHideTab } from '../../HideTabContext';
+import roomSocket from '../../socket';
 
 const Stack = createNativeStackNavigator();
-
 
 function MainChatScreen() {
   const navigation = useNavigation();
@@ -23,10 +23,18 @@ function MainChatScreen() {
     navigation.navigate('ChatRoom', { chatRoomId });
     setHideTab('none');
   };
+
+
   const onRefresh = async () => {
     setIsRefreshing(true);
     try {
       const data = await getGroupChatInformation(1);
+      // console.log(data)
+      data.forEach(room => {
+        console.log(room)
+        roomSocket.emit("join", { group_chat_id: room.id })
+        console.log("socket is connented? " + roomSocket.connected)
+      });
       setData(data);
       console.log("Data refresh")
     } catch (error) {
