@@ -98,36 +98,35 @@ export default function MapScreen () {
     (async () => {
       setIsLoading(true)
 
+      const level = await Battery.getBatteryLevelAsync()
+      const convertedLevel = level * 100
+      setBatteryLevel(convertedLevel)
+
       const { status } = await Location.requestForegroundPermissionsAsync()
       if (status !== 'granted') {
         console.error('Permission to access location was denied')
-      } else {
-        const currentLocation = await Location.getCurrentPositionAsync({})
-        setLocation(currentLocation.coords)
-        setInitialCoords(currentLocation.coords)
-        // Update location once on component mount
-        try {
-          await updateLocation(currentLocation.coords.latitude, currentLocation.coords.longitude)
-        } catch (error) {
-          console.error('Error updating location:', error)
-        }
+        setIsLoading(false)
+        return
+      }
+
+      const currentLocation = await Location.getCurrentPositionAsync({})
+      setLocation(currentLocation.coords)
+      setInitialCoords(currentLocation.coords)
+
+      try {
+        console.log('batteryLevel', convertedLevel)
+        await updateLocation(currentLocation.coords.latitude, currentLocation.coords.longitude, convertedLevel)
+      } catch (error) {
+        console.error('Error updating location:', error)
       }
 
       const storedUserId = await AsyncStorage.getItem('userId')
       console.log('Stored User ID:', storedUserId)
       setUserId(Number(storedUserId))
 
-      const level = await Battery.getBatteryLevelAsync()
-      setBatteryLevel(level)
-
       await fetchAndSetUsersLocations()
 
       setIsLoading(false)
-
-      // Periodically fetch all users' locations
-      const intervalId = setInterval(fetchAndSetUsersLocations, 10000) // Fetch every 10 seconds
-
-      return () => clearInterval(intervalId) // Cleanup interval on component unmount
     })()
   }, [fetchAndSetUsersLocations])
 
@@ -247,6 +246,7 @@ export default function MapScreen () {
                           }}
                         />
                       </View>
+                      <BatteryIcon level={user.battery_level} />
                     </Marker>
                     )
                   : null

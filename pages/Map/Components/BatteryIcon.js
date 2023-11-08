@@ -5,25 +5,29 @@ import { Text, View, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 const getBatteryColor = (level) => {
-  if (level > 0.8) return '#4CAF50' // Green
-  if (level > 0.5) return '#FFEB3B' // Yellow
-  if (level > 0.2) return '#FF9800' // Orange
+  if (level > 80) return '#4CAF50' // Green
+  if (level > 50) return '#FFEB3B' // Yellow
+  if (level > 20) return '#FF9800' // Orange
   return '#F44336' // Red
 }
 
 export default function BatteryIcon ({ level }) {
+  if (level == null) {
+    return null;
+  }
+
   return (
         <View style={styles.batteryIconContainer}>
             <Icon name="battery" size={15} color={getBatteryColor(level)} />
             <Text style={styles.batteryText}>
-                {Math.round(level * 100)}%
+                {Math.round(level)}%
             </Text>
         </View>
   )
 }
 
 BatteryIcon.propTypes = {
-  level: PropTypes.number.isRequired
+  level: PropTypes.number
 }
 
 const styles = StyleSheet.create({
