@@ -53,12 +53,12 @@ export async function getAvatar(id) {
     });
 
     if (!response.ok) {
-        return response;
+        throw new Error('Avatar fetch failed');
     }
 
-    const data = await response.json();
-
-    return data;
+    // If the server is indeed returning a JPEG or PNG, use response.blob() instead of response.json()
+    const blob = await response.blob();
+    return URL.createObjectURL(blob);
 }
 
 export async function updateAvatar(fileUri) {
