@@ -117,7 +117,7 @@ function getChatroomNameFromResponse (response) {
       return name
     }
   }
-  return 'Not in any chatroom'
+  return null
 }
 
 export async function checkUserChatroomStatus () {
