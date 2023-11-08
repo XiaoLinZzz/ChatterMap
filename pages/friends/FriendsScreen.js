@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { View, Text, TouchableOpacity, TextInput, FlatList, StyleSheet, Alert } from 'react-native'
-import FontAwesome from '@expo/vector-icons/FontAwesome'
-import { getUserData } from '../../Services/UserService.js'
-import { deleteFriend } from '../../Services/FriendService.js'
+import { View, Text, TouchableOpacity, TextInput, FlatList, StyleSheet, Alert } from 'react-native';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { getUserData } from '../../Services/UserService.js';
+import { deleteFriend } from '../../Services/FriendService.js';
 import { useHideTab } from '../../HideTabContext';
 import { Swipeable } from 'react-native-gesture-handler';
 
 const FriendsScreen = () => {
   const navigation = useNavigation();
   const [friends, setFriends] = useState([]);
-  const [newFriend, setNewFriend] = useState('')
+  const [newFriend, setNewFriend] = useState('');
+  const [swipeableResetKey, setSwipeableResetKey] = useState(0);
   const { hideTab, setHideTab } = useHideTab();
 
   const goToInvitations = () => {
@@ -36,6 +37,10 @@ const FriendsScreen = () => {
   useFocusEffect(
     React.useCallback(() => {
       fetchUserData();
+
+      // Reset Swipeable by updating the key
+      setSwipeableResetKey(prevKey => prevKey + 1);
+
       return () => { };
     }, [])
   );
@@ -110,7 +115,11 @@ const FriendsScreen = () => {
       <FlatList
         data={friends}
         renderItem={({ item }) => (
-          <Swipeable renderRightActions={() => renderRightActions(item.id)}>
+          <Swipeable
+            renderRightActions={() => renderRightActions(item.id)}
+            key={`swipeable_${swipeableResetKey}_${item.id}`} // Resetting Swipeable state by using a unique key
+          >
+            {/* Friend item content */}
             <View style={styles.friendContainer}>
               <Text style={styles.friendText}>{item.name}</Text>
               <TouchableOpacity onPress={() => openChatWithFriend(item.name)}>
