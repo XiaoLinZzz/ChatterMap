@@ -114,14 +114,14 @@ export default function MapScreen () {
       setInitialCoords(currentLocation.coords)
 
       try {
-        console.log('batteryLevel', convertedLevel)
+        // console.log('batteryLevel', convertedLevel)
         await updateLocation(currentLocation.coords.latitude, currentLocation.coords.longitude, convertedLevel)
       } catch (error) {
         console.error('Error updating location:', error)
       }
 
       const storedUserId = await AsyncStorage.getItem('userId')
-      console.log('Stored User ID:', storedUserId)
+      // console.log('Stored User ID:', storedUserId)
       setUserId(Number(storedUserId))
 
       await fetchAndSetUsersLocations()
@@ -129,6 +129,26 @@ export default function MapScreen () {
       setIsLoading(false)
     })()
   }, [fetchAndSetUsersLocations])
+
+  useEffect(() => {
+    const updateUserLocations = async () => {
+      try {
+        const usersLocations = await getFriendsLocation()
+        setAllUsersLocations(usersLocations)
+      } catch (error) {
+        console.error('Error getting all users locations:', error)
+      }
+    }
+
+    // Call once when the component mounts
+    updateUserLocations()
+    console.log('Updating user locations')
+
+    // Set up the interval
+    const locationUpdateInterval = setInterval(updateUserLocations, 10000)
+
+    return () => clearInterval(locationUpdateInterval)
+  }, [])
 
   useEffect(() => {
     Animated.timing(animatedProgress, {
@@ -179,14 +199,14 @@ export default function MapScreen () {
                   ? {
                       latitude: location.latitude,
                       longitude: location.longitude,
-                      latitudeDelta: 0.05,
-                      longitudeDelta: 0.025
+                      latitudeDelta: 0.01,
+                      longitudeDelta: 0.005
                     }
                   : {
                       latitude: -37.804467,
                       longitude: 144.972284,
-                      latitudeDelta: 0.05,
-                      longitudeDelta: 0.025
+                      latitudeDelta: 0.01,
+                      longitudeDelta: 0.005
                     }
               }
               onRegionChange={() => {
@@ -285,8 +305,8 @@ export default function MapScreen () {
                   mapViewRef.current.animateToRegion({
                     latitude: initialCoords.latitude,
                     longitude: initialCoords.longitude,
-                    latitudeDelta: 0.05,
-                    longitudeDelta: 0.025
+                    latitudeDelta: 0.01,
+                    longitudeDelta: 0.005
                   })
                   setShowButton(false)
                 }}

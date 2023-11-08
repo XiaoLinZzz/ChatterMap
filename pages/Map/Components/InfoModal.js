@@ -14,7 +14,7 @@ const InfoModal = ({ isVisible, onClose }) => {
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text style={styles.modalText}>Map Component Guide:</Text>
+          <Text style={styles.modalText}>Map Component Guide</Text>
 
           <View style={styles.infoSection}>
             <Image source={require('../../../resource/seach.png')} style={styles.image} resizeMode="contain" />
@@ -30,6 +30,11 @@ const InfoModal = ({ isVisible, onClose }) => {
           <View style={styles.infoSection}>
             <Image source={require('../../../resource/pin.png')} style={styles.image} resizeMode="contain" />
             <Text style={styles.infoDescription}>You can tap on map markers to view the active group chats.</Text>
+          </View>
+
+          <View style={styles.infoSection}>
+            <Image source={require('../../../resource/doc.png')} style={styles.image} resizeMode="contain" />
+            <Text style={styles.infoDescription}>Discover detailed guides, tips, and FAQs in our documentation.</Text>
           </View>
 
           <TouchableOpacity style={styles.button} onPress={onClose}>
