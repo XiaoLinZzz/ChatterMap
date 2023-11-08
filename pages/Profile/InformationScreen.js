@@ -5,7 +5,7 @@ import * as ImagePicker from 'expo-image-picker'
 import { getUserData, getAvatar, updateAvatar } from '../../Services/UserService.js'
 import { useHideTab } from '../../HideTabContext.js'
 
-function InformationScreen ({ navigation }) {
+function InformationScreen({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
   const [id, setId] = useState(null)
   const [name, setName] = useState('')
@@ -13,7 +13,7 @@ function InformationScreen ({ navigation }) {
   const { hideTab, setHideTab } = useHideTab()
 
   useEffect(() => {
-    async function fetchData () {
+    async function fetchData() {
       try {
         const userData = await getUserData()
         setId(userData.id)
@@ -67,14 +67,14 @@ function InformationScreen ({ navigation }) {
           {avatarSource
             ? (
               <Image source={avatarSource} style={styles.avatar} />
-              )
+            )
             : (
               <Image source={require('../../resource/profile1.png')} style={styles.avatar} />
-              )}
+            )}
         </TouchableOpacity>
         <Text style={styles.label}>Name:</Text>
         <View style={styles.emailContainer}>
-          <Text style={styles.text}>{name + ' #' + id}</Text>
+          <Text style={styles.text}>{name + '#' + id}</Text>
         </View>
         <Text style={styles.label}>Email:</Text>
         <View style={styles.emailContainer}>

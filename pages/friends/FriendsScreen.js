@@ -116,7 +116,7 @@ const FriendsScreen = () => {
             {/* Friend item content */}
             <View style={styles.friendContainer}>
               <Text style={styles.friendText}>{item.name}</Text>
-              <Text style={styles.friendIdText}>{item.id}</Text>
+              <Text style={styles.friendIdText}>uid: {item.id}</Text>
             </View>
           </Swipeable>
         )}
