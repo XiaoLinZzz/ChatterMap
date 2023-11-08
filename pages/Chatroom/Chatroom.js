@@ -25,15 +25,26 @@ export function ChatRoomScreen({ route }) {
 
   const flatListRef = React.useRef(null);
 
-  useEffect(() => {
+  useEffect(async () => {
+    const userId = await AsyncStorage.getItem('userId')
+    console.log(parseInt(userId))
     const newMessageArrived = (data) => {
-      console.log("Im here_HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
-      onRefresh()
+      // console.log("previous data: " + messages[0].text)
+      console.log("data")
+      console.log(data)
+      arrivedMessage = data.message
+      console.log(arrivedMessage)
+      setMessages((prevMessages) => [...prevMessages, {
+        id: arrivedMessage.id,
+        text: arrivedMessage.content,
+        sender: arrivedMessage.user.id === parseInt(userId) ? 'user' : 'other', // 判断是否是你发送的消息
+        sender_name: arrivedMessage.user.name
+      }]);
     }
     roomSocket.on("new_message", newMessageArrived)
     return () => {
 
-      roomSocket.off("new_message", newMessageArrived)
+      roomSocket.off("new_message")
     };
   }, []);
 
