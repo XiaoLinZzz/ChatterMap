@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { View, Animated, Easing, Image, Alert } from 'react-native'
+import { View, Animated, Easing, Image, Alert, Text, TouchableOpacity } from 'react-native'
 import MapView, { Marker, Circle } from 'react-native-maps'
 import * as Location from 'expo-location'
 import * as Battery from 'expo-battery'
@@ -13,6 +13,7 @@ import ChatRoom from './Components/ChatRoomLocation.js'
 import CheckChatroomButton from './Components/CheckChatroomButton.js'
 import InfoButton from './Components/InfoButton.js'
 import InfoModal from './Components/InfoModal.js'
+import { FontAwesome } from '@expo/vector-icons'
 
 export default function MapScreen () {
   const [location, setLocation] = useState(null)
@@ -62,6 +63,12 @@ export default function MapScreen () {
 
   const AnimatedProgressBar = Animated.createAnimatedComponent(Progress.Bar)
 
+  const handleRefresh = async () => {
+    setIsLoading(true)
+    await fetchAndSetUsersLocations()
+    setIsLoading(false)
+  }
+
   // const userId = 2
   const [allUsersLocations, setAllUsersLocations] = useState([])
 
@@ -101,6 +108,7 @@ export default function MapScreen () {
       const level = await Battery.getBatteryLevelAsync()
       const convertedLevel = level * 100
       setBatteryLevel(convertedLevel)
+      console.log('Battery level:', convertedLevel)
 
       const { status } = await Location.requestForegroundPermissionsAsync()
       if (status !== 'granted') {
@@ -178,10 +186,12 @@ export default function MapScreen () {
       {isLoading
         ? (
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text>Loading, please wait...</Text>
             <AnimatedProgressBar
               progress={animatedProgress}
               width={200}
               color="#0000ff"
+              top={10}
             />
           </View>
           )
@@ -322,6 +332,10 @@ export default function MapScreen () {
               isVisible={infoModalVisible}
               onClose={() => setInfoModalVisible(false)}
             />
+
+            <TouchableOpacity style={MapScreenStyles.refreshButton} onPress={handleRefresh}>
+              <FontAwesome name="refresh" size={24} color="black" />
+            </TouchableOpacity>
 
             <ChatRoom
               isVisible={!!selectedRoom}

@@ -1,64 +1,64 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, TouchableWithoutFeedback } from 'react-native'
 import PropTypes from 'prop-types'
 import * as ImagePicker from 'expo-image-picker'
 import { getUserData, getAvatar, updateAvatar } from '../../Services/UserService.js'
-import { useHideTab } from '../../HideTabContext.js';
+import { useHideTab } from '../../HideTabContext.js'
 
-function InformationScreen({ navigation }) {
+function InformationScreen ({ navigation }) {
   const [avatarSource, setAvatarSource] = useState(null)
-  const [id, setId] = useState(null);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const { hideTab, setHideTab } = useHideTab();
+  const [id, setId] = useState(null)
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const { hideTab, setHideTab } = useHideTab()
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetchData () {
       try {
-        const userData = await getUserData();
-        setId(userData.id);
-        setName(userData.name);
-        setEmail(userData.email);
+        const userData = await getUserData()
+        setId(userData.id)
+        setName(userData.name)
+        setEmail(userData.email)
 
-        const avatarData = await getAvatar(userData.id);
+        const avatarData = await getAvatar(userData.id)
 
         if (avatarData && avatarData.avatarUrl) {
-          setAvatarSource({ uri: avatarData.url });
+          setAvatarSource({ uri: avatarData.url })
         }
       } catch (error) {
-        console.error("Failed to fetch user data:", error);
+        console.error('Failed to fetch user data:', error)
       }
     }
 
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   const selectImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
     if (status !== 'granted') {
-      alert('Sorry, we need camera roll permissions to make this work!');
-      return;
+      alert('Sorry, we need camera roll permissions to make this work!')
+      return
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
-    });
+      quality: 1
+    })
 
     if (!result.cancelled && result.assets) {
-      const fileUri = result.assets[0].uri; // Make sure this is correct
-      setAvatarSource({ uri: fileUri });
+      const fileUri = result.assets[0].uri // Make sure this is correct
+      setAvatarSource({ uri: fileUri })
       try {
-        const data = await updateAvatar(fileUri);
+        const data = await updateAvatar(fileUri)
         // setAvatarSource({ uri: data.newAvatarUrl }); // Uncomment if the backend responds with the new URL
       } catch (error) {
-        console.error("Error updating avatar:", error);
-        alert('Failed to update avatar');
+        console.error('Error updating avatar:', error)
+        alert('Failed to update avatar')
       }
     }
-  };
+  }
 
   return (
     <TouchableWithoutFeedback>
@@ -67,14 +67,14 @@ function InformationScreen({ navigation }) {
           {avatarSource
             ? (
               <Image source={avatarSource} style={styles.avatar} />
-            )
+              )
             : (
               <Image source={require('../../resource/profile1.png')} style={styles.avatar} />
-            )}
+              )}
         </TouchableOpacity>
         <Text style={styles.label}>Name:</Text>
         <View style={styles.emailContainer}>
-          <Text style={styles.text}>{name + '#' + id}</Text>
+          <Text style={styles.text}>{name + ' #' + id}</Text>
         </View>
         <Text style={styles.label}>Email:</Text>
         <View style={styles.emailContainer}>
@@ -84,9 +84,9 @@ function InformationScreen({ navigation }) {
         <TouchableOpacity
           style={styles.settingsButton}
           onPress={() => {
-            setHideTab('none');
-            console.log('go to setting');
-            console.log('hideTab value:', hideTab);
+            setHideTab('none')
+            console.log('go to setting')
+            console.log('hideTab value:', hideTab)
             navigation.navigate('Setting')
           }}>
           <Text style={styles.settingsButtonText}>Settings</Text>
