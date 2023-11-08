@@ -67,22 +67,23 @@ export default function SettingScreen() {
   const handleChangePassword = async () => {
     if (newPassword === '') {
       alert("Password hasn't changed.")
-      hideModal()
+      
       return
     }
 
     // send request
     const data = await updatePassword(newPassword);
-    if (data == true) {
-      hideModal()
+    if (data.length >= 6 && hasNumber && hasLette) {
+    
       alert('Password changed.')
       console.log('Password changed.')
     } else {
       alert('Password hasn\'t changed. It has some errors.')
       console.log('Password hasn\'t changed. It has some errors.')
-      hideModal()
-      return
+      
+
     }
+    hideModal();
   }
 
   const toggleModal = () => {
@@ -172,7 +173,12 @@ export default function SettingScreen() {
           <View style={styles.modalContent}>
             <Text style={styles.label}>Enter New Password</Text>
             <TextInput
-              style={[styles.input, { backgroundColor: 'lightgray', color: 'black' }]
+              style={[styles.input, {
+                 backgroundColor: 'rgba(211, 211, 211, 0.5)', 
+                 color: 'black',
+                 padding: 3,
+                 borderRadius: 5 
+                }]
               }
               secureTextEntry={true}
               value={newPassword}
