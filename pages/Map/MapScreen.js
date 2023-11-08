@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { View, Animated, Easing, Image } from 'react-native'
+import { View, Animated, Easing, Image, Alert } from 'react-native'
 import MapView, { Marker, Circle } from 'react-native-maps'
 import * as Location from 'expo-location'
 import * as Battery from 'expo-battery'
 import MapScreenStyles from '../../styles/MapScreenStyle.js'
 import BatteryIcon from './Components/BatteryIcon.js'
 import ResetLocationButton from './Components/ResetLocationButton.js'
-import AddFriendButton from './Components/AddFriendButton.js'
-import AddFriendModal from './Components/AddFriendModal.js'
 import { updateLocation, getFriendsLocation, checkUserChatroomStatus } from '../../Services/LocationService.js'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Progress from 'react-native-progress'
 import ChatRoom from './Components/ChatRoomLocation.js'
 import CheckChatroomButton from './Components/CheckChatroomButton.js'
+import InfoButton from './Components/InfoButton.js'
+import InfoModal from './Components/InfoModal.js'
 
 export default function MapScreen () {
   const [location, setLocation] = useState(null)
@@ -31,6 +31,7 @@ export default function MapScreen () {
   // const [chatRooms, setChatRooms] = useState([]) // This would be loaded similarly to friends locations
   const [selectedRoom, setSelectedRoom] = useState(null)
   const [currentChatroom, setCurrentChatroom] = useState(null)
+  const [infoModalVisible, setInfoModalVisible] = useState(false)
 
   const chatRooms = [
     {
@@ -38,21 +39,24 @@ export default function MapScreen () {
       name: 'Eastern Resource Centre',
       latitude: -37.79935252464269,
       longitude: 144.96290471436666,
-      description: 'Chat with people in Central Park!'
+      description: '9 am - 5 pm',
+      url: 'https://library.unimelb.edu.au/erc'
     },
     {
       id: 'room2',
       name: 'Baillieu Library',
       latitude: -37.79847444052613,
       longitude: 144.95943074538698,
-      description: 'Discuss the hustle and bustle of Times Square.'
+      description: '9 am - 5 pm',
+      url: 'https://library.unimelb.edu.au/baillieu'
     },
     {
       id: 'room3',
       name: 'Law Building',
       latitude: -37.80227690068929,
       longitude: 144.96012347411093,
-      description: 'Share stories on the Brooklyn Bridge.'
+      description: '9 am - 5 pm',
+      url: 'https://law.unimelb.edu.au/law-library'
     }
   ]
 
@@ -79,9 +83,12 @@ export default function MapScreen () {
     try {
       const chatroomName = await checkUserChatroomStatus()
 
-      setCurrentChatroom(chatroomName)
-
-      alert(`You are currently in: ${chatroomName}`)
+      if (chatroomName) {
+        setCurrentChatroom(chatroomName)
+        Alert.alert('Your Status', `You are currently in ${chatroomName}`)
+      } else {
+        Alert.alert('Your Status', 'You are not in any chatroom')
+      }
     } catch (error) {
       console.error('Error checking chatroom status:', error)
     }
@@ -286,18 +293,15 @@ export default function MapScreen () {
               />
             )}
 
-            {/* /!* AddFriendButton Component *!/ */}
-            {/* <AddFriendButton onPress={() => setModalVisible(true)} /> */}
-
             {!isLoading && (
               <CheckChatroomButton onPress={checkChatroom} />
             )}
 
-            {/* /!* AddFriendModal Component *!/ */}
-            {/* <AddFriendModal */}
-            {/*   isVisible={modalVisible} */}
-            {/*   onClose={() => setModalVisible(false)} */}
-            {/* /> */}
+            <InfoButton onPress={() => setInfoModalVisible(true)} />
+            <InfoModal
+              isVisible={infoModalVisible}
+              onClose={() => setInfoModalVisible(false)}
+            />
 
             <ChatRoom
               isVisible={!!selectedRoom}
