@@ -52,6 +52,19 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     marginBottom: 5
+  },
+  refreshButton: {
+    position: 'absolute',
+    top: 50,
+    right: 7,
+    backgroundColor: 'white', // Choose a color that fits your app theme
+    padding: 10,
+    borderRadius: 15,
+    elevation: 3, // This adds a drop shadow on Android
+    shadowOffset: { width: 1, height: 1 }, // This adds a shadow on iOS
+    shadowColor: '#333',
+    shadowOpacity: 0.3,
+    shadowRadius: 2
   }
 })
 

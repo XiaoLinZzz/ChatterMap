@@ -11,6 +11,7 @@
     "format": "prettier --write \"./**/*.+(js|jsx|json|yml|yaml|css|scss|md|mdx|ts|tsx)\""
   },
   "dependencies": {
+    "@expo/vector-icons": "^13.0.0",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-masked-view/masked-view": "0.2.9",
