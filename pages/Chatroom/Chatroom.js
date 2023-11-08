@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'; 
-import { Button, FlatList, Text, TextInput, View, KeyboardAvoidingView, Platform, SafeAreaView, Keyboard } from 'react-native'; 
-import { useNavigation } from '@react-navigation/native'; 
-import AsyncStorage from '@react-native-async-storage/async-storage'; 
-import { sendGroupMessage, getLastNMessageInformation } from '../../Services/GroupChatService'; 
+import React, { useEffect, useState } from 'react';
+import { Button, FlatList, Text, TextInput, View, KeyboardAvoidingView, Platform, SafeAreaView, Keyboard } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { sendGroupMessage, getLastNMessageInformation } from '../../Services/GroupChatService';
 import { useHideTab } from '../../HideTabContext';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -24,12 +24,12 @@ export function ChatRoomScreen({ route }) {
 
   const flatListRef = React.useRef(null);
 
-  useFocusEffect( 
-    React.useCallback(() => { 
+  useFocusEffect(
+    React.useCallback(() => {
       //setHideTab('none');
       //setNewMessage('');
-      return () => setHideTab('flex'); 
-    }, [setHideTab]) 
+      return () => setHideTab('flex');
+    }, [setHideTab])
   );
 
 
@@ -67,35 +67,36 @@ export function ChatRoomScreen({ route }) {
     setScrollY(currentY);
   };
 
-  useEffect(() => { 
-    const scrollToBottom = () => { 
-      flatListRef.current?.scrollToEnd({ animated: false }); 
-    }; 
-    
+  useEffect(() => {
+    const scrollToBottom = () => {
+      flatListRef.current?.scrollToEnd({ animated: false });
+    };
+
     // 加载消息后滚动到底部 
-    const unsubscribeFocus = navigation.addListener('focus', scrollToBottom); 
-    
+    const unsubscribeFocus = navigation.addListener('focus', scrollToBottom);
+
     // 键盘显示时滚动到底部 
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', scrollToBottom); 
-    
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', scrollToBottom);
+
     // 返回时移除监听 
-    return () => { unsubscribeFocus(); keyboardDidShowListener.remove(); 
-    }; 
-  }, [navigation]); 
-  
+    return () => {
+      unsubscribeFocus(); keyboardDidShowListener.remove();
+    };
+  }, [navigation]);
+
   // 发送消息时滚动到底部 
-  useEffect(() => { 
-    if (messages.length > 0) { 
-      flatListRef.current?.scrollToEnd({ animated: true }); 
-    } 
+  useEffect(() => {
+    if (messages.length > 0) {
+      flatListRef.current?.scrollToEnd({ animated: true });
+    }
   }, [messages]);
 
 
   // change the title of the chat room
   useEffect(() => {
-    
+
     navigation.setOptions({ title: `${chatRoomId.name}` });
-    
+
     async function getMessages() {
       const messagesInChat = await getLastNMessageInformation(chatRoomId.id)
       // console.log(messagesInChat)
@@ -159,11 +160,11 @@ export function ChatRoomScreen({ route }) {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView
-        style = {{flex: 1}}
+        style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 85:0}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 85 : 0}
       >
         <View style={{ flex: 1, padding: 10 }}>
           <FlatList
@@ -175,38 +176,46 @@ export function ChatRoomScreen({ route }) {
             onScroll={handleScroll}
             onEndReached={loadMoreHistoryMessages}
             onEndReachedThreshold={0.01}
+            ListHeaderComponent={<View style={{ height: 20 }} />}
             renderItem={({ item }) => (
-              <View
-                style={{
-                alignSelf: item.sender === 'user' ? 'flex-end' : 'flex-start',
-                backgroundColor: item.sender === 'user' ? '#007AFF' : '#E5E5EA',
-                borderRadius: 10,
-                margin: 5,
-                maxWidth: '70%',
-                padding: 10,
-                }}
-              >
-              <Text style={{ color: item.sender === 'user' ? 'white' : 'black' }}>
-                {item.text}
-              </Text>
-            </View>
-          )}
-        />
-        <View style={{ 
-          flexDirection: 'row', 
-          alignItems: 'center',
-          paddingBottom: 0
-          }}>
-          <TextInput
-            style={{ flex: 1, borderWidth: 1, marginRight: 5, padding: 10, borderRadius: 10 }}
-            value={newMessage}
-            onChangeText={setNewMessage}
-            multiline={true}
+              <View>
+                {item.sender !== 'user' && (
+                  <Text style={{ fontSize: 12, color: 'gray' }}>
+                    {item.sender_name}
+                  </Text>
+                )}
+                <View
+                  style={{
+                    alignSelf: item.sender === 'user' ? 'flex-end' : 'flex-start',
+                    backgroundColor: item.sender === 'user' ? '#007AFF' : '#E5E5EA',
+                    borderRadius: 10,
+                    margin: 5,
+                    maxWidth: '70%',
+                    padding: 10,
+                  }}
+                >
+                  <Text style={{ color: item.sender === 'user' ? 'white' : 'black' }}>
+                    {item.text}
+                  </Text>
+                </View>
+              </View>
+            )}
           />
-          <Button title="Send" onPress={sendMessage} />
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingBottom: 0
+          }}>
+            <TextInput
+              style={{ flex: 1, borderWidth: 1, marginRight: 5, padding: 10, borderRadius: 10 }}
+              value={newMessage}
+              onChangeText={setNewMessage}
+              multiline={true}
+            />
+            <Button title="Send" onPress={sendMessage} />
+          </View>
         </View>
-      </View>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
