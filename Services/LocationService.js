@@ -6,7 +6,7 @@ const ALL_USERS_API_URL = 'http://18.222.120.14:5000/all-users/'
 const FRIENDS_API = 'http://18.222.120.14:5000/friends'
 const CHATROOM_API = 'http://18.222.120.14:5000/users/update-chatrooms'
 
-export async function updateLocation (latitude, longitude) {
+export async function updateLocation (latitude, longitude, batteryLevel) {
   try {
     const response = await fetch(`${API_URL}`, {
       method: 'PATCH',
@@ -16,7 +16,8 @@ export async function updateLocation (latitude, longitude) {
       },
       body: JSON.stringify({
         last_latitude: latitude,
-        last_longitude: longitude
+        last_longitude: longitude,
+        battery_level: batteryLevel
       })
     })
     if (!response.ok) {
@@ -76,7 +77,8 @@ export async function getFriendsLocation () {
           id: friend.id,
           name: friend.name,
           last_latitude: friend.last_latitude,
-          last_longitude: friend.last_longitude
+          last_longitude: friend.last_longitude,
+          battery_level: friend.battery_level
         }))
     }
 
