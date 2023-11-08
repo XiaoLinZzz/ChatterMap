@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Button, FlatList, Text, TextInput, View } from 'react-native';
 import { sendGroupMessage, getLastNMessageInformation } from '../../Services/GroupChatService';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useHideTab } from '../../HideTabContext';
+import { useFocusEffect } from '@react-navigation/native';
 
 export function ChatRoomScreen({ route }) {
   const navigation = useNavigation();
@@ -15,6 +17,14 @@ export function ChatRoomScreen({ route }) {
   const [scrollY, setScrollY] = useState(0);
   const [top, setTop] = useState(true)
   const [bottom, setBottom] = useState(true)
+
+  const { hideTab, setHideTab } = useHideTab();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => setHideTab('flex');
+    }, [])
+  );
 
   const addMessage = async (content) => {
     const user_id = await AsyncStorage.getItem('userId')
