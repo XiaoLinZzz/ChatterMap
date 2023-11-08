@@ -68,22 +68,29 @@ export default function SettingScreen() {
     if (newPassword === '') {
       alert("Password hasn't changed.")
       
-      return
     }
 
+    const isValidPassword = (newPassword) => {
+      const hasNumber = /\d/.test(newPassword)
+      const hasLetter = /[a-zA-Z]/.test(newPassword)
+      return newPassword.length >= 6 && hasNumber && hasLetter
+    }
     // send request
-    const data = await updatePassword(newPassword);
-    if (data.length >= 6 && hasNumber && hasLette) {
+    //const data = await updatePassword(newPassword);
+
+    if (isValidPassword(newPassword)) {
     
       alert('Password changed.')
       console.log('Password changed.')
+      await updatePassword(newPassword);
+      hideModal();
     } else {
       alert('Password hasn\'t changed. It has some errors.')
       console.log('Password hasn\'t changed. It has some errors.')
       
 
     }
-    hideModal();
+  
   }
 
   const toggleModal = () => {
@@ -165,7 +172,7 @@ export default function SettingScreen() {
 
       <Modal
         transparent={true}
-        animationType="slide"
+        animationType="fade"
         visible={isModalVisible}
         onRequestClose={hideModal}
       >
@@ -217,7 +224,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    backgroundColor: 'rgba(0, 0, 0, 0.35)',
   },
   modalContent: {
     height: 130,
@@ -237,7 +244,7 @@ const styles = StyleSheet.create({
   imagecontainer: {
     flex: 1,
     alignItems: 'center',
-    padding: Dimensions.get('window').height / 10
+    padding: 200
   },
   avatar: {
     width: 102,

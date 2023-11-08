@@ -20,9 +20,15 @@ function MainChatScreen() {
   const { hideTab, setHideTab } = useHideTab();
 
   const joinChatRoom = (chatRoomId) => {
-    navigation.navigate('ChatRoom', { chatRoomId });
     setHideTab('none');
+    const timeoutId = setTimeout(() => {
+      navigation.navigate('ChatRoom', { chatRoomId });
+      //setHideTab('none');
+    }, 10);
+    
+    return () => clearTimeout(timeoutId)
   };
+  
   const onRefresh = async () => {
     setIsRefreshing(true);
     try {
