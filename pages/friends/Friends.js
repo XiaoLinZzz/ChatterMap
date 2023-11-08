@@ -1,5 +1,3 @@
-// Friends.js
-
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import FriendsScreen from './FriendsScreen'
