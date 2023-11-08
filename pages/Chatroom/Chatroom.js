@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useHideTab } from '../../HideTabContext';
 import { useFocusEffect } from '@react-navigation/native';
 import { KeyboardAvoidingView, Platform, SafeAreaView, Keyboard } from 'react-native';
+import io from 'socket.io-client';
 
 export function ChatRoomScreen({ route }) {
   const navigation = useNavigation();
@@ -23,9 +24,20 @@ export function ChatRoomScreen({ route }) {
 
 
   const flatListRef = React.useRef(null);
+  const socket = React.useRef(null);
 
+  useEffect(() => {
 
-  
+    socket.current = io('http://18.222.120.14:5000');
+    socket.current.on('new_message', (message) => {
+      addMessage(message);
+    });
+
+    // 清除 Socket 连接
+    return () => {
+      socket.current.disconnect();
+    };
+  }, []);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -65,27 +77,28 @@ export function ChatRoomScreen({ route }) {
 
 
 
-  useEffect(() => { 
-    const scrollToBottom = () => { 
-      flatListRef.current?.scrollToEnd({ animated: false }); 
-    }; 
-    
+  useEffect(() => {
+    const scrollToBottom = () => {
+      flatListRef.current?.scrollToEnd({ animated: false });
+    };
+
     // 加载消息后滚动到底部 
-    const unsubscribeFocus = navigation.addListener('focus', scrollToBottom); 
-    
+    const unsubscribeFocus = navigation.addListener('focus', scrollToBottom);
+
     // 键盘显示时滚动到底部 
-    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', scrollToBottom); 
-    
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', scrollToBottom);
+
     // 返回时移除监听 
-    return () => { unsubscribeFocus(); keyboardDidShowListener.remove(); 
-    }; 
-  }, [navigation]); 
-  
+    return () => {
+      unsubscribeFocus(); keyboardDidShowListener.remove();
+    };
+  }, [navigation]);
+
   // 发送消息时滚动到底部 
-  useEffect(() => { 
-    if (messages.length > 0) { 
-      flatListRef.current?.scrollToEnd({ animated: true }); 
-    } 
+  useEffect(() => {
+    if (messages.length > 0) {
+      flatListRef.current?.scrollToEnd({ animated: true });
+    }
   }, [messages]);
 
 
@@ -149,6 +162,8 @@ export function ChatRoomScreen({ route }) {
     try {
       if (messages.length > 0) {
         console.log("top message id:" + messages[0])
+        // 这里要改
+        console.log("这里有问题")
         const data = await getLastNMessageInformation(chatRoomId.id, messages[0].id);
         console.log(data)
         addMessages(data);
@@ -170,7 +185,7 @@ export function ChatRoomScreen({ route }) {
       >
         <View style={{ flex: 1, padding: 10 }}>
           <FlatList
-          ref={flatListRef}
+            ref={flatListRef}
             data={messages}
             keyExtractor={(item) => item.id ? item.id.toString() : Math.random().toString()}
             refreshing={isRefreshing}
