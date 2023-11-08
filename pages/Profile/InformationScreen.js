@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, TouchableWithoutFeedback } from 'react-native'
 import PropTypes from 'prop-types'
 import * as ImagePicker from 'expo-image-picker'
-import { getUserData } from '../../Services/UserService.js'
+import { getUserData, getAvatar, updateAvatar } from '../../Services/UserService.js'
 import { useHideTab } from '../../HideTabContext.js';
 
 function InformationScreen({ navigation }) {
@@ -15,10 +15,16 @@ function InformationScreen({ navigation }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await getUserData();
-        setId(data.id);
-        setName(data.name);
-        setEmail(data.email);
+        const userData = await getUserData();
+        setId(userData.id);
+        setName(userData.name);
+        setEmail(userData.email);
+
+        const avatarData = await getAvatar(userData.id);
+
+        if (avatarData && avatarData.avatarUrl) {
+          setAvatarSource({ uri: avatarData.url });
+        }
       } catch (error) {
         console.error("Failed to fetch user data:", error);
       }
@@ -27,25 +33,32 @@ function InformationScreen({ navigation }) {
     fetchData();
   }, []);
 
-
   const selectImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
-      alert('Sorry, we need camera roll permissions to make this work!')
-      return
+      alert('Sorry, we need camera roll permissions to make this work!');
+      return;
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1
-    })
+      quality: 1,
+    });
 
-    if (!result.canceled) {
-      setAvatarSource({ uri: result.assets[0].uri })
+    if (!result.cancelled && result.assets) {
+      const fileUri = result.assets[0].uri; // Make sure this is correct
+      setAvatarSource({ uri: fileUri });
+      try {
+        const data = await updateAvatar(fileUri);
+        // setAvatarSource({ uri: data.newAvatarUrl }); // Uncomment if the backend responds with the new URL
+      } catch (error) {
+        console.error("Error updating avatar:", error);
+        alert('Failed to update avatar');
+      }
     }
-  }
+  };
 
   return (
     <TouchableWithoutFeedback>
