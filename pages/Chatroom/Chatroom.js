@@ -26,6 +26,7 @@ export function ChatRoomScreen({ route }) {
 
   const { vibrationEnabled } = useVibration();//vibrationEnabled从Setting传进来，vibrationEnabled == true 或 false，
                                               //如果Setting选择震动，就是vibrationEnabled == true，你改一下你下面的逻辑就行
+                                              //你之前那个都不好判断是不是传进来了，我这个好判断，而且在所有页面中都生效
 
 
 
