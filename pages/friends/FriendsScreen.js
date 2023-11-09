@@ -175,7 +175,6 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     flex: 1
   },
-
   title: {
     fontSize: 26,
     fontWeight: 'bold',

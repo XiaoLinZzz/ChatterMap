@@ -20,11 +20,11 @@ function InformationScreen({ navigation }) {
         setName(userData.name)
         setEmail(userData.email)
 
-        const avatarData = await getAvatar(userData.id)
+        // const avatarData = await getAvatar(userData.id)
 
-        if (avatarData && avatarData.avatarUrl) {
-          setAvatarSource({ uri: avatarData.url })
-        }
+        // if (avatarData && avatarData.avatarUrl) {
+        //   setAvatarSource({ uri: avatarData.url })
+        // }
       } catch (error) {
         console.error('Failed to fetch user data:', error)
       }
