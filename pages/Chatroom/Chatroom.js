@@ -27,18 +27,23 @@ export function ChatRoomScreen({ route }) {
 
   useEffect(async () => {
     const userId = await AsyncStorage.getItem('userId')
-    console.log(parseInt(userId))
-    const newMessageArrived = async (data) => {
+
+    const storedValue = await getVibrationSwitchGlobal();
+    const flag = JSON.parse(storedValue);
+    console.log("这个是看有没有开震动：" + flag);
+    console.log(typeof flag)
+    // console.log(parseInt(userId))
+    const newMessageArrived = (data) => {
       // console.log("previous data: " + messages[0].text)
       console.log('data')
       // console.log(data)
       arrivedMessage = data.message
       // console.log(arrivedMessage)
       const othermessage = arrivedMessage.user.id === parseInt(userId)
+      console.log("这个是判断是不是你发的：" + othermessage)
+      console.log(typeof othermessage)
       if (othermessage === false) {
-        const storedValue = await getVibrationSwitchGlobal();
-        const flag = JSON.parse(storedValue);
-        if (flag) {
+        if (flag === true) {
           Vibration.vibrate()
         }
       }
