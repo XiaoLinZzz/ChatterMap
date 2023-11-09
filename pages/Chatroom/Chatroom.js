@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useHideTab } from '../../HideTabContext'
 import roomSocket from '../../socket'
 
-export function ChatRoomScreen ({ route }) {
+export function ChatRoomScreen({ route }) {
   const navigation = useNavigation()
   const { chatRoomId } = route.params
 
@@ -21,6 +21,8 @@ export function ChatRoomScreen ({ route }) {
   const { hideTab, setHideTab } = useHideTab()
 
   const flatListRef = React.useRef(null)
+
+
 
   useEffect(async () => {
     const userId = await AsyncStorage.getItem('userId')
@@ -55,7 +57,7 @@ export function ChatRoomScreen ({ route }) {
     console.log('chatroom id' + chatRoomId)
     sendGroupMessage(content, chatRoomId.id, user_id)
 
-    async function getMessages () {
+    async function getMessages() {
       const messagesInChat = await getLastNMessageInformation(chatRoomId.id)
       // console.log(messagesInChat)
       addMessages(messagesInChat)
@@ -82,7 +84,10 @@ export function ChatRoomScreen ({ route }) {
 
   useEffect(() => {
     const scrollToBottom = () => {
-      flatListRef.current?.scrollToEnd({ animated: false })
+      // Using a setTimeout to allow the FlatList to update before scrolling
+      setTimeout(() => {
+        flatListRef.current?.scrollToEnd({ animated: true });
+      }, 10); // A slight delay to ensure the list is updated
     }
 
     // 加载消息后滚动到底部
@@ -100,20 +105,35 @@ export function ChatRoomScreen ({ route }) {
   // 发送消息时滚动到底部
   useEffect(() => {
     if (messages.length > 0) {
-      flatListRef.current?.scrollToEnd({ animated: true })
+
+      const timer = setTimeout(() => {
+
+        flatListRef.current?.scrollToEnd({ animated: true });
+      }, 800);
+
+      return () => clearTimeout(timer);
     }
-  }, [messages])
+  }, [messages]);
+
+
+  // useEffect(() => {
+  //   if (messages.length > 0) {
+  //     flatListRef.current?.scrollToEnd({ animated: true })
+  //   }
+  // }, [messages])
 
   // change the title of the chat room
   useEffect(() => {
     navigation.setOptions({ title: `${chatRoomId.name}` })
-    async function getMessages () {
+    async function getMessages() {
       const messagesInChat = await getLastNMessageInformation(chatRoomId.id)
       // console.log(messagesInChat)
       addMessages(messagesInChat)
     }
     getMessages()
   }, [chatRoomId])
+
+
   // when user scroll from top to buttom refresh data
   const addMessages = async (newMessages) => {
     const userId = await AsyncStorage.getItem('userId')
