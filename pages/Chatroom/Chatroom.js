@@ -5,6 +5,7 @@ import { sendGroupMessage, getLastNMessageInformation } from '../../Services/Gro
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useHideTab } from '../../HideTabContext'
 import roomSocket from '../../socket'
+import { Vibration } from 'react-native'
 
 export function ChatRoomScreen({ route }) {
   const navigation = useNavigation()
@@ -27,16 +28,24 @@ export function ChatRoomScreen({ route }) {
   useEffect(async () => {
     const userId = await AsyncStorage.getItem('userId')
     console.log(parseInt(userId))
-    const newMessageArrived = (data) => {
+    const newMessageArrived = async (data) => {
       // console.log("previous data: " + messages[0].text)
       console.log('data')
-      console.log(data)
+      // console.log(data)
       arrivedMessage = data.message
-      console.log(arrivedMessage)
+      // console.log(arrivedMessage)
+      const othermessage = arrivedMessage.user.id === parseInt(userId)
+      if (othermessage === false) {
+        const storedValue = await getVibrationSwitchGlobal();
+        const flag = JSON.parse(storedValue);
+        if (flag) {
+          Vibration.vibrate()
+        }
+      }
       setMessages((prevMessages) => [...prevMessages, {
         id: arrivedMessage.id,
         text: arrivedMessage.content,
-        sender: arrivedMessage.user.id === parseInt(userId) ? 'user' : 'other', // 判断是否是你发送的消息
+        sender: arrivedMessage.user.id === parseInt(userId) ? 'user' : 'other',
         sender_name: arrivedMessage.user.name
       }])
     }
