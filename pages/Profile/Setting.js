@@ -5,15 +5,21 @@ import { updatePassword } from '../../Services/UserService.js';
 import { UserContext } from '../UserContext';
 import { useHideTab } from '../../HideTabContext';
 import { useFocusEffect } from '@react-navigation/native';
+import { useVibration } from '../../VibrationContext';
+
+
+
 
 export default function SettingScreen() {
   const [notificationEnabled, setNotificationEnabled] = useState(false)
   const [autoJoinEnabled, setAutoJoinEnabled] = useState(false)
-  const [vibrationEnabled, setVibrationEnabled] = useState(false)
+  //const [vibrationEnabled, setVibrationEnabled] = useState(false)
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const { logoutUser } = useContext(UserContext);
   const { hideTab, setHideTab } = useHideTab();
+  const { vibrationEnabled, switchVibration } = useVibration();
+  
 
   useFocusEffect(
     React.useCallback(() => {
@@ -50,19 +56,19 @@ export default function SettingScreen() {
     });
   }
 
-  const switchVibration = async () => {
-    setVibrationEnabled(prevState => {
-      const newState = !prevState;
-      if (newState) {
-        Vibration.vibrate();
-      } else {
-        Vibration.cancel();
-      }
-      setVibrationSwitchGlobal(newState);
-      // console.log(newState)
-      return newState;
-    });
-  }
+  // const switchVibration = async () => {
+  //   setVibrationEnabled(prevState => {
+  //     const newState = !prevState;
+  //     if (newState) {
+  //       Vibration.vibrate();
+  //     } else {
+  //       Vibration.cancel();
+  //     }
+  //     setVibrationSwitchGlobal(newState);
+  //     console.log("s  " + newState)
+  //     return newState;
+  //   });
+  // }
 
   const handleChangePassword = async () => {
     if (newPassword === '') {

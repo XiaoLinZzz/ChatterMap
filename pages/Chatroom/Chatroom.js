@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useHideTab } from '../../HideTabContext'
 import roomSocket from '../../socket'
 import { Vibration } from 'react-native'
+import { useVibration } from '../../VibrationContext'
 
 export function ChatRoomScreen({ route }) {
   const navigation = useNavigation()
@@ -23,7 +24,12 @@ export function ChatRoomScreen({ route }) {
 
   const flatListRef = React.useRef(null)
 
+  const { vibrationEnabled } = useVibration();//vibrationEnabled从Setting传进来，vibrationEnabled == true 或 false，
+                                              //如果Setting选择震动，就是vibrationEnabled == true，你改一下你下面的逻辑就行
 
+
+
+  console.log("c :" + vibrationEnabled)
 
   useEffect(async () => {
     const userId = await AsyncStorage.getItem('userId')
@@ -43,7 +49,7 @@ export function ChatRoomScreen({ route }) {
       console.log("这个是判断是不是你发的：" + othermessage)
       console.log(typeof othermessage)
       if (othermessage === false) {
-        if (flag === true) {
+        if (flag === true && vibrationEnabled == true) {
           Vibration.vibrate()
         }
       }
