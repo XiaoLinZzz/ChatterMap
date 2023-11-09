@@ -3,13 +3,16 @@ import React from 'react'
 import { UserProvider } from './pages/UserContext'
 import AppNavigator from './pages/Navigators/AppNavigator'
 import { HideTabProvider } from './HideTabContext'
+import { VibrationProvider } from './VibrationContext';
 
 
 const App = () => (
   <UserProvider>
-    <HideTabProvider>
-      <AppNavigator />
-    </HideTabProvider>
+    <VibrationProvider>
+      <HideTabProvider>
+        <AppNavigator />
+      </HideTabProvider>
+    </VibrationProvider>
   </UserProvider>
 )
 
