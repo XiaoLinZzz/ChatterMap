@@ -32,40 +32,48 @@ export function ChatRoomScreen({ route }) {
 
   console.log("c :" + vibrationEnabled)
 
-  useEffect(async () => {
-    const userId = await AsyncStorage.getItem('userId')
-
-    const storedValue = await getVibrationSwitchGlobal();
-    const flag = JSON.parse(storedValue);
-    console.log("这个是看有没有开震动：" + flag);
-    console.log(typeof flag)
-    // console.log(parseInt(userId))
-    const newMessageArrived = (data) => {
-      // console.log("previous data: " + messages[0].text)
-      console.log('data')
-      // console.log(data)
-      arrivedMessage = data.message
-      // console.log(arrivedMessage)
-      const othermessage = arrivedMessage.user.id === parseInt(userId)
-      console.log("这个是判断是不是你发的：" + othermessage)
-      console.log(typeof othermessage)
-      if (othermessage === false) {
-        if (flag === true && vibrationEnabled == true) {
-          Vibration.vibrate()
+  useEffect(() => {
+    let isMounted = true; 
+  
+    
+    const setupSocketListener = async () => {
+      const userId = await AsyncStorage.getItem('userId'); 
+      const newMessageArrived = (data) => {
+        const arrivedMessage = data.message;
+        // Vibrate only if the message is from another user
+        if (arrivedMessage.user.id !== parseInt(userId, 10) && vibrationEnabled) {
+          Vibration.vibrate();
+          console.log("-------------------------zzzzzzzzz-----------")
         }
-      }
-      setMessages((prevMessages) => [...prevMessages, {
-        id: arrivedMessage.id,
-        text: arrivedMessage.content,
-        sender: arrivedMessage.user.id === parseInt(userId) ? 'user' : 'other',
-        sender_name: arrivedMessage.user.name
-      }])
-    }
-    roomSocket.on('new_message', newMessageArrived)
+        // Update state with the new message
+        if (isMounted) {
+          setMessages((prevMessages) => [...prevMessages, {
+            id: arrivedMessage.id,
+            text: arrivedMessage.content,
+            sender: arrivedMessage.user.id === parseInt(userId, 10) ? 'user' : 'other',
+            sender_name: arrivedMessage.user.name
+          }]);
+        }
+      };
+  
+      
+      roomSocket.on('new_message', newMessageArrived);
+  
+     
+      return () => roomSocket.off('new_message', newMessageArrived);
+    };
+  
+    
+    setupSocketListener();
+  
+    
     return () => {
-      roomSocket.off('new_message')
-    }
-  }, [])
+      isMounted = false;
+    };
+  }, [vibrationEnabled]);
+
+  
+
 
   useFocusEffect(
     React.useCallback(() => {
