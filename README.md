@@ -43,8 +43,10 @@ Now you should have the development server running and can start exploring the p
 
 ## screenshots
 <p align="center">
-  <img height="300" src="ex1.jpg" alt="应用截图1"/> &nbsp;&nbsp;
-  <img height="300" src="ex2.jpg" alt="应用截图2"/>
+  <img height="300" src="ex2.jpg" alt=""/> &nbsp;&nbsp;
+  <img height="300" src="ex3.jpg" alt=""/> &nbsp;&nbsp;
+  <img height="300" src="ex1.jpg" alt=""/> &nbsp;&nbsp;
+  <img height="300" src="ex4.jpg" alt=""/> &nbsp;&nbsp;
 </p>
 
 
