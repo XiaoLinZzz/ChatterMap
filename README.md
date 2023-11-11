@@ -1,4 +1,7 @@
-# <img src="logo.png" width="600" height="270"/>
+<p align="center">
+  <img src="logo.png" width="700" height="300"/>
+</p>
+
 
 ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white) 
 ![React Native](https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) 
