@@ -39,6 +39,7 @@ Now you should have the development server running and can start exploring the p
 - [Tech Spec](https://chattermap.notion.site/Tech-Spec-7a4f390044de40dcafd913281694b1cf?pvs=4): Detailed technical information about ChatterMap's design and architecture.
 - [History](history.md): Review the development history and major updates of ChatterMap.
 - [Tasks](https://chattermap.notion.site/37bb4c012cc04b3eb8813f6a3261baf5?v=990421b1c3e843ecb08af42ce728afa4&pvs=4): See what tasks are being worked on and what has been completed.
+- [Guide](https://xiaolinzzz.notion.site/Guide-to-Open-Chatrooms-3ee45b4f037b4c3f8cfd62a6fe875303?pvs=4): The guide of how you use the chatter map.
 
 ## Backend Library
 
