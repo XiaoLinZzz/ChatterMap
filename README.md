@@ -41,6 +41,14 @@ Now you should have the development server running and can start exploring the p
 - [Tasks](https://chattermap.notion.site/37bb4c012cc04b3eb8813f6a3261baf5?v=990421b1c3e843ecb08af42ce728afa4&pvs=4): See what tasks are being worked on and what has been completed.
 - [Guide](https://xiaolinzzz.notion.site/Guide-to-Open-Chatrooms-3ee45b4f037b4c3f8cfd62a6fe875303?pvs=4): The guide of how you use the chatter map.
 
+## screenshots
+<p align="center">
+  <img height="300" src="ex1.jpg" alt="应用截图1"/> &nbsp;&nbsp;
+  <img height="300" src="ex2.jpg" alt="应用截图2"/>
+</p>
+
+
+
 ## Backend
 
 You can find the backend repository [here](https://github.com/ignacio-urrutia/MyApp-backend).
